@@ -6,6 +6,7 @@ import com.industech.model.User;
 import com.industech.repository.PrivilegeRepository;
 import com.industech.repository.RoleRepository;
 import com.industech.repository.UserRepository;
+import com.industech.service.AuthenticationService;
 import jakarta.transaction.Transactional;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -30,9 +31,10 @@ public class Main {
 	CommandLineRunner commandLineRunner(UserRepository userRepository,
 										RoleRepository roleRepository,
 										PrivilegeRepository privilegeRepository,
-										PasswordEncoder encoder){
+										AuthenticationService authService
+										){
 		return args -> {
-			//TODO: GET PRIVILEGES AND ROLES TO SET FIRST USER
+
 		};
 	}
 

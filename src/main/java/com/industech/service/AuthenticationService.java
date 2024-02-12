@@ -1,5 +1,6 @@
 package com.industech.service;
 
+import com.industech.model.Privilege;
 import com.industech.model.Role;
 import com.industech.model.User;
 import com.industech.repository.PrivilegeRepository;
@@ -27,8 +28,15 @@ public class AuthenticationService {
     private PasswordEncoder passwordEncoder;
 
 
-    private Set<Role> userRoles(){
-        return null;
+    public Set<Role> roles(String roleName){
+        Set<Privilege>privileges=new HashSet<>(privilegeRepository.getUserPermissions());
+        Set<Role> roles=new HashSet<>();
+        Optional<Role> role= roleRepository.findByRoleName(roleName);
+        if(role.isPresent()){
+            role.get().setPrivileges(privileges);
+            roles.add(role.get());
+        }
+        return roles;
     }
 
     public User registerUser(String name, String email, String password) {
@@ -38,7 +46,7 @@ public class AuthenticationService {
             throw new IllegalStateException("This email is already in use.");
         }
         else {
-            User recordUser = new User(name, email, passwordEncoder.encode(password), userRoles());
+            User recordUser = new User(name, email, passwordEncoder.encode(password), roles("user"));
             return userRepository.save(recordUser);
         }
     }
