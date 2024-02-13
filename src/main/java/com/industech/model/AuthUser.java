@@ -1,5 +1,6 @@
 package com.industech.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -35,11 +36,22 @@ public class AuthUser implements UserDetails {
         return authorities;
     }
 
+    @Override
+    public String getUsername() {return user.getEmail();}
+    @Override @JsonIgnore
+    public String getPassword() {return user.getPassword();}
 
-    @Override public String getUsername() {return user.getEmail();}
-    @Override public String getPassword() {return user.getPassword();}
-    @Override public boolean isAccountNonExpired() {return true;}
-    @Override public boolean isAccountNonLocked() {return true;}
-    @Override public boolean isCredentialsNonExpired() {return true;}
-    @Override public boolean isEnabled() {return true;}
+    @Override @JsonIgnore public boolean isAccountNonExpired() {return true;}
+    @Override @JsonIgnore public boolean isAccountNonLocked() {return true;}
+    @Override @JsonIgnore public boolean isCredentialsNonExpired() {return true;}
+    @Override @JsonIgnore public boolean isEnabled() {return true;}
+
+    @Override
+    public String toString() {
+        return "AuthUser {"+
+                "\n\tid: "+user.getId()+
+                "\n\temail: "+getUsername()+
+                "\n\troles: "+getAuthorities()+
+                "\n}";
+    }
 }

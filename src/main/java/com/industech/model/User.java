@@ -1,5 +1,6 @@
 package com.industech.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,13 +16,14 @@ import java.util.Set;
 @Entity(name = "User")
 public class User {
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    private Long id;//todo: change strategy
 
     private String name;
 
     private String email;//todo: set unique
 
-    private String password;//todo: hide on response
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",

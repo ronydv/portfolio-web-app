@@ -1,5 +1,7 @@
 package com.industech.controller;
 
+import com.industech.dto.LoginRequest;
+import com.industech.dto.LoginResponse;
 import com.industech.model.User;
 import com.industech.service.AuthenticationService;
 import lombok.extern.slf4j.Slf4j;
@@ -21,13 +23,16 @@ public class AuthenticationController {
     public ResponseEntity<User> signUp(@RequestBody User user) {
         return new ResponseEntity<>(
                 authenticationService.registerUser(
-                        user.getName(), user.getEmail(), user.getPassword()
-        ), HttpStatus.CREATED);
+                        user.getName(), user.getEmail(), user.getPassword()),
+                HttpStatus.CREATED);
     }
 
-    @GetMapping("/login")
-    public String logIn(){
-        return "login endpoint tested successfully";
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> logIn(@RequestBody LoginRequest user) {
+        return new ResponseEntity<>(
+                authenticationService.login(
+                        user.email(), user.password()),
+                HttpStatus.OK);
     }
 
     //change hasAuthority to hasRole if the role contains ROLE_ prefix
@@ -37,7 +42,7 @@ public class AuthenticationController {
         return "login endpoint for role admin tested successfully";
     }
 
-    @PreAuthorize("hasAuthority('user')")
+    @PreAuthorize("hasRole('user')")
     @GetMapping("/testuser")
     public String testUser(){
         return "login endpoint for role user tested successfully";
