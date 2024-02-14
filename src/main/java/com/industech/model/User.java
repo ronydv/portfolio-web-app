@@ -12,15 +12,20 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "users")
+@Table(name = "users", uniqueConstraints = {
+        @UniqueConstraint(name="email_unique_constraint", columnNames = {"email"} )
+})
 @Entity(name = "User")
 public class User {
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;//todo: change strategy
+    @Id
+    @SequenceGenerator(name= "user_sequence", sequenceName= "user_id_sequence", allocationSize=1 )//auto-increment by 1
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
+    private Long id;
 
     private String name;
 
-    private String email;//todo: set unique
+    @Column(nullable = false)
+    private String email;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
