@@ -1,10 +1,8 @@
 package com.industech.service;
 
 import com.industech.dto.LoginResponse;
-import com.industech.model.AuthUser;
-import com.industech.model.Privilege;
-import com.industech.model.Role;
-import com.industech.model.User;
+import com.industech.dto.Token;
+import com.industech.model.*;
 import com.industech.repository.PrivilegeRepository;
 import com.industech.repository.RoleRepository;
 import com.industech.repository.UserRepository;
@@ -65,18 +63,34 @@ public class AuthenticationService {
     public LoginResponse login(String username, String password){
         AuthUser user= null;
         String accessToken= null;
+        RefreshToken refreshToken=null;
         try {
             Authentication auth =//Authenticate the user for the ProviderManager in SecurityConfig.class, @Bean AuthenticationManager
                     authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
             if(auth.isAuthenticated()){
                 user= (AuthUser) auth.getPrincipal();//the principal is set in UserDetailsServiceImpl.class
                 accessToken=tokenService.createJwtAccessToken(user);
+                refreshToken=tokenService.createUUIDRefreshToken(user.getUser());
                 log.info("\u001B[96mauthenticated user:\n"+ user+"\u001B[0m");
             }
-            return new LoginResponse(user,accessToken);
+            return new LoginResponse(user,accessToken,refreshToken.getToken());
         }catch (AuthenticationException e) {
             //TODO: create custom exception for users and tokens
             throw new IllegalStateException("invalid user");
         }
+    }
+
+    public Token refreshToken(String refreshTokenRequest) {
+
+        return tokenService.findRefreshToken(refreshTokenRequest)
+                .map(tokenService::verifyExpiration)//returns a token, or an exception if it has expired
+                .map(RefreshToken::getUser)//get the user of the refresh token from above
+                .map(user ->{
+                    String accessToken=tokenService.createJwtAccessToken(new AuthUser(user));
+                    log.info("\u001B[35mgenerated new access token: " + accessToken + "\u001B[0m");
+                    return new Token(accessToken, refreshTokenRequest);
+                })
+                .orElseThrow(() ->
+                        new IllegalStateException("invalid token or user is null"));
     }
 }

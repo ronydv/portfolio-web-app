@@ -1,13 +1,13 @@
 package com.industech.service;
 
 import com.industech.model.AuthUser;
+import com.industech.model.RefreshToken;
 import com.industech.model.User;
+import com.industech.repository.RefreshTokenRepository;
 import com.industech.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
@@ -22,12 +22,11 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class TokenService {
-    @Autowired
-    private JwtEncoder jwtEncoder;
+    @Autowired private JwtEncoder jwtEncoder;
     @Autowired private UserRepository userRepository;
-    //@Autowired private RefreshTokenRepository refreshTokenRepository;
+    @Autowired private RefreshTokenRepository tokenRepository;
 
-    //generate an access token for the logged user if it is successfully authenticated
+
     public String createJwtAccessToken(AuthUser user){
         Instant now = Instant.now();
         //Instant thirtyMinutes= ZonedDateTime.now().plusMinutes(30).toInstant();
@@ -46,33 +45,41 @@ public class TokenService {
     }
 
 
-/*    public RefreshToken createUUIDRefreshToken(User user) {
-        RefreshToken refreshToken = new RefreshToken(
-                UUID.randomUUID().toString(),
-                //ZonedDateTime.now().plusMinutes(1440).toInstant(),//24hs
-                ZonedDateTime.now().plusMinutes(3).toInstant(),
-                user);
-        return refreshTokenRepository.save(refreshToken);//- saving the refresh token to a database
+    public RefreshToken createUUIDRefreshToken(User user) {
+        Optional<RefreshToken> token= Optional.ofNullable(user.getRefreshToken());
+        if(token.isPresent()){
+            //return existing token in case user already has one, use update methods if necessary
+            return user.getRefreshToken();
+        }else{
+            RefreshToken refreshToken = new RefreshToken(
+                    UUID.randomUUID().toString(),
+                    //ZonedDateTime.now().plusMinutes(1440).toInstant(),//24hs
+                    ZonedDateTime.now().plusMinutes(3).toInstant(),
+                    user);
+            return tokenRepository.save(refreshToken);
+        }
     }
 
     public Optional<RefreshToken> findRefreshToken(String refreshToken) {
-        return refreshTokenRepository.findRefreshToken(refreshToken);
+        return tokenRepository.findByToken(refreshToken);
     }
 
     public RefreshToken verifyExpiration(RefreshToken token) {
-        try{
-            if (token.getExpiryDate().compareTo(Instant.now()) < 0) {
-                log.warn("checking token expiration...\ntoken expired, deleting token: "
-                        +token.getRefreshToken()+ " with id: "+token.getRefreshTokenId());
-                refreshTokenRepository.deleteToken(token.getRefreshToken());
-                refreshTokenRepository.flush();
-                throw new TokenException("Refresh token: "+token.getRefreshToken()+" was expired. Please make a new signin request");
-            } else {
-                log.info("\u001B[35m"+"checking token expiration...\nrefresh token still valid! :D"+"\u001B[0m");
-                return token;
-            }
-        }catch (Exception e){
-            throw new TokenException(e.getMessage());//get the exception message from the above block
+        //TODO: create custom Exception for tokens
+        log.info("\u001B[35muser with token id:" +token.getId()+" is requesting a refresh\u001B[0m");
+        if (token.getExpiryDate().compareTo(Instant.now()) < 0) {
+            log.warn("checking token expiration...\ntoken expired, deleting token: "
+                    + token.getToken() + " with id: " + token.getId());
+            tokenRepository.delete(token);
+            throw new IllegalStateException("Refresh token: "+token.getToken()+" was expired. Please make a new login request");
+        } else {
+            log.info("\u001B[35mchecking token expiration...\nrefresh token still valid! :D\u001B[0m");
+            return token;
         }
-    }*/
+    }
 }
+/*
+            RefreshToken tokenToUpdate=tokenRepository.getReferenceById(token.get().getId());
+            tokenToUpdate.setToken(refreshToken.getToken());
+            tokenToUpdate.setExpiryDate(refreshToken.getExpiryDate());
+*/

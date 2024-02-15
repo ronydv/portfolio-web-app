@@ -36,10 +36,13 @@ public class AuthUser implements UserDetails {
         return authorities;
     }
 
+    public Long getId() {return user.getId();}
     @Override
     public String getUsername() {return user.getEmail();}
     @Override @JsonIgnore
     public String getPassword() {return user.getPassword();}
+    @JsonIgnore
+    public User getUser(){ return user; }
 
     @Override @JsonIgnore public boolean isAccountNonExpired() {return true;}
     @Override @JsonIgnore public boolean isAccountNonLocked() {return true;}

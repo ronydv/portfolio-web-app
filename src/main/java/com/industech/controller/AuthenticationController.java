@@ -2,6 +2,7 @@ package com.industech.controller;
 
 import com.industech.dto.LoginRequest;
 import com.industech.dto.LoginResponse;
+import com.industech.dto.Token;
 import com.industech.model.User;
 import com.industech.service.AuthenticationService;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +34,10 @@ public class AuthenticationController {
                 authenticationService.login(
                         user.email(), user.password()),
                 HttpStatus.OK);
+    }
+    @PostMapping("/refresh-token")
+    public ResponseEntity<Token>refreshToken(@RequestBody Token token){
+        return new ResponseEntity<>( authenticationService.refreshToken(token.refreshToken()),HttpStatus.OK );
     }
 
     //change hasAuthority to hasRole if the role contains ROLE_ prefix

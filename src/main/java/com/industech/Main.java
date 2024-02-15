@@ -35,16 +35,20 @@ public class Main {
 										){
 
 		return args -> {
-/*			Optional<User> user=userRepository.findByEmail("test@mail.com");
+/*			Optional<User> user=userRepository.findByEmail("user@mail.com");
 			RefreshToken refreshToken=new RefreshToken();
 			refreshToken.setToken("34sd-34t43efsd-443-grfd");
 			refreshToken.setUser(user.get());
 			tokenRepository.save(refreshToken);*/
-
 			//userRepository.deleteById(8L);
+			//tokenRepository.delete(user.get().getRefreshToken());
 
-
-			//tokenRepository.deleteById(12L);
+/*			Optional<User> user=userRepository.findByEmail("test@mail.com");
+			Optional<RefreshToken> token=tokenRepository.findByToken(user.get().getRefreshToken().getToken());
+			System.out.println(token.get());*/
+			//TODO: create update method for RefreshToken entity
+			// to avoid conflicts in duplicate entries for unique constraint from user_id
+			// in refresh_token table
 		};
 	}
 

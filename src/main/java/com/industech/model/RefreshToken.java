@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Data
@@ -23,14 +24,18 @@ public class RefreshToken {
 
     private String token;
 
-    @UuidGenerator(style = UuidGenerator.Style.TIME)
-    private UUID uuid = UUID.randomUUID();
+    private Instant expiryDate;
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id",
             foreignKey = @ForeignKey(name ="user_token_fk" ))
     private User user;
 
+    public RefreshToken(String token, Instant expiryDate, User user){
+        this.token=token;
+        this.expiryDate=expiryDate;
+        this.user=user;
+    }
     @Override
     public String toString(){
         return "refresh token {" +
