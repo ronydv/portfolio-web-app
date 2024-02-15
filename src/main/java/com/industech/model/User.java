@@ -38,6 +38,9 @@ public class User {
                     foreignKey = @ForeignKey(name = "role_id_fk")))
     private Set<Role> roles=new HashSet<>();
 
+    @OneToOne(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.REMOVE)//on delete user, delete token
+    private RefreshToken refreshToken;
+
     public User(String name, String email, String password, Set<Role> roles ){
         this.name=name;
         this.email=email;

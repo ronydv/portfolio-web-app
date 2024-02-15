@@ -1,9 +1,11 @@
 package com.industech;
 
 import com.industech.model.Privilege;
+import com.industech.model.RefreshToken;
 import com.industech.model.Role;
 import com.industech.model.User;
 import com.industech.repository.PrivilegeRepository;
+import com.industech.repository.RefreshTokenRepository;
 import com.industech.repository.RoleRepository;
 import com.industech.repository.UserRepository;
 import com.industech.service.AuthenticationService;
@@ -14,10 +16,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @SpringBootApplication
 @Transactional
@@ -31,10 +30,21 @@ public class Main {
 	CommandLineRunner commandLineRunner(UserRepository userRepository,
 										RoleRepository roleRepository,
 										PrivilegeRepository privilegeRepository,
+										RefreshTokenRepository tokenRepository,
 										AuthenticationService authService
 										){
-		return args -> {
 
+		return args -> {
+/*			Optional<User> user=userRepository.findByEmail("test@mail.com");
+			RefreshToken refreshToken=new RefreshToken();
+			refreshToken.setToken("34sd-34t43efsd-443-grfd");
+			refreshToken.setUser(user.get());
+			tokenRepository.save(refreshToken);*/
+
+			//userRepository.deleteById(8L);
+
+
+			//tokenRepository.deleteById(12L);
 		};
 	}
 

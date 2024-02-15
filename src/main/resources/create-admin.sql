@@ -1,12 +1,11 @@
 --Query used to transform the very first user created by the app to an admin.
---Creating the admin from the beginning through SQL before any user
+--Creating the admin from the beginning directly in postgreSQL before any user
 --crated by the app gives conflict in the sequence generator, because
---the manually generated user with id=1 in postgreSQL will conflict later
---with the next created user by the app, because the sequence generator from the app
---will create the user starting with id=1.
---To avoid that just create the first user through the app and spring will give it the first id value,
---then just update the first user and transform to an admin, so the next user crated by the app will give the
---next id value without any conflict.
+--any manually generated user with id=1 in postgreSQL outside JPA
+--will conflict with the sequence of the JPA Entity since JPA doesn't register the
+--first value created manually through SQL code. To avoid this, just simply
+--create a standard user through the app, so jpa can register the first value for
+--the sequence generator, and then transform it to an admin:
 INSERT INTO privilege (id, name)
 VALUES (1, 'create'),
 	(2, 'read'),
