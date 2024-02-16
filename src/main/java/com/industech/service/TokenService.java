@@ -1,5 +1,6 @@
 package com.industech.service;
 
+import com.industech.exception.TokenException;
 import com.industech.model.AuthUser;
 import com.industech.model.RefreshToken;
 import com.industech.model.User;
@@ -48,7 +49,7 @@ public class TokenService {
     public RefreshToken createUUIDRefreshToken(User user) {
         Optional<RefreshToken> token= Optional.ofNullable(user.getRefreshToken());
         if(token.isPresent()){
-            //return existing token in case user already has one, use update methods if necessary
+            //return existing token if the user already has one, use update methods if necessary forward in development
             return user.getRefreshToken();
         }else{
             RefreshToken refreshToken = new RefreshToken(
@@ -65,13 +66,11 @@ public class TokenService {
     }
 
     public RefreshToken verifyExpiration(RefreshToken token) {
-        //TODO: create custom Exception for tokens
-        log.info("\u001B[35muser with token id:" +token.getId()+" is requesting a refresh\u001B[0m");
         if (token.getExpiryDate().compareTo(Instant.now()) < 0) {
             log.warn("checking token expiration...\ntoken expired, deleting token: "
-                    + token.getToken() + " with id: " + token.getId());
+                    + token.getToken() + " with id: " + token.getId()+" Please make a new login request");
             tokenRepository.delete(token);
-            throw new IllegalStateException("Refresh token: "+token.getToken()+" was expired. Please make a new login request");
+            throw new TokenException("Refresh token: "+token.getToken()+" was expired. Please make a new login request");
         } else {
             log.info("\u001B[35mchecking token expiration...\nrefresh token still valid! :D\u001B[0m");
             return token;

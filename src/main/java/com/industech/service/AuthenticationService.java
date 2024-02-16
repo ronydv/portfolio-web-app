@@ -2,6 +2,8 @@ package com.industech.service;
 
 import com.industech.dto.LoginResponse;
 import com.industech.dto.Token;
+import com.industech.exception.AuthUserException;
+import com.industech.exception.TokenException;
 import com.industech.model.*;
 import com.industech.repository.PrivilegeRepository;
 import com.industech.repository.RoleRepository;
@@ -51,10 +53,9 @@ public class AuthenticationService {
     public User registerUser(String name, String email, String password) {
         Optional<User> existingUser = userRepository.findByEmail(email);
         if (existingUser.isPresent()) {
-            log.error("email is already in use.");
-            throw new IllegalStateException("This email is already in use.");
-        }
-        else {
+            log.error("\u001B[31memail is already in use.\u001B[0m");
+            throw new AuthUserException("This email is already in use.");
+        } else {
             User recordUser = new User(name, email, passwordEncoder.encode(password), roles("user"));
             return userRepository.save(recordUser);
         }
@@ -75,8 +76,8 @@ public class AuthenticationService {
             }
             return new LoginResponse(user,accessToken,refreshToken.getToken());
         }catch (AuthenticationException e) {
-            //TODO: create custom exception for users and tokens
-            throw new IllegalStateException("invalid user");
+            log.error("\u001B[31minvalid user.\u001B[0m");
+            throw new AuthUserException("invalid user");
         }
     }
 
@@ -87,10 +88,12 @@ public class AuthenticationService {
                 .map(RefreshToken::getUser)//get the user of the refresh token from above
                 .map(user ->{
                     String accessToken=tokenService.createJwtAccessToken(new AuthUser(user));
-                    log.info("\u001B[35mgenerated new access token: " + accessToken + "\u001B[0m");
+                    log.info("\u001B[35mgenerated new access token: " + accessToken + "\u001B[0m");//delete after
                     return new Token(accessToken, refreshTokenRequest);
                 })
-                .orElseThrow(() ->
-                        new IllegalStateException("invalid token or user is null"));
+                .orElseThrow(() -> {
+                    log.error("\u001B[31minvalid token or user is null.\u001B[0m");
+                    return new TokenException("invalid token or user is null");
+                });
     }
 }
