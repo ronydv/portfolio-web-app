@@ -1,0 +1,34 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* styling the layout */
+.layout{/*container*/
+  display: flex;
+  flex-direction: column;
+}
+.content{/* container of nav (sidebar) and main elements */
+  display: flex;
+  flex-direction: row;
+}
+.sidebar{/*components on this sidebar will be rendered depending of the viewport width size*/
+  background-color: var(--chakra-colors-cyan-400);
+}
+.main {/*this container will render all outlets from routing*/
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  align-items: center;/* set items at the center of the pane */
+  justify-content: center;/* set items horizontally in the middle */
+}
