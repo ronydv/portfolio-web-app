@@ -49,7 +49,7 @@ public class TokenService {
     public RefreshToken createUUIDRefreshToken(User user) {
         Optional<RefreshToken> token= Optional.ofNullable(user.getRefreshToken());
         if(token.isPresent()){
-            //return existing token if the user already has one, use update methods if necessary forward in development
+            //return existing token if the user already has one, use update methods forward in development
             return user.getRefreshToken();
         }else{
             RefreshToken refreshToken = new RefreshToken(

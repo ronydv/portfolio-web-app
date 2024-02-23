@@ -20,14 +20,14 @@ const Header = () => {
 
             <Spacer />
 
-            <div className={classes.container}>
+{/*             <div className={classes.container}>
                 <Link to={'/'}>
                     <Button variant='outline' color={darkMode}>Home</Button>
                 </Link>
                 <Button variant='link' color={darkMode}>About</Button>
                 <Button variant='link' color={darkMode}>Contact</Button>
                 <Button variant='link' color={darkMode}>Services</Button>
-            </div>
+            </div> */}
 
             <Spacer flex={0.2}/>
 

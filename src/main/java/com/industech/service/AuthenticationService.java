@@ -77,7 +77,7 @@ public class AuthenticationService {
             return new LoginResponse(user,accessToken,refreshToken.getToken());
         }catch (AuthenticationException e) {
             log.error("\u001B[31minvalid user.\u001B[0m");
-            throw new AuthUserException("invalid user");
+            throw new AuthUserException("Invalid User");
         }
     }
 
