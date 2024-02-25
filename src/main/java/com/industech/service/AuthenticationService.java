@@ -10,6 +10,7 @@ import com.industech.repository.RoleRepository;
 import com.industech.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -54,7 +55,7 @@ public class AuthenticationService {
         Optional<User> existingUser = userRepository.findByEmail(email);
         if (existingUser.isPresent()) {
             log.error("\u001B[31memail is already in use.\u001B[0m");
-            throw new AuthUserException("This email is already in use.");
+            throw new AuthUserException("This email is already in use.", HttpStatus.CONFLICT);
         } else {
             User recordUser = new User(name, email, passwordEncoder.encode(password), roles("user"));
             return userRepository.save(recordUser);
@@ -93,7 +94,7 @@ public class AuthenticationService {
                 })
                 .orElseThrow(() -> {
                     log.error("\u001B[31minvalid token or user is null.\u001B[0m");
-                    return new TokenException("invalid token or user is null");
+                    return new TokenException("invalid token or user is null",HttpStatus.FORBIDDEN);
                 });
     }
 }

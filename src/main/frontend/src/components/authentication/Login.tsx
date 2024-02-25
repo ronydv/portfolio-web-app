@@ -14,8 +14,7 @@ const Login = () => {
         console.log(user);
         try{
             const response = await axios.post<LoginResponse>("/api/v1/auth/login",
-                //object to send to the server
-                user, {
+                user, {//object to send to the server
                 headers: {
                     "Accept": "application/json",
                     "Content-Type": "application/json",
