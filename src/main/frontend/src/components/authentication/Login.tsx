@@ -57,7 +57,7 @@ const Login = () => {
                     </div>
 
                     <div>
-                        <Button type="submit" isDisabled={disable}>Log in</Button>
+                        <Button marginTop={3} type="submit" isDisabled={disable}>Log in</Button>
                     </div>
                 </FormControl>
             </form>

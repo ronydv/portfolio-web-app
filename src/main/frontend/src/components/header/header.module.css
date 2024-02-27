@@ -1,7 +1,7 @@
 .header{
     display: flex;
     flex-wrap: wrap;
-    
+    row-gap: 10px;
     align-items: center;/* set items at the center of the pane */
     justify-content: center;/* set items horizontally in the middle */
     padding: 20px 120px 0px 120px;
@@ -9,11 +9,11 @@
 .container{/* container for title and middle pane and buttons */
     display: flex;
     column-gap: 15px;
-    flex-wrap: wrap;
     align-items: center;/* set items at the center of the pane */
     justify-content: center;/* set items horizontally in the middle */
     margin: 5px;
 }
+
 /* styling the span of the brand title */
 .span{
     background: linear-gradient(0deg, #219c90, #266f77);
@@ -23,15 +23,5 @@
     display: inline-block;/* fit the background to the font size */
     border-radius: 4px;
     font-size: 24px;
-    /* font-size: 22px; */
     color: beige;
 }
-/* this mode is for bigger span background */
-/* .span{
-    background: linear-gradient(0deg, #219c90, #266f77);
-    padding: 0px 8px;
-    margin-left:4px;
-    display: inline-block;
-    border-radius: 8px;
-    color: beige;
-} */

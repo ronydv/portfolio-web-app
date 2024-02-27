@@ -1,0 +1,10 @@
+.navbar{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding: 0px 5px;
+    align-items: center;
+    position: sticky;  
+    position: -webkit-sticky;
+    bottom: 40px;
+}

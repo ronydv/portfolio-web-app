@@ -98,7 +98,7 @@ const Signup = () => {
                     </div>
 
                     <div>
-                        <Button type="submit" isDisabled={disable}>Register</Button>
+                        <Button marginTop={3} type="submit" isDisabled={disable}>Register</Button>
                     </div>
                 </FormControl>
             </form>

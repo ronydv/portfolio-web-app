@@ -1,8 +1,12 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { useColorMode } from "@chakra-ui/react";
 import Header from "./components/header/Header";
 import classes from './index.module.css'
 import { Outlet } from "react-router-dom";
+import useMatchMedia from "./components/hooks/useMatchMedia";
+import Navbar from "./components/navbar/Navbar";
 const Layout = () => {
+    const mode = useColorMode();
+    const isDesktop=useMatchMedia();
     return (
         <div className={classes.layout}>
             <header>
@@ -11,10 +15,14 @@ const Layout = () => {
 
             <div className={classes.content}>
 
-                <nav className={classes.sidebar}>{/* `side bar` */}</nav>
+                {!isDesktop &&
+                <nav className={`${classes.sidebar} ${mode.colorMode==='dark' ? 
+                                                        classes.darkmode:classes.lightmode}`}>
+                    <Navbar/>
+                </nav>}
 
                 <main className={classes.main}>
-                    <Outlet/>
+                    <Outlet />
                 </main>
 
             </div>
