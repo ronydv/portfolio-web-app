@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom/client';
-import classes from './index.module.css'
 import App from './App';
 import { ChakraBaseProvider } from '@chakra-ui/react';
-import { indexTheme } from './components/themes/global-theme';
+import { indexTheme } from './themes/global-theme';
+import { AuthProvider } from './context/AuthProvider';
+
+
 
 const root = ReactDOM.createRoot(
 	document.getElementById('root') as HTMLElement
@@ -12,7 +14,9 @@ const root = ReactDOM.createRoot(
 root.render(
 	<React.StrictMode>
 		<ChakraBaseProvider theme={indexTheme}>
-			<App />
+			<AuthProvider>
+				<App />
+			</AuthProvider>
 		</ChakraBaseProvider>
 	</React.StrictMode>
 );

@@ -1,7 +1,13 @@
 import { Button, Text} from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import useInterceptor from "../../hooks/useInterceptor";
+import { useFetch } from "../../hooks/useFetch";
 
 const Home = () => {
+    const {data:users}=useFetch<User>("/api/v1/users/user");
+    
+    console.log(users);
+    
     return ( 
         <div>
             <h1>Home component</h1>
@@ -18,6 +24,7 @@ const Home = () => {
             <Text size={'lg'}> text for users</Text>
             <br /><br />
             <Text size={'lg'}> text for admin</Text>
+            
         </div>
      );
 }

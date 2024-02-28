@@ -1,9 +1,11 @@
 import { Button, FormControl, FormErrorMessage, FormHelperText, FormLabel, Input } from "@chakra-ui/react";
 import classes from './authentication.module.css';
-import { FormEvent, useState } from "react";
+import { FormEvent, useContext, useState } from "react";
 import axios from "axios";
+import AuthContext from "../../context/AuthProvider";
 
 const Login = () => {
+    const authContext  = useContext<UserContext | undefined>(AuthContext);//fill the data and manage it in AuthProvider.tsx
     const [user, setUser] = useState<User>({email:'admin@mail.com',password:'password'});//data for test purposes
     const [isError, setIsError]= useState<boolean>(false)
     const [error, setError]=useState<string | undefined>(undefined);
@@ -20,12 +22,17 @@ const Login = () => {
                     "Content-Type": "application/json",
                 },
             });
-            console.log(response);
+            authContext?.setAuth(response.data);
+            console.log(response.data, authContext?.auth);//delete this line later
         }catch(error:unknown){
             if(axios.isAxiosError(error)){
-                setIsError(true);
-                setError(error.response?.data.message);
-                console.log(error.response?.data.message);
+                if (error.response?.status === 401) {
+                    setIsError(true);
+                    setError(error.response.data.message);
+                }else if (error.response?.status === 500){
+                    setIsError(true);
+                    setError("Error while trying to login");
+                }
             }
         }
     };
@@ -42,7 +49,7 @@ const Login = () => {
                                 setIsError(false);
                             }} />
                         {!isError ? <FormHelperText>We'll never share your data or send spam</FormHelperText> :
-                            <FormErrorMessage>{`${error}, invalid email or password`}</FormErrorMessage>
+                            <FormErrorMessage>{`${error}`}</FormErrorMessage>
                         }
                     </div>
 

@@ -32,7 +32,7 @@ public class TokenService {
     public String createJwtAccessToken(AuthUser user){
         Instant now = Instant.now();
         //Instant thirtyMinutes= ZonedDateTime.now().plusMinutes(30).toInstant();
-        Instant thirtyMinutes=ZonedDateTime.now().plusMinutes(1).toInstant();
+        Instant thirtyMinutes=ZonedDateTime.now().plusSeconds(15).toInstant();
         String role = user.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(" "));

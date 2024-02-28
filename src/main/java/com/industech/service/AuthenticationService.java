@@ -64,21 +64,21 @@ public class AuthenticationService {
 
     public LoginResponse login(String username, String password){
         AuthUser user= null;
-        String accessToken= null;
-        RefreshToken refreshToken=null;
+        Token token=null;
         try {
             Authentication auth =//Authenticate the user for the ProviderManager in SecurityConfig.class, @Bean AuthenticationManager
                     authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
             if(auth.isAuthenticated()){
                 user= (AuthUser) auth.getPrincipal();//the principal is set in UserDetailsServiceImpl.class
-                accessToken=tokenService.createJwtAccessToken(user);
-                refreshToken=tokenService.createUUIDRefreshToken(user.getUser());
+                token=new Token(
+                        tokenService.createJwtAccessToken(user),
+                        tokenService.createUUIDRefreshToken(user.getUser()).getToken());
                 log.info("\u001B[96mauthenticated user:\n"+ user+"\u001B[0m");
             }
-            return new LoginResponse(user,accessToken,refreshToken.getToken());
+            return new LoginResponse(user,token);
         }catch (AuthenticationException e) {
             log.error("\u001B[31minvalid user.\u001B[0m");
-            throw new AuthUserException("Invalid User");
+            throw new AuthUserException("Invalid User", HttpStatus.UNAUTHORIZED);
         }
     }
 

@@ -60,7 +60,7 @@ const Signup = () => {
                         <FormLabel>Name</FormLabel>
                         <Input type='text' placeholder="Enter your name (optional)" isInvalid={false}
                             onChange={(event) => {
-                                setUser({ ...user, username: event.target.value });
+                                setUser({ ...user, name: event.target.value });
                             }} />
                     </div>
 

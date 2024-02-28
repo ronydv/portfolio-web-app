@@ -2,7 +2,7 @@ import { useColorMode } from "@chakra-ui/react";
 import Header from "./components/header/Header";
 import classes from './index.module.css'
 import { Outlet } from "react-router-dom";
-import useMatchMedia from "./components/hooks/useMatchMedia";
+import useMatchMedia from "./hooks/useMatchMedia";
 import Navbar from "./components/navbar/Navbar";
 const Layout = () => {
     const mode = useColorMode();
