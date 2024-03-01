@@ -25,8 +25,8 @@ function App() {
 				<Route path='/signup' element={<Signup />} />
 				<Route path="/unauthorized" element={<Unauthorized />} />
 
+				{/* protected */}
 				<Route element={<PersistLogin />}>
-					{/* protected */}
 					<Route element={<Restricted to={[Role.ADMIN]} />}>
 						<Route path='/products' element={<Products />} />
 					</Route>

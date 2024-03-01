@@ -82,15 +82,16 @@ public class AuthenticationService {
         }
     }
 
-    public Token refreshToken(String refreshTokenRequest) {
+    public LoginResponse refreshToken(String refreshTokenRequest) {
 
         return tokenService.findRefreshToken(refreshTokenRequest)
                 .map(tokenService::verifyExpiration)//returns a token, or an exception if it has expired
                 .map(RefreshToken::getUser)//get the user of the refresh token from above
                 .map(user ->{
-                    String accessToken=tokenService.createJwtAccessToken(new AuthUser(user));
+                    AuthUser authUser=new AuthUser(user);
+                    String accessToken=tokenService.createJwtAccessToken(authUser);
                     log.info("\u001B[35mgenerated new access token: " + accessToken + "\u001B[0m");//delete after
-                    return new Token(accessToken, refreshTokenRequest);
+                    return new LoginResponse(authUser,new Token(accessToken, refreshTokenRequest));
                 })
                 .orElseThrow(() -> {
                     log.error("\u001B[31minvalid token or user is null.\u001B[0m");
