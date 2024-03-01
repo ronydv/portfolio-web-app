@@ -1,12 +1,10 @@
 import { Button, Text} from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import useInterceptor from "../../hooks/useInterceptor";
 import { useFetch } from "../../hooks/useFetch";
+import Restricted from "../authentication/Restricted";
 
 const Home = () => {
     const {data:users}=useFetch<User>("/api/v1/users/user");
-    
-    console.log(users);
     
     return ( 
         <div>
@@ -21,9 +19,19 @@ const Home = () => {
             <br /><br />
             <Text size={'lg'}> text for visitors</Text>
             <br /><br />
-            <Text size={'lg'}> text for users</Text>
+            <Restricted to={['user']}>
+                <p> text for users</p>
+            </Restricted>
             <br /><br />
-            <Text size={'lg'}> text for admin</Text>
+
+
+            <Restricted to={['admin']}>
+                <h2> text for admin</h2>
+                <ul>
+                    {users.map((user, i) => (
+                        <li key={i}>{user.email}</li>))}
+                </ul>
+            </Restricted>
             
         </div>
      );
