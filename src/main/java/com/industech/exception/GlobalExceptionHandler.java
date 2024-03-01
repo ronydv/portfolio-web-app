@@ -14,18 +14,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(AuthUserException.class)
     public ResponseEntity<CustomError> authUserException(AuthUserException e){
         CustomError error=new CustomError(
-                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                e.getStatus().value(),
                 e.getMessage()
         );
-        return new ResponseEntity<>(error,HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(error,e.getStatus());
     }
 
     @ExceptionHandler(TokenException.class)
     public ResponseEntity<CustomError> tokenException(TokenException e){
         CustomError error=new CustomError(
-                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                e.getStatus().value(),
                 e.getMessage()
         );
-        return new ResponseEntity<>(error,HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(error,e.getStatus());
     }
 }

@@ -1,6 +1,7 @@
 package com.industech.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -37,7 +38,8 @@ public class AuthUser implements UserDetails {
     }
 
     public Long getId() {return user.getId();}
-    @Override
+    public String getName(){return user.getName();}
+    @Override @JsonProperty(value = "email")//email is the variable name for the response
     public String getUsername() {return user.getEmail();}
     @Override @JsonIgnore
     public String getPassword() {return user.getPassword();}
@@ -47,7 +49,8 @@ public class AuthUser implements UserDetails {
     @Override @JsonIgnore public boolean isAccountNonExpired() {return true;}
     @Override @JsonIgnore public boolean isAccountNonLocked() {return true;}
     @Override @JsonIgnore public boolean isCredentialsNonExpired() {return true;}
-    @Override @JsonIgnore public boolean isEnabled() {return true;}
+    @Override @JsonProperty(value = "isEnabled") public boolean isEnabled() {return true;}
+
 
     @Override
     public String toString() {

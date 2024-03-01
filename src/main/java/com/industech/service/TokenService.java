@@ -8,6 +8,7 @@ import com.industech.repository.RefreshTokenRepository;
 import com.industech.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
@@ -31,7 +32,7 @@ public class TokenService {
     public String createJwtAccessToken(AuthUser user){
         Instant now = Instant.now();
         //Instant thirtyMinutes= ZonedDateTime.now().plusMinutes(30).toInstant();
-        Instant thirtyMinutes=ZonedDateTime.now().plusMinutes(1).toInstant();
+        Instant thirtyMinutes=ZonedDateTime.now().plusSeconds(15).toInstant();
         String role = user.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(" "));
@@ -49,13 +50,13 @@ public class TokenService {
     public RefreshToken createUUIDRefreshToken(User user) {
         Optional<RefreshToken> token= Optional.ofNullable(user.getRefreshToken());
         if(token.isPresent()){
-            //return existing token if the user already has one, use update methods if necessary forward in development
+            //return existing token if the user already has one, use update methods forward in development
             return user.getRefreshToken();
         }else{
             RefreshToken refreshToken = new RefreshToken(
                     UUID.randomUUID().toString(),
                     //ZonedDateTime.now().plusMinutes(1440).toInstant(),//24hs
-                    ZonedDateTime.now().plusMinutes(3).toInstant(),
+                    ZonedDateTime.now().plusMinutes(2).toInstant(),
                     user);
             return tokenRepository.save(refreshToken);
         }
@@ -70,7 +71,8 @@ public class TokenService {
             log.warn("checking token expiration...\ntoken expired, deleting token: "
                     + token.getToken() + " with id: " + token.getId()+" Please make a new login request");
             tokenRepository.delete(token);
-            throw new TokenException("Refresh token: "+token.getToken()+" was expired. Please make a new login request");
+            throw new TokenException("Refresh token: "+token.getToken()+" was expired. Please make a new login request",
+                    HttpStatus.UNAUTHORIZED);
         } else {
             log.info("\u001B[35mchecking token expiration...\nrefresh token still valid! :D\u001B[0m");
             return token;

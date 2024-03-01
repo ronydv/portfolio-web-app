@@ -10,6 +10,7 @@ import com.industech.repository.RoleRepository;
 import com.industech.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -54,7 +55,7 @@ public class AuthenticationService {
         Optional<User> existingUser = userRepository.findByEmail(email);
         if (existingUser.isPresent()) {
             log.error("\u001B[31memail is already in use.\u001B[0m");
-            throw new AuthUserException("This email is already in use.");
+            throw new AuthUserException("This email is already in use.", HttpStatus.CONFLICT);
         } else {
             User recordUser = new User(name, email, passwordEncoder.encode(password), roles("user"));
             return userRepository.save(recordUser);
@@ -63,21 +64,21 @@ public class AuthenticationService {
 
     public LoginResponse login(String username, String password){
         AuthUser user= null;
-        String accessToken= null;
-        RefreshToken refreshToken=null;
+        Token token=null;
         try {
             Authentication auth =//Authenticate the user for the ProviderManager in SecurityConfig.class, @Bean AuthenticationManager
                     authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
             if(auth.isAuthenticated()){
                 user= (AuthUser) auth.getPrincipal();//the principal is set in UserDetailsServiceImpl.class
-                accessToken=tokenService.createJwtAccessToken(user);
-                refreshToken=tokenService.createUUIDRefreshToken(user.getUser());
+                token=new Token(
+                        tokenService.createJwtAccessToken(user),
+                        tokenService.createUUIDRefreshToken(user.getUser()).getToken());
                 log.info("\u001B[96mauthenticated user:\n"+ user+"\u001B[0m");
             }
-            return new LoginResponse(user,accessToken,refreshToken.getToken());
+            return new LoginResponse(user,token);
         }catch (AuthenticationException e) {
             log.error("\u001B[31minvalid user.\u001B[0m");
-            throw new AuthUserException("invalid user");
+            throw new AuthUserException("Invalid User", HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -93,7 +94,7 @@ public class AuthenticationService {
                 })
                 .orElseThrow(() -> {
                     log.error("\u001B[31minvalid token or user is null.\u001B[0m");
-                    return new TokenException("invalid token or user is null");
+                    return new TokenException("invalid token or user is null",HttpStatus.FORBIDDEN);
                 });
     }
 }
