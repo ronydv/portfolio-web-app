@@ -18,7 +18,7 @@ const Header = () => {
                 <Heading as='h1' size='lg' whiteSpace={"nowrap"} 
                          fontSize={{ base: "30px", lg: "30px" }}
                          lineHeight={{base:'1.2',lg: "1.2"}}>
-                    <Text as='span' bgGradient='linear(to-t, #26ab9e, #266f77)'bgClip='text'>Indus</Text>
+                    <Text as='span' bgGradient='linear(to-t, #e53e3e, #941414)'bgClip='text'>Indus</Text>
                     <span className={classes.span}>tech</span>
                 </Heading>
             </div>
@@ -27,7 +27,7 @@ const Header = () => {
 
             {isDesktop && <div className={classes.container}>
                 <Link to={'/'}>
-                    <Button variant='outline' color={darkMode}>Home</Button>
+                    <Button variant='outline' color={darkMode} borderColor={darkMode}>Home</Button>
                 </Link>
                 <Button variant='link' color={darkMode}>About</Button>
                 <Button variant='link' color={darkMode}>Contact</Button>

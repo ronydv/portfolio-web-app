@@ -13,7 +13,7 @@ export const indexTheme = extendBaseTheme({
 //https://chakra-ui.com/docs/styled-system/customize-theme
 //setting dark mode by default
 const defaultColor = {
-	initialColorMode: 'dark',
+	initialColorMode: 'light',
 	useSystemColorMode: false,
 };
 
@@ -39,15 +39,25 @@ export const indexTheme = extendTheme({
 	components: {
 		Button: {
 			variants: {
-				solid: {
-					boxShadow: '0 0 6px 1px rgb(0, 0, 0, 0.200)',
-				},
+				solid: (props: StyleFunctionProps) => ({
+					boxShadow:props.colorMode === 'dark' ? 
+								'0 0 6px 1px rgb(0, 0, 0, 0.6)':'0 0 6px 1px rgb(0, 0, 0, 0.200)',
+					bgGradient:props.colorMode === 'dark' ?
+								'linear(to-t, #e53e3e, #ae1717)':'linear(to-t, red.500, red.600)',
+					_hover: {
+						bgGradient:props.colorMode === 'dark' ? 
+								'linear(to-t, red.400, red.600)':'linear(to-t, red.600, red.700)',
+					  },
+				  }),
 				//other variants
+				outline:(props: StyleFunctionProps) => ({
+					borderColor: props.colorMode === 'dark' ? 'red.400' : 'red.500',
+				  }),
 			},
 			defaultProps: {
 				size: 'sm', // default is md
 				variant: 'solid', // default is solid
-				colorScheme: 'teal', // default is gray
+				colorScheme: 'red', // default is gray
 			},
 		},
 		Input: inputTheme,

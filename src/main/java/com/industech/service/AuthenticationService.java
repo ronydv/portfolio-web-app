@@ -95,7 +95,6 @@ public class AuthenticationService {
     }
 
     public LoginResponse refreshToken(String refreshTokenRequest) {
-
         return tokenService.findRefreshToken(refreshTokenRequest)
                 .map(tokenService::verifyExpiration)//returns a token, or an exception if it has expired
                 .map(RefreshToken::getUser)//get the user of the refresh token from above
