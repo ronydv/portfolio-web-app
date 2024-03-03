@@ -6,25 +6,23 @@ import { Outlet } from "react-router-dom";
 const PersistLogin = () => {
     const [isLoading, setIsLoading] = useState(true);
     const refresh = useRefreshToken();
-    const { auth } = useAuthContext();
+    const { auth:{token} } = useAuthContext();
 
     useEffect(() => {
         //run this function and get a new access token before getting to the RequireAuth component in the routing layout
         const verifyRefreshToken = async () => {
             try {
                 await refresh();
-            }
-            catch (err) {
+            }catch (err) {
                 console.error(err);
-            }
-            finally {
+            }finally {
                 setIsLoading(false);
             }
         };
         //if the user reloads the page or leaves the page and then went back to the page
         //verify refreshToken only if the auth doesn't have an access token
         //!auth?.token?.accessToken ? verifyRefreshToken() : setIsLoading(false);
-        if(!auth?.token?.accessToken){
+        if(!token?.accessToken){
             verifyRefreshToken();
             console.log("token is undefined, verifying refresh token");
         } else{

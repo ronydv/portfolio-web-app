@@ -19,6 +19,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,6 +30,7 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 import static org.springframework.http.HttpMethod.GET;
 
@@ -41,6 +43,8 @@ public class SecurityConfig {
     private RSAKeyGenerator keys;
     @Autowired
     private UserDetailsService userDetailsService;
+    @Autowired
+    private LogoutHandler logoutHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -63,6 +67,12 @@ public class SecurityConfig {
                 })
                 .sessionManagement(session -> {
                     session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                })
+                .logout(logout ->{
+                    logout.logoutUrl("/api/v1/auth/logout");
+                    logout.addLogoutHandler(this.logoutHandler);
+                    logout.logoutSuccessHandler(
+                            (request,response,authentication) -> SecurityContextHolder.clearContext());
                 })
                 .build();
     }
