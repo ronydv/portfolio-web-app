@@ -17,22 +17,22 @@ import PersistLogin from './components/authentication/PersistAuth';
 function App() {
 	const router = createBrowserRouter(
 		createRoutesFromElements(//createRoutesFromElements = <Routes>
-			<Route path="/" element={<Layout />}>
-				{/* public */}
-				{/* <Route index element={<Index />}></Route> */}
-				<Route path='/' element={<Home />} />
-				<Route path='/login' element={<Login />} />
-				<Route path='/signup' element={<Signup />} />
-				<Route path="/unauthorized" element={<Unauthorized />} />
+			<Route element={<PersistLogin />}>
+				<Route path="/" element={<Layout />}>
 
-				{/* protected */}
-				<Route element={<PersistLogin />}>
+					{/* public */}
+					{/* <Route index element={<Index />}></Route> */}
+					<Route path='/' element={<Home />} />
+					<Route path='/login' element={<Login />} />
+					<Route path='/signup' element={<Signup />} />
+					<Route path="/unauthorized" element={<Unauthorized />} />
+
+					{/* protected */}
 					<Route element={<Restricted to={[Role.ADMIN]} />}>
 						<Route path='/products' element={<Products />} />
 					</Route>
+					<Route path='/services' element={<Services />} />
 				</Route>
-
-				<Route path='/services' element={<Services />} />
 			</Route>
 		)//TODO: create protected routes
 	);

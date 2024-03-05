@@ -2,13 +2,23 @@ import { Button, Heading, Spacer, useColorMode, Text, IconButton, useColorModeVa
 import { FaMoon as Moon} from "react-icons/fa6";
 import { MdSunny as Sun} from "react-icons/md";
 import classes from './header.module.css';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useMatchMedia from "../../hooks/useMatchMedia";
+import useLogout from "../../hooks/useLogout";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 const Header = () => {
+    const {auth:{user}} : UserContext = useAuthContext();
+    const navigate = useNavigate();
+    const logout = useLogout();
     const { colorMode, toggleColorMode } = useColorMode()
     const darkMode = useColorModeValue('gray.600','gray.400');
     const isDesktop=useMatchMedia();
+
+    const closeSession = async () => {
+        await logout();
+        navigate('/');
+    }
 
     return (
         <div className={classes.header}>
@@ -37,7 +47,11 @@ const Header = () => {
             <Spacer flex={0.2}/>
 
             <div className={classes.container}>
-                <Link to={'/login'}><Button variant='outline'> Log in</Button></Link>
+                {user?.isEnabled ?
+                        <Button onClick={closeSession}>Logout</Button>
+                        :
+                        <Link to={'/login'}><Button variant='outline'> Log in</Button></Link>
+                }
 
                 <Link to={'/signup'}><Button> Sign up</Button></Link>
 

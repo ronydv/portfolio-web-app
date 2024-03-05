@@ -37,8 +37,7 @@ const useInterceptor = () => {
 				const previousRequest = error?.config;
 				if (error?.response?.status === 401 && !previousRequest.sent) {
 					previousRequest.sent = true;//set true to avoid infinite loop
-					//keep tokens to send to the endpoint, but set user to null to avoid reaching components that requires roles if the refresh token has expired
-					setAuth({...token, user:undefined})
+					setAuth({user:undefined})//set user to null to avoid reaching components that requires roles if the refresh token has expired
 					const newToken:Token= (await refresh()).token!;//navigate to the refresh endpoint and return the new token
 					previousRequest.headers['Authorization'] = `Bearer ${newToken.accessToken}`;
 					accessToken=newToken.accessToken!;//overwrite value for the dependency array to re-render the component

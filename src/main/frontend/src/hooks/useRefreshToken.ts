@@ -13,7 +13,6 @@ const useRefreshToken = () => {
             },
             withCredentials:true//sends the cookies to the endpoint
         });
-        //the response contains user with roles, accessToken and refreshToken
         setAuth(response.data);
         //console.log("new token: ",response.data.token?.accessToken);
         return response?.data;

@@ -1,6 +1,6 @@
-import { Button, FormControl, FormErrorMessage, FormHelperText, FormLabel, Input } from "@chakra-ui/react";
+import { Button, Checkbox, FormControl, FormErrorMessage, FormHelperText, FormLabel, Input } from "@chakra-ui/react";
 import classes from './authentication.module.css';
-import { FormEvent, useContext, useState } from "react";
+import { FormEvent, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import AuthContext from "../../context/AuthProvider";
 
@@ -23,7 +23,6 @@ const Login = () => {
                 },
             });
             authContext?.setAuth(response.data);
-            console.log(response.data, authContext?.auth);//delete this line later
         }catch(error:unknown){
             if(axios.isAxiosError(error)){
                 if (error.response?.status === 401) {
@@ -36,6 +35,12 @@ const Login = () => {
             }
         }
     };
+    const togglePersist = () => authContext?.setPersist(prev => !prev);
+    
+    useEffect(() => {
+        localStorage.setItem('persist',JSON.stringify(authContext?.persist));
+    }, [authContext?.persist])
+
     return (
         <div className={classes.container}>
             <h2>Log in</h2>
@@ -61,6 +66,13 @@ const Login = () => {
                                 setIsError(false);
                             }} />
                         
+                    </div>
+
+                    <div>
+                        <Checkbox onChange={togglePersist} isChecked={authContext?.persist}
+                                    colorScheme="red" >
+                            Remember session
+                        </Checkbox>
                     </div>
 
                     <div>
