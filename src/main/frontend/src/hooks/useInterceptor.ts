@@ -12,8 +12,8 @@ const axiosPrivate = axios.create({
 });
 
 const useInterceptor = () => {
-	const { auth }: UserContext = useAuthContext();
-	let accessToken:string = auth.token?.accessToken!;
+	const { auth:{token}, setAuth, }: UserContext = useAuthContext();
+	let accessToken:string = token?.accessToken!;
 	const refresh = useRefreshToken();
 	useEffect(() => {
 		//this send the access token from the login to the protected endpoint
@@ -37,7 +37,8 @@ const useInterceptor = () => {
 				const previousRequest = error?.config;
 				if (error?.response?.status === 401 && !previousRequest.sent) {
 					previousRequest.sent = true;//set true to avoid infinite loop
-					const newToken = await refresh();//navigate to the refresh endpoint and return the new token
+					setAuth({user:undefined})//set user to null to avoid reaching components that requires roles if the refresh token has expired
+					const newToken:Token= (await refresh()).token!;//navigate to the refresh endpoint and return the new token
 					previousRequest.headers['Authorization'] = `Bearer ${newToken.accessToken}`;
 					accessToken=newToken.accessToken!;//overwrite value for the dependency array to re-render the component
 					return axiosPrivate(previousRequest);//after getting the token, redirect again to the requested endpoint

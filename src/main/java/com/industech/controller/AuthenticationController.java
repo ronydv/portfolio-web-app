@@ -5,6 +5,7 @@ import com.industech.dto.LoginResponse;
 import com.industech.dto.Token;
 import com.industech.model.User;
 import com.industech.service.AuthenticationService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,15 +30,15 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> logIn(@RequestBody LoginRequest user) {
+    public ResponseEntity<LoginResponse> logIn(@RequestBody LoginRequest user, HttpServletResponse response) {
         return new ResponseEntity<>(
                 authenticationService.login(
-                        user.email(), user.password()),
+                        user.email(), user.password(), response),
                 HttpStatus.OK);
     }
     @PostMapping("/refresh-token")
-    public ResponseEntity<Token>refreshToken(@RequestBody Token token){
-        return new ResponseEntity<>( authenticationService.refreshToken(token.refreshToken()),HttpStatus.OK );
+    public ResponseEntity<LoginResponse>refreshToken(@CookieValue(name = "refreshToken") String refreshToken){
+        return new ResponseEntity<>( authenticationService.refreshToken(refreshToken),HttpStatus.OK );
     }
 
     //change hasAuthority to hasRole if the role contains ROLE_ prefix
