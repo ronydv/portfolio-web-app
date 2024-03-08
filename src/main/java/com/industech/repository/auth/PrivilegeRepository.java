@@ -1,6 +1,6 @@
-package com.industech.repository;
+package com.industech.repository.auth;
 
-import com.industech.model.Privilege;
+import com.industech.model.auth.Privilege;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

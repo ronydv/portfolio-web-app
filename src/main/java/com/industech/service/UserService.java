@@ -1,8 +1,7 @@
 package com.industech.service;
 
-import com.industech.model.AuthUser;
-import com.industech.model.User;
-import com.industech.repository.UserRepository;
+import com.industech.model.auth.AuthUser;
+import com.industech.repository.auth.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

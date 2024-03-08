@@ -1,11 +1,11 @@
 package com.industech.service;
 
 import com.industech.exception.TokenException;
-import com.industech.model.AuthUser;
-import com.industech.model.RefreshToken;
-import com.industech.model.User;
-import com.industech.repository.RefreshTokenRepository;
-import com.industech.repository.UserRepository;
+import com.industech.model.auth.AuthUser;
+import com.industech.model.auth.RefreshToken;
+import com.industech.model.auth.User;
+import com.industech.repository.auth.RefreshTokenRepository;
+import com.industech.repository.auth.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

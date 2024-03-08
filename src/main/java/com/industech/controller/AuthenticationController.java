@@ -2,8 +2,7 @@ package com.industech.controller;
 
 import com.industech.dto.LoginRequest;
 import com.industech.dto.LoginResponse;
-import com.industech.dto.Token;
-import com.industech.model.User;
+import com.industech.model.auth.User;
 import com.industech.service.AuthenticationService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;

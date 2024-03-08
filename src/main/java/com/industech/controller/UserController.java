@@ -1,7 +1,6 @@
 package com.industech.controller;
 
-import com.industech.model.AuthUser;
-import com.industech.model.User;
+import com.industech.model.auth.AuthUser;
 import com.industech.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

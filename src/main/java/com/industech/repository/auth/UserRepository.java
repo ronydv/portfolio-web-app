@@ -1,6 +1,6 @@
-package com.industech.repository;
+package com.industech.repository.auth;
 
-import com.industech.model.User;
+import com.industech.model.auth.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

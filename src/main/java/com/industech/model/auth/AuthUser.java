@@ -1,4 +1,4 @@
-package com.industech.model;
+package com.industech.model.auth;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;

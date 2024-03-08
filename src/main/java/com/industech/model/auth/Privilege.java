@@ -1,4 +1,4 @@
-package com.industech.model;
+package com.industech.model.auth;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

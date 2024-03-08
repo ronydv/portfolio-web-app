@@ -1,6 +1,6 @@
-package com.industech.repository;
+package com.industech.repository.auth;
 
-import com.industech.model.RefreshToken;
+import com.industech.model.auth.RefreshToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

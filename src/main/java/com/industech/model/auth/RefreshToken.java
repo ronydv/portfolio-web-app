@@ -1,13 +1,11 @@
-package com.industech.model;
+package com.industech.model.auth;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.UuidGenerator;
 
 import java.time.Instant;
-import java.util.UUID;
 
 @Data
 @NoArgsConstructor
