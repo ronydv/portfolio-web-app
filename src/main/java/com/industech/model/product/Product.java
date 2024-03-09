@@ -4,7 +4,12 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
+import static jakarta.persistence.CascadeType.*;
 
 @Data
 @NoArgsConstructor
@@ -31,14 +36,12 @@ public class Product {
 
     private Boolean status;
 
-    @NonNull
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "product_categories",
-            joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id",
-                    foreignKey = @ForeignKey(name = "product_id_fk")),
-            inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id",
-                    foreignKey = @ForeignKey(name = "category_id_fk")))
-    private Set<Category> categories;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "product", cascade = {PERSIST, REMOVE /*or ALL*/})
+    private List<ProductCategory> productCategories=new ArrayList<>();
+
+    public void addProductCategories(ProductCategory productCategory){
+        this.productCategories.add(productCategory);
+    }
 
     public String toString(){
         return "Product {\n"
@@ -46,7 +49,9 @@ public class Product {
                 +"\tprice: "+price+"\n"
                 +"\tquantity: "+quantity+"\n"
                 +"\tadded at: "+added_at.toLocalDate()+"\n"
-                +"\tcategories: "+categories+"\n"
+/*                +"\tcategories: "+productCategories.stream()
+                                    .map(ProductCategory::getCategory)
+                                    .toList()+"\n"*/
                 +"}";
     }
 }
