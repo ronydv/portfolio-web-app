@@ -1,2 +1,24 @@
-package com.industech.service;public class CategoryService {
+package com.industech.service;
+
+import com.industech.model.auth.AuthUser;
+import com.industech.model.product.Category;
+import com.industech.repository.product.CategoryRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Transactional
+@Service
+public class CategoryService {
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    public Category getCategory(String categoryName){
+        return categoryRepository.findByName(categoryName);
+    }
+
+    public void createCategories(String categoryName){
+        Category category = new Category(categoryName);
+        categoryRepository.save(category);
+    }
 }

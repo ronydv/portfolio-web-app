@@ -4,10 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static jakarta.persistence.CascadeType.*;
 
@@ -15,6 +12,7 @@ import static jakarta.persistence.CascadeType.*;
 @NoArgsConstructor
 @RequiredArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 @Table(name = "product")
 @Entity
 public class Product {
@@ -36,11 +34,18 @@ public class Product {
 
     private Boolean status;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "product", cascade = {PERSIST, REMOVE /*or ALL*/})
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = {PERSIST}, orphanRemoval = true)
     private List<ProductCategory> productCategories=new ArrayList<>();
 
+
+    //////setters, getters and other methods
     public void addProductCategories(ProductCategory productCategory){
         this.productCategories.add(productCategory);
+        productCategory.setProduct(this);
+    }
+    public void removeProductCategory(ProductCategory productCategory) {
+        productCategories.remove(productCategory);
+        productCategory.setProduct(null);
     }
 
     public String toString(){

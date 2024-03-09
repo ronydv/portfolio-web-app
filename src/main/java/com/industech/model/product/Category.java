@@ -14,6 +14,7 @@ import static jakarta.persistence.CascadeType.*;
 @NoArgsConstructor
 @RequiredArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 @Table(name = "category")
 @Entity
 public class Category {
@@ -24,16 +25,21 @@ public class Category {
     @NonNull
     private String name;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "category",cascade = {PERSIST, REMOVE})
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category",cascade = {PERSIST}, orphanRemoval = true)
     private List<ProductCategory> productCategories=new ArrayList<>();
 
     public void addProductCategories(ProductCategory productCategory){
         this.productCategories.add(productCategory);
+        productCategory.setCategory(this);
+    }
+    public void removeProductCategory(ProductCategory productCategory) {
+        productCategories.remove(productCategory);
+        productCategory.setCategory(null);
     }
 
     public String toString(){
         return "{"+
-                "\n\t\tcategory??????????????: "+ name +"\n"+
+                "\n\t\tcategory: "+ name +"\n"+
                 "\t}";
     }
 }

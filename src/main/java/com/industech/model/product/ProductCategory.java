@@ -18,13 +18,12 @@ public class ProductCategory {
     @EmbeddedId
     private ProductCategoryId id;
 
-    @EqualsAndHashCode.Exclude
+
     @ManyToOne
     @MapsId("productId")//this comes from ProductCategoryId instance field
     @JoinColumn(name = "product_id", foreignKey = @ForeignKey(name="product_id_fk"))
     private Product product;
 
-    @EqualsAndHashCode.Exclude
     @ManyToOne
     @MapsId("categoryId")//this comes from ProductCategoryId instance field
     @JoinColumn(name = "category_id", foreignKey = @ForeignKey(name="category_id_fk"))
