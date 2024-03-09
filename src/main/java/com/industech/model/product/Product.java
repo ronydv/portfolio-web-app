@@ -39,11 +39,11 @@ public class Product {
 
 
     //////setters, getters and other methods
-    public void addProductCategories(ProductCategory productCategory){
+    public void addCategory(ProductCategory productCategory){
         this.productCategories.add(productCategory);
         productCategory.setProduct(this);
     }
-    public void removeProductCategory(ProductCategory productCategory) {
+    public void removeCategory(ProductCategory productCategory) {
         productCategories.remove(productCategory);
         productCategory.setProduct(null);
     }

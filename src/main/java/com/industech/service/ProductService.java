@@ -29,7 +29,7 @@ public class ProductService {
         if(!categoryNames.isEmpty()){
             categoryNames.forEach(categoryName -> {
                 Category category = categoryRepository.getCategory(categoryName);
-                product.addProductCategories(
+                product.addCategory(
                         ProductCategory.addProductAndCategory(product, category));
             });
         }
@@ -40,8 +40,8 @@ public class ProductService {
         productRepository.findById(id)
                 .ifPresent(product -> {
                     List<ProductCategory> toRemove = new ArrayList<>(product.getProductCategories());
-                    for (ProductCategory pc : toRemove) {
-                        product.removeProductCategory(pc);
+                    for (ProductCategory productCategory : toRemove) {
+                        product.removeCategory(productCategory);
                     }
                     productRepository.delete(product);
                 });

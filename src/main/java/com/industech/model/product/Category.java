@@ -28,11 +28,11 @@ public class Category {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category",cascade = {PERSIST}, orphanRemoval = true)
     private List<ProductCategory> productCategories=new ArrayList<>();
 
-    public void addProductCategories(ProductCategory productCategory){
+    public void addProduct(ProductCategory productCategory){
         this.productCategories.add(productCategory);
         productCategory.setCategory(this);
     }
-    public void removeProductCategory(ProductCategory productCategory) {
+    public void removeProduct(ProductCategory productCategory) {
         productCategories.remove(productCategory);
         productCategory.setCategory(null);
     }
