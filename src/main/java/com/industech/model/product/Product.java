@@ -28,7 +28,7 @@ public class Product {
 
     private Boolean status;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = {PERSIST}, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = {PERSIST,MERGE}, orphanRemoval = true)
     private List<ProductCategory> productCategories=new ArrayList<>();
 
 

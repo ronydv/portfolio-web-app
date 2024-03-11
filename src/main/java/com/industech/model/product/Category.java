@@ -20,7 +20,7 @@ public class Category {
 
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category",cascade = {PERSIST}, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category",cascade = {PERSIST,MERGE}, orphanRemoval = true)
     private List<ProductCategory> productCategories=new ArrayList<>();
 
 

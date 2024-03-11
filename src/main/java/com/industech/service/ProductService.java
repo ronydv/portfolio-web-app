@@ -20,19 +20,41 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
     @Autowired
-    private CategoryService categoryRepository;
+    private CategoryService categoryService;
 
 
     public void saveProduct(Set<String> categoryNames) {
         Product product = new Product("wires", 4500, 20);
         if(!categoryNames.isEmpty()){
             categoryNames.forEach(categoryName -> {
-                Category category = categoryRepository.getCategory(categoryName);
+                Category category = categoryService.getCategory(categoryName);
                 product.addCategory(
                         ProductCategory.addProductAndCategory(product, category));
             });
         }
         productRepository.save(product);
+    }
+
+    public void updateProduct(Product product){
+        Product toUpdate=productRepository.getReferenceById(product.getId());
+        System.out.println(toUpdate);
+        toUpdate.setName(product.getName());
+        toUpdate.setPrice(product.getPrice());
+        toUpdate.setQuantity(product.getQuantity());
+
+        if(!toUpdate.getProductCategories().isEmpty()){
+            List<ProductCategory> toRemove = new ArrayList<>(toUpdate.getProductCategories());
+            for (ProductCategory productCategory : toRemove) {
+                toUpdate.removeCategory(productCategory);
+            }
+        }
+        product.getProductCategories().forEach(cat -> {
+            Category category = cat.getCategory();
+            toUpdate.addCategory(
+                    ProductCategory.addProductAndCategory(product, category));
+        });
+
+        productRepository.save(toUpdate);
     }
 
     public void deleteProduct(Integer id){
