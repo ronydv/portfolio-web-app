@@ -21,13 +21,12 @@ public class Category {
     private String name;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category",cascade = {PERSIST,MERGE}, orphanRemoval = true)
-    private List<ProductCategory> productCategories=new ArrayList<>();
+    private Set<ProductCategory> productCategories=new HashSet<>();
 
 
     public Category(){}
     public Category(String name){ this.name=name;}
-
-    public Category(Integer id, String name, List<ProductCategory> productCategories) {
+    public Category(Integer id, String name, Set<ProductCategory> productCategories) {
         this.id = id;
         this.name = name;
         this.productCategories = productCategories;

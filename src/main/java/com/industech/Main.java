@@ -27,21 +27,22 @@ public class Main {
 	CommandLineRunner commandLineRunner(ProductService productService,
 										CategoryService categoryService) {
 		return args -> {
-/*			categoryService.createCategories("Electronics");
+			/*TODO: MODIFY Category to unique TO AVOID DUPLICATE ENTRIES and create service to avoid duplicates for same name and same categories*/
+	/*		categoryService.createCategories("Electronics");
 			categoryService.createCategories("Connections");
 			categoryService.createCategories("Design");
 			categoryService.createCategories("Installation");*/
-			//productService.saveProduct(new HashSet<>(List.of()));
+			//productService.saveProduct(new HashSet<>(List.of("Electronics","Connections")));
 /*			Product product = new Product("Ethernet wires", 4500, 20);
-			product.setId(4);
+			product.setId(25);
 			new HashSet<>(Set.of("Connections","Installation")).forEach(categoryName -> {
 				Category category = categoryService.getCategory(categoryName);
 				product.addCategory(
 						ProductCategory.addProductAndCategory(product, category));
 			});
 			productService.updateProduct(product);*/
-			//categoryService.deleteCategory(1);
-			//productService.deleteProduct(4);
+			//categoryService.deleteCategory(34);
+			//productService.deleteProduct(26);
 
 
 		};

@@ -29,7 +29,7 @@ public class Product {
     private Boolean status;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = {PERSIST,MERGE}, orphanRemoval = true)
-    private List<ProductCategory> productCategories=new ArrayList<>();
+    private Set<ProductCategory> productCategories=new HashSet<>();
 
 
     //////constructor setters, getters and other methods
@@ -41,7 +41,7 @@ public class Product {
     }
     public Product(Integer id, String name, Integer price,
                    Integer quantity, LocalDateTime addedAt,
-                   Boolean status, List<ProductCategory> productCategories) {
+                   Boolean status, Set<ProductCategory> productCategories) {
         this.id = id;
         this.name = name;
         this.price = price;
