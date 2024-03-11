@@ -22,7 +22,6 @@ public class ProductService {
     @Autowired
     private CategoryService categoryRepository;
 
-    //TODO: DELETE CATEGORY WITHOUT DELETING PRODUCT
 
     public void saveProduct(Set<String> categoryNames) {
         Product product = new Product("wires", 4500, 20);

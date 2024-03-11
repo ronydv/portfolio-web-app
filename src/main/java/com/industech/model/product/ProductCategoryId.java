@@ -2,17 +2,12 @@ package com.industech.model.product;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.Objects;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Setter @Getter
 @Embeddable
 public class ProductCategoryId implements Serializable {
 
@@ -20,6 +15,12 @@ public class ProductCategoryId implements Serializable {
     private Integer productId;//this instance is mapped to @MapsId in ProductCategory entity
     @Column(name = "category_id")
     private Integer categoryId;//this instance is mapped to @MapsId in ProductCategory entity
+
+    public ProductCategoryId(){}
+    public ProductCategoryId(Integer productId, Integer categoryId) {
+        this.productId = productId;
+        this.categoryId = categoryId;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -31,6 +32,12 @@ public class ProductCategoryId implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(productId, categoryId);
+        final int prime = 31;
+        int result = 1;
+        result = prime * result
+                + ((productId == null) ? 0 : productId.hashCode());
+        result = prime * result
+                + ((categoryId == null) ? 0 : categoryId.hashCode());
+        return result;
     }
 }

@@ -8,11 +8,7 @@ import java.util.*;
 
 import static jakarta.persistence.CascadeType.*;
 
-@Data
-@NoArgsConstructor
-@RequiredArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode
+@Setter @Getter
 @Table(name = "product")
 @Entity
 public class Product {
@@ -20,17 +16,15 @@ public class Product {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NonNull
     private String name;
 
-    @NonNull @Column(nullable = false)
+    @Column(nullable = false)
     private Integer price;
 
-    @NonNull
     private Integer quantity;
 
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-    private LocalDateTime added_at= LocalDateTime.now();
+    private LocalDateTime addedAt = LocalDateTime.now();
 
     private Boolean status;
 
@@ -38,7 +32,25 @@ public class Product {
     private List<ProductCategory> productCategories=new ArrayList<>();
 
 
-    //////setters, getters and other methods
+    //////constructor setters, getters and other methods
+    public Product(){}
+    public Product(String name, Integer price, Integer quantity){
+        this.name=name;
+        this.price=price;
+        this.quantity=quantity;
+    }
+    public Product(Integer id, String name, Integer price,
+                   Integer quantity, LocalDateTime addedAt,
+                   Boolean status, List<ProductCategory> productCategories) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+        this.addedAt = addedAt;
+        this.status = status;
+        this.productCategories = productCategories;
+    }
+
     public void addCategory(ProductCategory productCategory){
         this.productCategories.add(productCategory);
         productCategory.setProduct(this);
@@ -53,7 +65,7 @@ public class Product {
                 +"\tname: "+name+"\n"
                 +"\tprice: "+price+"\n"
                 +"\tquantity: "+quantity+"\n"
-                +"\tadded at: "+added_at.toLocalDate()+"\n"
+                +"\tadded at: "+ addedAt.toLocalDate()+"\n"
 /*                +"\tcategories: "+productCategories.stream()
                                     .map(ProductCategory::getCategory)
                                     .toList()+"\n"*/

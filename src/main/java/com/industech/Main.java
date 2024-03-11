@@ -29,14 +29,10 @@ public class Main {
 			categoryService.createCategories("Connections");
 			categoryService.createCategories("Design");
 			categoryService.createCategories("Installation");*/
-			//productService.saveProduct(new HashSet<>(Set.of("Electronics","Connections")));
-			
-/*			categoryService.deleteCategory(1);
-			categoryService.deleteCategory(2);*/
+			//productService.saveProduct(new HashSet<>());
 
 
-/*			productService.deleteProduct(1);
-			productService.deleteProduct(2);*/
+			//productService.deleteProduct(1);
 
 		};
 	}

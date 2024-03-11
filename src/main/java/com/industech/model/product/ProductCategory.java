@@ -8,9 +8,7 @@ import java.util.Objects;
 
 import static jakarta.persistence.CascadeType.*;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Setter @Getter
 @Table(name = "product_categories")
 @Entity
 public class ProductCategory {
@@ -27,6 +25,13 @@ public class ProductCategory {
     @MapsId("categoryId")//this comes from ProductCategoryId instance field
     @JoinColumn(name = "category_id", foreignKey = @ForeignKey(name="category_id_fk"))
     private Category category;
+
+    public ProductCategory(){}
+    public ProductCategory(ProductCategoryId id, Product product, Category category){
+        this.id=id;
+        this.product=product;
+        this.category=category;
+    }
 
 
     //add the embedded id, and entities here instead of adding ids in the service class

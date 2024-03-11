@@ -10,11 +10,7 @@ import java.util.Set;
 
 import static jakarta.persistence.CascadeType.*;
 
-@Data
-@NoArgsConstructor
-@RequiredArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode
+@Setter @Getter
 @Table(name = "category")
 @Entity
 public class Category {
@@ -22,11 +18,20 @@ public class Category {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NonNull
     private String name;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category",cascade = {PERSIST}, orphanRemoval = true)
     private List<ProductCategory> productCategories=new ArrayList<>();
+
+
+    public Category(){}
+    public Category(String name){ this.name=name;}
+
+    public Category(Integer id, String name, List<ProductCategory> productCategories) {
+        this.id = id;
+        this.name = name;
+        this.productCategories = productCategories;
+    }
 
     public void addProduct(ProductCategory productCategory){
         this.productCategories.add(productCategory);

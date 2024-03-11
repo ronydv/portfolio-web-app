@@ -1,6 +1,5 @@
 package com.industech.service;
 
-import com.industech.model.auth.AuthUser;
 import com.industech.model.product.Category;
 import com.industech.model.product.ProductCategory;
 import com.industech.repository.product.CategoryRepository;
