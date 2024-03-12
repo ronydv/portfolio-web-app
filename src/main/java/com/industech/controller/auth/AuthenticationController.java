@@ -1,9 +1,9 @@
-package com.industech.controller;
+package com.industech.controller.auth;
 
-import com.industech.dto.LoginRequest;
-import com.industech.dto.LoginResponse;
+import com.industech.dto.auth.LoginRequest;
+import com.industech.dto.auth.LoginResponse;
 import com.industech.model.auth.User;
-import com.industech.service.AuthenticationService;
+import com.industech.service.auth.AuthenticationService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

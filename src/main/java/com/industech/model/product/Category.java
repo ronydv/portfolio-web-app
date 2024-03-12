@@ -11,7 +11,8 @@ import java.util.Set;
 import static jakarta.persistence.CascadeType.*;
 
 @Setter @Getter
-@Table(name = "category")
+@Table(name = "category", uniqueConstraints = {
+        @UniqueConstraint(name="category_name_uk", columnNames = {"name"}) })
 @Entity
 public class Category {
 

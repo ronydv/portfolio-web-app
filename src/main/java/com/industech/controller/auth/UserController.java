@@ -1,7 +1,7 @@
-package com.industech.controller;
+package com.industech.controller.auth;
 
 import com.industech.model.auth.AuthUser;
-import com.industech.service.UserService;
+import com.industech.service.auth.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

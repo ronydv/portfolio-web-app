@@ -1,4 +1,4 @@
-package com.industech.service;
+package com.industech.service.auth;
 
 import com.industech.model.auth.AuthUser;
 import com.industech.repository.auth.UserRepository;

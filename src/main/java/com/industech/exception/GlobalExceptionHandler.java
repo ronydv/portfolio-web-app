@@ -1,7 +1,6 @@
 package com.industech.exception;
 
-import com.industech.dto.CustomError;
-import org.springframework.http.HttpStatus;
+import com.industech.dto.auth.CustomError;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

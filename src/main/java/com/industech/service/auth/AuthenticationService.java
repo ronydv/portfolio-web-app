@@ -1,7 +1,7 @@
-package com.industech.service;
+package com.industech.service.auth;
 
-import com.industech.dto.LoginResponse;
-import com.industech.dto.Token;
+import com.industech.dto.auth.LoginResponse;
+import com.industech.dto.auth.Token;
 import com.industech.exception.AuthUserException;
 import com.industech.exception.TokenException;
 import com.industech.model.auth.*;

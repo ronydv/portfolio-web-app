@@ -1,7 +1,7 @@
 package com.industech.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.industech.dto.CustomError;
+import com.industech.dto.auth.CustomError;
 import com.industech.repository.auth.RefreshTokenRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

@@ -10,7 +10,7 @@ import java.util.Objects;
 import static jakarta.persistence.CascadeType.*;
 @Slf4j
 @Setter @Getter
-@Table(name = "product_categories")
+@Table(name = "product_category")
 @Entity
 public class ProductCategory {
 

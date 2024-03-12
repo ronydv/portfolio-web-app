@@ -1,4 +1,4 @@
-package com.industech.dto;
+package com.industech.dto.auth;
 
 import com.industech.model.auth.AuthUser;
 
