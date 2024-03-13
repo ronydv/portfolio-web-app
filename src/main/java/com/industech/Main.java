@@ -26,36 +26,19 @@ public class Main {
 										CategoryService categoryService,
 										ProductRepository productRepo) {
 		return args -> {
-			/*TODO: create controllers for productService and categoryService with its DTOs*/
-			categoryService.createCategory("Electronics");
-			categoryService.createCategory("Installation");
-			Product product = new Product("wires", 4500, 20);
-			Set<String>categories=new HashSet<>(Set.of("Connections","Installation"));
-			productService.saveProduct(product,categories);
+			//TODO: create controllers for productService and categoryService with its DTOs
+/*			categoryService.createCategory("Electronics");
+			categoryService.createCategory("Installation");*/
+/*			Product product = new Product("wires", 4500, 20);
+			Set<String>categories=new HashSet<>(Set.of("Electronics","Installation"));
+			System.out.println(productService.saveProduct(product,categories));*/
+			//System.out.println(productService.getProduct(2));
+
+/*			Product updateProduct = new Product("Ethernet wires", 5600, 12);
+			updateProduct.setId(1);
+			new HashSet<>(Set.of("Installation","Electronics"));
+			productService.updateProduct(updateProduct);*/
 
 		};
 	}
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*/*			Product product = new Product("Ethernet wires", 4500, 20);
-			product.setId(25);
-			new HashSet<>(Set.of("Connections","Installation")).forEach(categoryName -> {
-				Category category = categoryService.getCategory(categoryName);
-				product.addCategory(
-						ProductCategory.addProductAndCategory(product, category));
-			});
-			productService.updateProduct(product);*/

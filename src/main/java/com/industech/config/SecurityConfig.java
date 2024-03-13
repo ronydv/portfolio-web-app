@@ -58,6 +58,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())//by default, it uses corsConfigurationSource bean name
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/api/v1/auth/**").permitAll();
+                    auth.requestMatchers("/api/v1/product-management/**").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .oauth2ResourceServer(oAuth2 -> {

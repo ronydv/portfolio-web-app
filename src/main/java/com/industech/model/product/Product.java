@@ -39,16 +39,11 @@ public class Product {
         this.price=price;
         this.quantity=quantity;
     }
-    public Product(Integer id, String name, Integer price,
-                   Integer quantity, LocalDateTime addedAt,
-                   Boolean status, Set<ProductCategory> productCategories) {
-        this.id = id;
+    public Product(String name, Integer price, Integer quantity, Boolean status) {
         this.name = name;
         this.price = price;
         this.quantity = quantity;
-        this.addedAt = addedAt;
         this.status = status;
-        this.productCategories = productCategories;
     }
 
     public void addCategory(ProductCategory productCategory){
@@ -66,9 +61,9 @@ public class Product {
                 +"\tprice: "+price+"\n"
                 +"\tquantity: "+quantity+"\n"
                 +"\tadded at: "+ addedAt.toLocalDate()+"\n"
-/*                +"\tcategories: "+productCategories.stream()
+                +"\tcategories: "+productCategories.stream()
                                     .map(ProductCategory::getCategory)
-                                    .toList()+"\n"*/
+                                    .toList()+"\n"
                 +"}";
     }
 }

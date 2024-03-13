@@ -1,5 +1,6 @@
 package com.industech.service.product;
 
+import com.industech.dto.product.CategoryDetails;
 import com.industech.model.product.Category;
 import com.industech.model.product.ProductCategory;
 import com.industech.repository.product.CategoryRepository;
@@ -10,32 +11,32 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Slf4j
-@Transactional
 @Service
+@Transactional
 public class CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    public Category getCategory(String categoryName){
+    protected Category getCategory(String categoryName){
        return categoryRepository.findByName(categoryName)
                .orElseGet( () ->{
-                   log.info("\u001B[33mCategory"+categoryName+" not found\u001B[0m");
+                   log.info("\u001B[33mCategory: \u001B[35m'"+categoryName+"'\u001B[0m not found\u001B[0m");
                    return null;
                });
     }
 
-    public Category createCategory(String categoryName){
-        if(getCategory(categoryName) == null){
-            return categoryRepository.save(new Category(categoryName));
+    public CategoryDetails saveCategory(String categoryName){
+        if(categoryRepository.findByName(categoryName).isEmpty()){
+            Category category= categoryRepository.save(new Category(categoryName));
+            return new CategoryDetails(category.getId(),category.getName());
         }else{
-            log.info("\u001B[33mCategory already exists\u001B[0m");
+            log.info("\u001B[33mCategory: \u001B[35m'"+categoryName+"'\u001B[0m already exists\u001B[0m");
             return null;//throw custom exception
         }
-
     }
+
     public void deleteCategory(Integer id){
         categoryRepository.findById(id)
                 .ifPresent(category -> {
