@@ -25,6 +25,21 @@ public class ProductService {
     @Autowired
     private CategoryService categoryService;
 
+    public ProductDetails getProduct(Integer id){
+        return productRepository.findById(id)
+                .map( found -> {
+                    ProductDetails product= new ProductDetails(found.getId(),found.getName(),found.getPrice(),
+                                                    found.getQuantity(),found.getAddedAt(),found.getStatus());
+                    found.getProductCategories().forEach( item ->{
+                        product.addCategory(new CategoryDetails(item.getCategory().getId(),
+                                                                item.getCategory().getName()));
+                    });
+                    return product;
+                }).orElseGet(()-> {
+                    log.error(" product not found");
+                    return null;
+                });
+    }
 
     public ProductDetails saveProduct(ProductDetails productDetails) {
         Product product = new Product(productDetails.getName(),productDetails.getPrice(),
@@ -48,7 +63,45 @@ public class ProductService {
     }
 
 
-    //todo:replace void with a Response Object
+
+    public ProductDetails updateProduct(ProductDetails product){
+        Product toUpdate=productRepository.getReferenceById(product.getId());
+        log.info("\nproduct to update: "+toUpdate);
+        toUpdate.setName(product.getName());
+        toUpdate.setPrice(product.getPrice());
+        toUpdate.setQuantity(product.getQuantity());
+
+        //remove association with product_categories table before inserting new data
+        if(!toUpdate.getProductCategories().isEmpty()){
+            List<ProductCategory> toRemove = new ArrayList<>(toUpdate.getProductCategories());
+            for (ProductCategory category : toRemove) {
+                toUpdate.removeCategory(category);
+            }
+        }
+        //add incoming categories to the product to be updated
+        product.getProductCategories().forEach(item -> {
+            Category category = new Category(item.id(),item.name());
+            toUpdate.addCategory(
+                    ProductCategory.add(toUpdate, category));
+        });
+        productRepository.save(toUpdate);
+        return product;
+    }
+
+    public void deleteProduct(Integer id){
+        productRepository.findById(id)
+                .ifPresent(product -> {
+                    List<ProductCategory> toRemove = new ArrayList<>(product.getProductCategories());
+                    for (ProductCategory productCategory : toRemove) {
+                        product.removeCategory(productCategory);
+                    }
+                    productRepository.delete(product);
+                });
+    }
+}
+
+
+/*
     public void updateProduct(Product product){
         Product productToUpdate=productRepository.getReferenceById(product.getId());
         log.info("product to update: "+productToUpdate);
@@ -70,15 +123,4 @@ public class ProductService {
         });
         productRepository.save(productToUpdate);
     }
-
-    public void deleteProduct(Integer id){
-        productRepository.findById(id)
-                .ifPresent(product -> {
-                    List<ProductCategory> toRemove = new ArrayList<>(product.getProductCategories());
-                    for (ProductCategory productCategory : toRemove) {
-                        product.removeCategory(productCategory);
-                    }
-                    productRepository.delete(product);
-                });
-    }
-}
+* */

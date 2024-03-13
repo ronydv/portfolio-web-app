@@ -1,6 +1,9 @@
 package com.industech;
 
+import com.industech.model.product.Category;
 import com.industech.model.product.Product;
+import com.industech.model.product.ProductCategory;
+import com.industech.repository.product.CategoryRepository;
 import com.industech.repository.product.ProductRepository;
 import com.industech.service.product.CategoryService;
 import com.industech.service.product.ProductService;
@@ -24,19 +27,18 @@ public class Main {
 	@Bean
 	CommandLineRunner commandLineRunner(ProductService productService,
 										CategoryService categoryService,
+										CategoryRepository categoryRepo,
 										ProductRepository productRepo) {
 		return args -> {
 			//TODO: create controllers for productService and categoryService with its DTOs
-/*			categoryService.createCategory("Electronics");
-			categoryService.createCategory("Installation");*/
-/*			Product product = new Product("wires", 4500, 20);
-			Set<String>categories=new HashSet<>(Set.of("Electronics","Installation"));
-			System.out.println(productService.saveProduct(product,categories));*/
-			//System.out.println(productService.getProduct(2));
 
-/*			Product updateProduct = new Product("Ethernet wires", 5600, 12);
-			updateProduct.setId(1);
-			new HashSet<>(Set.of("Installation","Electronics"));
+/*			Product updateProduct = new Product(1,"Ethernet wires", 5600, 12);
+			new HashSet<>(Set.of("Installation","Electronics"))
+					.forEach(cat ->{
+						Category category = categoryRepo.findByName(cat).get();
+						System.out.println(category+" inside main");
+						updateProduct.addCategory(ProductCategory.add(updateProduct,category));
+					});
 			productService.updateProduct(updateProduct);*/
 
 		};

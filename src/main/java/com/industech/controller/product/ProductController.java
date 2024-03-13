@@ -24,8 +24,19 @@ public class ProductController {
     public ResponseEntity<CategoryDetails> saveCategory(@RequestBody CategoryDetails categoryName){
         return new ResponseEntity<>(categoryService.saveCategory(categoryName.name()),OK);
     }
+
+    @GetMapping("/product/{id}")
+    public ResponseEntity<ProductDetails> getProduct(@PathVariable("id") Integer id){
+        return new ResponseEntity<ProductDetails>(productService.getProduct(id), OK);
+    }
+
     @PostMapping("/product")
     public ResponseEntity<ProductDetails> saveProduct(@RequestBody ProductDetails product){
         return new ResponseEntity<ProductDetails>(productService.saveProduct(product), OK);
+    }
+
+    @PutMapping("/product")
+    public ResponseEntity<ProductDetails> updateProduct(@RequestBody ProductDetails product){
+        return new ResponseEntity<ProductDetails>(productService.updateProduct(product), OK);
     }
 }
