@@ -19,6 +19,7 @@ public class Category {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    //@Column(nullable = false)
     private String name;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category",cascade = {PERSIST,MERGE}, orphanRemoval = true)

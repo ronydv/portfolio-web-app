@@ -30,7 +30,7 @@ public class CategoryService {
     public CategoryDetails saveCategory(String categoryName){
         if(categoryRepository.findByName(categoryName).isEmpty() && !categoryName.isBlank()){
             Category category= categoryRepository.save(new Category(categoryName));
-            return new CategoryDetails(category.getId(),category.getName());
+            return new CategoryDetails(category);
         }else{
             log.info("\u001B[33mCategory: \u001B[35m'"+categoryName+"'\u001B[0m " +
               (categoryName.isBlank() ?"categoryName is empty":"already exists")+"\u001B[0m");

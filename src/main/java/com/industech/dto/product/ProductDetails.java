@@ -1,42 +1,51 @@
 package com.industech.dto.product;
 
-import com.industech.model.product.Category;
 import com.industech.model.product.Product;
-import com.industech.model.product.ProductCategory;
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import static jakarta.persistence.CascadeType.MERGE;
-import static jakarta.persistence.CascadeType.PERSIST;
+/*
+this DTO is created specifically to avoid this exception:
+** Response already committed. Ignoring:HttpMessageNotWritableException:
+** Could not write JSON: Infinite recursion (StackOverflowError)
+*/
 
 @Setter @Getter
 public class ProductDetails {
-     private Integer id;
-     private String name;
-     private Integer price;
-     private Integer quantity;
-     private LocalDateTime addedAt;
-     private Boolean status;
-     private List<CategoryDetails> productCategories=new ArrayList<>();
+    private Integer id;
+    private String name;
+    private Integer price;
+    private Integer quantity;
+    private LocalDateTime addedAt;
+    private Boolean status;
+    private List<CategoryDetails> productCategories = new ArrayList<>();
 
-     public ProductDetails(){}
-    public ProductDetails(Integer id, String name, Integer price,
-                          Integer quantity, LocalDateTime addedAt, Boolean status) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.quantity = quantity;
-        this.addedAt = addedAt;
-        this.status = status;
+    public ProductDetails() {}
+    public ProductDetails(Product product) {
+        this.id = product.getId();
+        this.name = product.getName();
+        this.price = product.getPrice();
+        this.quantity = product.getQuantity();
+        this.addedAt = product.getAddedAt();
+        this.status = product.getStatus();
     }
-    public void addCategory(CategoryDetails category){ this.productCategories.add(category); }
+    public ProductDetails(Product product,List<CategoryDetails> productCategories ) {
+        this.id = product.getId();
+        this.name = product.getName();
+        this.price = product.getPrice();
+        this.quantity = product.getQuantity();
+        this.addedAt = product.getAddedAt();
+        this.status = product.getStatus();
+        this.productCategories=productCategories;
+    }
+
+    public void addCategory(CategoryDetails category) {
+        this.productCategories.add(category);
+    }
 }
 
 

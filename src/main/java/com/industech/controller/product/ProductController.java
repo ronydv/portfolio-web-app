@@ -22,7 +22,7 @@ public class ProductController {
     }
     @PostMapping("/category")
     public ResponseEntity<CategoryDetails> saveCategory(@RequestBody CategoryDetails categoryName){
-        return new ResponseEntity<>(categoryService.saveCategory(categoryName.name()),OK);
+        return new ResponseEntity<>(categoryService.saveCategory(categoryName.getName()),OK);
     }
 
     @GetMapping("/product/{id}")
@@ -38,5 +38,14 @@ public class ProductController {
     @PutMapping("/product")
     public ResponseEntity<ProductDetails> updateProduct(@RequestBody ProductDetails product){
         return new ResponseEntity<ProductDetails>(productService.updateProduct(product), OK);
+    }
+
+    @DeleteMapping("/product/{id}")
+    public void deleteProduct(@PathVariable("id") Integer id){
+        productService.deleteProduct(id);
+    }
+    @DeleteMapping("/category/{id}")
+    public void deleteCategory(@PathVariable("id") Integer id){
+        categoryService.deleteCategory(id);
     }
 }
