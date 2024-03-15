@@ -7,6 +7,7 @@ import com.industech.service.product.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
@@ -20,32 +21,34 @@ public class ProductController {
         this.productService = productService;
         this.categoryService = categoryService;
     }
+
+
     @PostMapping("/category")
     public ResponseEntity<CategoryDetails> saveCategory(@RequestBody CategoryDetails categoryName){
-        return new ResponseEntity<>(categoryService.saveCategory(categoryName.getName()),OK);
+        return new ResponseEntity<>(categoryService.saveCategory(categoryName.getName()),CREATED);
     }
 
     @GetMapping("/product/{id}")
     public ResponseEntity<ProductDetails> getProduct(@PathVariable("id") Integer id){
-        return new ResponseEntity<ProductDetails>(productService.getProduct(id), OK);
+        return new ResponseEntity<>(productService.getProduct(id), OK);
     }
 
     @PostMapping("/product")
     public ResponseEntity<ProductDetails> saveProduct(@RequestBody ProductDetails product){
-        return new ResponseEntity<ProductDetails>(productService.saveProduct(product), OK);
+        return new ResponseEntity<>(productService.saveProduct(product), CREATED);
     }
 
     @PutMapping("/product")
     public ResponseEntity<ProductDetails> updateProduct(@RequestBody ProductDetails product){
-        return new ResponseEntity<ProductDetails>(productService.updateProduct(product), OK);
+        return new ResponseEntity<>(productService.updateProduct(product), OK);
     }
 
     @DeleteMapping("/product/{id}")
-    public void deleteProduct(@PathVariable("id") Integer id){
-        productService.deleteProduct(id);
+    public ResponseEntity<String> deleteProduct(@PathVariable("id") Integer id){
+        return new ResponseEntity<>(productService.deleteProduct(id),OK);
     }
     @DeleteMapping("/category/{id}")
-    public void deleteCategory(@PathVariable("id") Integer id){
-        categoryService.deleteCategory(id);
+    public ResponseEntity<String>  deleteCategory(@PathVariable("id") Integer id){
+        return new ResponseEntity<>(categoryService.deleteCategory(id),OK);
     }
 }

@@ -27,4 +27,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         );
         return new ResponseEntity<>(error,e.getStatus());
     }
+
+    @ExceptionHandler(ProductException.class)
+    public ResponseEntity<CustomError> productException(ProductException e){
+        CustomError error=new CustomError(
+                e.getStatus().value(),
+                e.getMessage()
+        );
+        return new ResponseEntity<>(error,e.getStatus());
+    }
 }
