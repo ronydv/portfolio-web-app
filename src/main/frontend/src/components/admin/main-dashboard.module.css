@@ -1,0 +1,45 @@
+.dashboard{
+    display: flex;
+    flex-direction: row;
+}
+/* left navigation pane for the dashboard */
+.links{
+    border-radius: 5px 5px 0 0;
+    padding-top: 40px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+    min-width: 200px;
+    align-items: flex-start;
+    min-height: 100vh;
+}
+.links.light{
+    background-color: var(--chakra-colors-gray-100);
+    border:1px solid var(--chakra-colors-gray-200);
+    box-shadow: -2px 10px 15px 3px rgb(0, 0, 0, 0.100);
+}
+.links.dark{
+    background-color: var(--chakra-colors-gray-900);
+    border:1px solid var(--chakra-colors-gray-900);
+    box-shadow: -2px 10px 15px 3px rgba(0, 0, 0, 0.344);
+}
+.active-border{
+    margin-right: 10px;
+    border-radius: 0 5px 5px 0;
+    content: "";
+    width: 5px;
+    height: 100%;
+}
+.active-border.selected{/* show active button in the left side of the dashboard navbar */
+    background-color: rgb(255, 0, 132);
+}
+
+/* right side of the dashboard pane, this contains the components */
+.outlet{
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex: 1;
+    margin-left: 25px;
+    padding-top: 30px;
+}

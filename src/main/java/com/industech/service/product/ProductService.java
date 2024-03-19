@@ -43,8 +43,9 @@ public class ProductService {
 
     public ProductDetails saveProduct(ProductDetails productDetails) {
         try {
-            Product product = new Product(productDetails.getName(), productDetails.getPrice(),
-                                          productDetails.getQuantity(), productDetails.getStatus());
+            Product product = new Product(productDetails.getBrand(),productDetails.getName(),
+                                            productDetails.getPrice(), productDetails.getQuantity(),
+                                            productDetails.getStatus(), productDetails.getDescription());
             List<CategoryDetails> categories = new ArrayList<>();
             productDetails.getProductCategories().forEach(categoryName -> {
                 //check if the incoming list of categories exists in the database before adding to the product
@@ -67,10 +68,12 @@ public class ProductService {
     public ProductDetails updateProduct(ProductDetails product){
         try{
             Product toUpdate=productRepository.getReferenceById(product.getId());
+            toUpdate.setBrand(product.getBrand());
             toUpdate.setName(product.getName());
             toUpdate.setPrice(product.getPrice());
             toUpdate.setQuantity(product.getQuantity());
             toUpdate.setStatus(product.getStatus());
+            toUpdate.setDescription(product.getDescription());
             List<CategoryDetails>categories=new ArrayList<>();
 
             //remove association with product_categories table before inserting new data

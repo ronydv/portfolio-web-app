@@ -2,8 +2,8 @@ import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } 
 import './App.css';
 import Layout from './Layout';
 import Home from './components/home/Home';
-import Products from './components/products/Products';
-import Services from './components/products/Services';
+import Products from './components/store/Products';
+import Services from './components/store/Services';
 import Login from './components/authentication/Login';
 import Signup from './components/authentication/Signup';
 
@@ -11,6 +11,8 @@ import Unauthorized from './components/authentication/Unauthorized';
 import { Role } from './react-app-env.d';
 import Restricted from './components/authentication/Restricted';
 import PersistLogin from './components/authentication/PersistAuth';
+import ProductDashboard from './components/admin/add-product/ProductDashboard';
+import MainDashboard from './components/admin/MainDashboard';
 
 
   
@@ -29,8 +31,14 @@ function App() {
 
 					{/* protected */}
 					<Route element={<Restricted to={[Role.ADMIN]} />}>
-						<Route path='/products' element={<Products />} />
+						{/* dashboard here /> */}
 					</Route>
+					<Route path='/dashboard' element={<MainDashboard/>} >
+						<Route path='products-dashboard'element={<ProductDashboard/>}/>
+					</Route>
+
+
+					<Route path='/products' element={<Products />} />
 					<Route path='/services' element={<Services />} />
 				</Route>
 			</Route>

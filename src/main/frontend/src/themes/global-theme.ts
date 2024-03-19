@@ -1,4 +1,4 @@
-import { Box, extendBaseTheme, theme as chakraTheme, extendTheme, StyleFunctionProps, } from "@chakra-ui/react";
+import { theme as chakraTheme, extendTheme, StyleFunctionProps, } from "@chakra-ui/react";
 import { inputAnatomy } from '@chakra-ui/anatomy';
 import { createMultiStyleConfigHelpers } from '@chakra-ui/react';
 //This is a minimal version of ChakraProvider that only supplies theme tokens
@@ -50,9 +50,9 @@ export const indexTheme = extendTheme({
 					  },
 				  }),
 				//other variants
-				outline:(props: StyleFunctionProps) => ({
+/* 				outline:(props: StyleFunctionProps) => ({
 					borderColor: props.colorMode === 'dark' ? 'red.400' : 'red.500',
-				  }),
+				  }), */
 			},
 			defaultProps: {
 				size: 'sm', // default is md

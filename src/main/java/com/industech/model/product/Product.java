@@ -16,6 +16,9 @@ public class Product {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(nullable = false)
+    private String brand;
+
     private String name;
 
     @Column(nullable = false)
@@ -28,6 +31,9 @@ public class Product {
 
     private Boolean status;
 
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = {PERSIST,MERGE}, orphanRemoval = true)
     private Set<ProductCategory> productCategories=new HashSet<>();
 
@@ -39,11 +45,14 @@ public class Product {
         this.price=price;
         this.quantity=quantity;
     }
-    public Product(String name, Integer price, Integer quantity, Boolean status) {
+    public Product(String brand,String name, Integer price,
+                   Integer quantity, Boolean status, String description) {
+        this.brand=brand;
         this.name = name;
         this.price = price;
         this.quantity = quantity;
         this.status = status;
+        this.description=description;
     }
 
     public void addCategory(ProductCategory productCategory){
@@ -57,6 +66,7 @@ public class Product {
 
     public String toString(){
         return "Product {\n"
+                +"\tbrand: "+brand+"\n"
                 +"\tname: "+name+"\n"
                 +"\tprice: "+price+"\n"
                 +"\tquantity: "+quantity+"\n"

@@ -1,6 +1,7 @@
 import { Button, Heading, Spacer, useColorMode, Text, IconButton, useColorModeValue } from "@chakra-ui/react";
 import { FaMoon as Moon} from "react-icons/fa6";
 import { MdSunny as Sun} from "react-icons/md";
+import { FaHome as HomeIcon } from "react-icons/fa";
 import classes from './header.module.css';
 import { Link, useNavigate } from "react-router-dom";
 import useMatchMedia from "../../hooks/useMatchMedia";
@@ -12,7 +13,8 @@ const Header = () => {
     const navigate = useNavigate();
     const logout = useLogout();
     const { colorMode, toggleColorMode } = useColorMode()
-    const darkMode = useColorModeValue('gray.600','gray.400');
+    const linksBtn = useColorModeValue('gray.600','gray.400');
+    const dashboardBtn = useColorModeValue('blue.400','blue.300');
     const isDesktop=useMatchMedia();
 
     const closeSession = async () => {
@@ -37,27 +39,37 @@ const Header = () => {
 
             {isDesktop && <div className={classes.container}>
                 <Link to={'/'}>
-                    <Button variant='outline' color={darkMode} borderColor={darkMode}>Home</Button>
+                    <Button marginRight={2} variant='link' color={linksBtn}>Home</Button>
                 </Link>
-                <Button variant='link' color={darkMode}>About</Button>
-                <Button variant='link' color={darkMode}>Contact</Button>
-                <Button variant='link' color={darkMode}>Services</Button>
+                <Link to={'/'}>
+                    <Button marginRight={2} variant='link' color={linksBtn}>Store</Button>
+                </Link>
+                <Link to={'/'}>
+                    <Button marginRight={2} variant='link' color={linksBtn}>Contact</Button>
+                </Link>
+                <Link to={'/'}>
+                    <Button marginRight={2} variant='link' color={linksBtn}>About</Button>
+                </Link>
             </div>}
 
             <Spacer flex={0.2}/>
 
             <div className={classes.container}>
+                <Link to='/dashboard'>
+                    <Button variant='outline' color={dashboardBtn}>Dashboard</Button>
+                </Link>
+                
                 {user?.isEnabled ?
                         <Button onClick={closeSession}>Logout</Button>
                         :
-                        <Link to={'/login'}><Button variant='outline'> Log in</Button></Link>
+                        <Link to='/login'><Button variant='outline'> Log in</Button></Link>
                 }
 
-                <Link to={'/signup'}><Button> Sign up</Button></Link>
+                <Link to='/signup'><Button> Sign up</Button></Link>
 
                 <IconButton isRound={true} variant='ghost' aria-label='Dark Mode'
                     fontSize='20px' onClick={toggleColorMode}
-                    color={darkMode}
+                    color={linksBtn}
                     icon={colorMode === 'light' ? <Moon /> : <Sun />} />
             </div>
         </div>

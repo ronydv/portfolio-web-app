@@ -17,29 +17,35 @@ this DTO is created specifically to avoid this exception:
 @Setter @Getter
 public class ProductDetails {
     private Integer id;
+    private String brand;
     private String name;
     private Integer price;
     private Integer quantity;
     private LocalDateTime addedAt;
     private Boolean status;
+    private String description;
     private List<CategoryDetails> productCategories = new ArrayList<>();
 
     public ProductDetails() {}
     public ProductDetails(Product product) {
         this.id = product.getId();
+        this.brand=product.getBrand();
         this.name = product.getName();
         this.price = product.getPrice();
         this.quantity = product.getQuantity();
         this.addedAt = product.getAddedAt();
         this.status = product.getStatus();
+        this.description=product.getDescription();
     }
     public ProductDetails(Product product,List<CategoryDetails> productCategories ) {
         this.id = product.getId();
+        this.brand=product.getBrand();
         this.name = product.getName();
         this.price = product.getPrice();
         this.quantity = product.getQuantity();
         this.addedAt = product.getAddedAt();
         this.status = product.getStatus();
+        this.description=product.getDescription();
         this.productCategories=productCategories;
     }
 
