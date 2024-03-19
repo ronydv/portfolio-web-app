@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -29,19 +30,31 @@ public class CategoryService {
                });
     }
 
+    public List<CategoryDetails> getCategories() {
+        List<Category> categories = categoryRepository.findAll();
+        if (categories.isEmpty()) {
+            log.error("No categories found");
+            throw new ProductException("No categories found", HttpStatus.NOT_FOUND);
+        } else {
+            return categories.stream()
+                    .map(CategoryDetails::new)
+                    .collect(Collectors.toList());
+        }
+    }
+
     public CategoryDetails saveCategory(String categoryName){
         try{
             if(categoryRepository.findByName(categoryName).isEmpty() && !categoryName.isBlank()){
                 Category category= categoryRepository.save(new Category(categoryName));
                 return new CategoryDetails(category);
             }else{
-                String message=(categoryName.isBlank() ?"categoryName is empty":"already exists")+"\u001B[0m";
+                String message=(categoryName.isBlank() ?"categoryName is empty":"already exists");
                 log.error("\u001B[33mCategory: \u001B[35m'"+categoryName+"'\u001B[0m " + message+"\u001B[0m");
-                throw new ProductException(message,HttpStatus.UNAUTHORIZED);//throw exception for  duplicate entries
+                throw new ProductException(message);//throw exception for  duplicate entries
             }
         }catch(Exception e){//throw exception for  null values
             if(e.getLocalizedMessage().contains("String.isBlank()")) log.error(e.getMessage());
-            throw new ProductException(e.getMessage(), HttpStatus.UNAUTHORIZED);
+            throw new ProductException(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 

@@ -1,69 +1,103 @@
-import { Heading, FormLabel, Input, Button, Menu, MenuButton,
-     MenuList, MenuGroup, MenuItem, Checkbox, Grid, Tag, ColorMode } from "@chakra-ui/react";
+import { Heading, FormLabel,Text, Input, Button, Checkbox, Grid, Tag, ColorMode, Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Spacer } from "@chakra-ui/react";
 import { FiChevronDown as ChevronDownIcon } from "react-icons/fi";
 import { RiDeleteBinFill as DeleteIcon } from "react-icons/ri";
 import classes from "./add-product.module.css";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { useFetch } from "../../../hooks/useFetch";
+import useInterceptor from "../../../hooks/useInterceptor";
+import axios from "axios";
 
-const categoriesSample:{name:string}[]=[
-    {name:'Electronics'},
-    {name:'Installation'},
-    {name:'Connectors'},
-    {name:'Wires'},
-    {name:'Capacitors'},
-];
+
 type CategoryList={names:string[]}
 type CategoriesProps= {
     colorMode: ColorMode
     setProduct: React.Dispatch<React.SetStateAction<Product>>;
 }
 const SelectCategories = ({ colorMode, setProduct }: CategoriesProps) => {
-
-    const [categories, setCategories] = useState<CategoryList>({ names: [] });
-
+    const axiosPrivate = useInterceptor();
+    const [error, setError]=useState("");
+    const {data}=useFetch<Category>("/api/v1/product-management/categories");
+    const [category, setCategory]= useState<Category>({});
+    const [tags, setTags] = useState<CategoryList>({ names: [] });
+    const [categories, setCategories] = useState<Category[]>([]);
+//todo: add delete button
     const handleCheckbox = (e: ChangeEvent<HTMLInputElement>) => {
         const { value, checked } = e.target;
-        console.log(`${value} is ${checked}`);
-        setCategories((prev) => {
+        setTags((prev) => {
             if (checked) return { names: [...prev.names, value] };
             else return { names: prev.names.filter((category) => category !== value) };
         });
     };
+
+    const addCategory = async ()=>{
+        try {              
+            const response = await axiosPrivate.post<Category>("/api/v1/product-management/categories",
+                category, {
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                },
+            });
+            setCategories(prevCategories => [...prevCategories, response.data]);
+        }catch(error){
+            if(axios.isAxiosError(error)) setError(error.response?.data.message);
+        }
+    }
+    const deleteCategory = async (category:Category)=>{
+        console.log("category deleted: ",category);
+        try {              
+            const response = await axiosPrivate.delete<Category>(`/api/v1/product-management/categories/${category.id}`);
+            setCategories(prevCategories => prevCategories.filter(c => c.id !== category.id));
+            console.log(response.data);
+        }catch(error){
+            if(axios.isAxiosError(error)) setError(error.response?.data.message);
+        }
+    }
+
+    useEffect(() => {setCategories(data);}, [data]);//render the items in the accordion after adding new category
     useEffect(() => {
         /* update the categories in the product object through re-rendering this component */
         setProduct(prevProduct => {
-            const categoryList = categories.names.map(category => ({ name: category }));
+            const categoryList = tags.names.map(category => ({ name: category }));
             return ({ ...prevProduct, categories: categoryList });
         });
-    }, [categories]);
+    }, [tags]);
 
     return (
         <section className={`${classes.categories} ${colorMode === 'light' ? classes.light : classes.dark}`}>
             <Heading as='h2' size='sm' marginRight={10}>Add category</Heading>
-            <FormLabel mt={2}>Category name</FormLabel>
-            <Input type='text' placeholder="Insert category" />
-            <Button mt={2}>Add</Button>
-            <Menu closeOnSelect={false}>
-                <MenuButton mt={3} as={Button} color={'blue.300'} variant={'outline'}
-                    rightIcon={<ChevronDownIcon />}>
-                    Select existing categories
-                </MenuButton>
-                <MenuList>
-                    <MenuGroup title='Categories'>
-                        {categoriesSample.map((category, i) => (
-                            <MenuItem key={i}>
-                                <Checkbox value={category.name} marginRight={5}
+            <FormLabel mt={2}>{error ? <Text color={'red'}>{error}</Text>: 'Category Name'}</FormLabel>
+            <Input type='text' placeholder="Insert category" onChange={(e) =>{
+                        setCategory({ name: e.target.value })
+                        setError("");
+            }}/>
+            <Button mt={2} onClick={addCategory}>Add</Button>
+
+            <Accordion allowToggle={true} mt={3}>
+                <AccordionItem>
+                    <AccordionButton>
+                        <Box as="span" flex='1' textAlign='left'>
+                            Select categories
+                        </Box><AccordionIcon />
+                    </AccordionButton>
+
+                    <AccordionPanel pb={4} style={{ maxHeight: '200px', overflowY: 'auto' }}>
+                        {categories.map((category, i) => (
+                            <div key={i} style={{ display: 'flex' }}>
+                                <Checkbox value={category.name}
                                     onChange={(e) => handleCheckbox(e)}>
                                     {category.name}
                                 </Checkbox>
-                                <DeleteIcon color="red" onClick={() => console.log("deleted")} />
-                            </MenuItem>
+                                <Spacer />
+                                <DeleteIcon color="red" onClick={() => deleteCategory(category)} />
+                            </div>
                         ))}
-                    </MenuGroup>
-                </MenuList>
-            </Menu>
+                    </AccordionPanel>
+
+                </AccordionItem>
+            </Accordion>
             <Grid mt={2} templateColumns='repeat(3, 1fr)' gap={2}>
-                {categories.names.map((item, i) => (
+                {tags.names.map((item, i) => (
                     <Tag key={i}>{item}</Tag>
                 ))}
             </Grid>
