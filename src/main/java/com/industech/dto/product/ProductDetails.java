@@ -24,7 +24,7 @@ public class ProductDetails {
     private LocalDateTime addedAt;
     private Boolean status;
     private String description;
-    private List<CategoryDetails> productCategories = new ArrayList<>();
+    private List<CategoryDetails> categories = new ArrayList<>();
 
     public ProductDetails() {}
     public ProductDetails(Product product) {
@@ -37,7 +37,7 @@ public class ProductDetails {
         this.status = product.getStatus();
         this.description=product.getDescription();
     }
-    public ProductDetails(Product product,List<CategoryDetails> productCategories ) {
+    public ProductDetails(Product product,List<CategoryDetails> categories) {
         this.id = product.getId();
         this.brand=product.getBrand();
         this.name = product.getName();
@@ -46,11 +46,11 @@ public class ProductDetails {
         this.addedAt = product.getAddedAt();
         this.status = product.getStatus();
         this.description=product.getDescription();
-        this.productCategories=productCategories;
+        this.categories = categories;
     }
 
     public void addCategory(CategoryDetails category) {
-        this.productCategories.add(category);
+        this.categories.add(category);
     }
 }
 

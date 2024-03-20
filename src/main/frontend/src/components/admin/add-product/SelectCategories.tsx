@@ -1,4 +1,4 @@
-import { Heading, FormLabel,Text, Input, Button, Checkbox, Grid, Tag, ColorMode, Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Spacer } from "@chakra-ui/react";
+import { Heading, FormLabel,Text, Input, Button, Checkbox, Grid, Tag, ColorMode, Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Spacer, FormControl } from "@chakra-ui/react";
 import { FiChevronDown as ChevronDownIcon } from "react-icons/fi";
 import { RiDeleteBinFill as DeleteIcon } from "react-icons/ri";
 import classes from "./add-product.module.css";
@@ -20,7 +20,7 @@ const SelectCategories = ({ colorMode, setProduct }: CategoriesProps) => {
     const [category, setCategory]= useState<Category>({});
     const [tags, setTags] = useState<CategoryList>({ names: [] });
     const [categories, setCategories] = useState<Category[]>([]);
-//todo: add delete button
+
     const handleCheckbox = (e: ChangeEvent<HTMLInputElement>) => {
         const { value, checked } = e.target;
         setTags((prev) => {
@@ -38,7 +38,7 @@ const SelectCategories = ({ colorMode, setProduct }: CategoriesProps) => {
                     "Content-Type": "application/json",
                 },
             });
-            setCategories(prevCategories => [...prevCategories, response.data]);
+            setCategories([...categories, response.data]);//add the new category to the list of categories
         }catch(error){
             if(axios.isAxiosError(error)) setError(error.response?.data.message);
         }
@@ -46,9 +46,8 @@ const SelectCategories = ({ colorMode, setProduct }: CategoriesProps) => {
     const deleteCategory = async (category:Category)=>{
         console.log("category deleted: ",category);
         try {              
-            const response = await axiosPrivate.delete<Category>(`/api/v1/product-management/categories/${category.id}`);
+            await axiosPrivate.delete<Category>(`/api/v1/product-management/categories/${category.id}`);
             setCategories(prevCategories => prevCategories.filter(c => c.id !== category.id));
-            console.log(response.data);
         }catch(error){
             if(axios.isAxiosError(error)) setError(error.response?.data.message);
         }
@@ -66,11 +65,14 @@ const SelectCategories = ({ colorMode, setProduct }: CategoriesProps) => {
     return (
         <section className={`${classes.categories} ${colorMode === 'light' ? classes.light : classes.dark}`}>
             <Heading as='h2' size='sm' marginRight={10}>Add category</Heading>
-            <FormLabel mt={2}>{error ? <Text color={'red'}>{error}</Text>: 'Category Name'}</FormLabel>
-            <Input type='text' placeholder="Insert category" onChange={(e) =>{
-                        setCategory({ name: e.target.value })
-                        setError("");
-            }}/>
+            
+            <FormControl as='fieldset' className={classes.form} isInvalid={error!==""}>
+                <FormLabel mt={2}>{error ? <Text color={'red'}>{error}</Text>: 'Category Name'}</FormLabel>
+                <Input type='text' placeholder="Insert category" onChange={(e) =>{
+                            setCategory({ name: e.target.value })
+                            setError("");
+                }}/>
+            </FormControl>
             <Button mt={2} onClick={addCategory}>Add</Button>
 
             <Accordion allowToggle={true} mt={3}>

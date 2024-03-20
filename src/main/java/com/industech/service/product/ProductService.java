@@ -7,17 +7,13 @@ import com.industech.model.product.Category;
 import com.industech.model.product.Product;
 import com.industech.model.product.ProductCategory;
 import com.industech.repository.product.ProductRepository;
-import jakarta.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.PropertyValueException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Slf4j
 @Service
@@ -47,7 +43,7 @@ public class ProductService {
                                             productDetails.getPrice(), productDetails.getQuantity(),
                                             productDetails.getStatus(), productDetails.getDescription());
             List<CategoryDetails> categories = new ArrayList<>();
-            productDetails.getProductCategories().forEach(categoryName -> {
+            productDetails.getCategories().forEach(categoryName -> {
                 //check if the incoming list of categories exists in the database before adding to the product
                 Category category = categoryService.getCategory(categoryName.getName());
                 if (category != null) {
@@ -55,7 +51,6 @@ public class ProductService {
                     categories.add(new CategoryDetails(category));// map categories to the DTO
                 }
             });
-            log.info("product: "+productDetails.getName()+" saved");
             return new ProductDetails(productRepository.save(product), categories);
         } catch (Exception e) {//throw exception if a repeated product with same brand already exists
             log.error(e.getMessage());
@@ -82,7 +77,7 @@ public class ProductService {
                 toRemove.forEach(toUpdate::removeCategory);
             }
             //add incoming categories to the product to be updated
-            product.getProductCategories().forEach(item -> {
+            product.getCategories().forEach(item -> {
                 Category category = categoryService.getCategory(item.getName());
                 if(category != null ){
                     toUpdate.addCategory(ProductCategory.add(toUpdate, category));//map to the database
