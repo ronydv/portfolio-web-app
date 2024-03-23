@@ -33,7 +33,7 @@ public class CategoryService {
     public List<CategoryDetails> getCategories() {
         List<Category> categories = categoryRepository.findAll();
         if (categories.isEmpty()) {
-            log.error("No categories found");
+            log.error("No categories found -> getCategories()");
             throw new ProductException("No categories found", HttpStatus.NOT_FOUND);
         } else {
             return categories.stream()

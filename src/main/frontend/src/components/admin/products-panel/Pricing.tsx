@@ -1,5 +1,5 @@
 import { ColorMode, FormControl, FormLabel, Text, Heading, Input, NumberInput, NumberInputField } from "@chakra-ui/react";
-import classes from "./add-product.module.css";
+import classes from "./products-panel.module.css";
 
 type PricingProps= {
     product: Product;

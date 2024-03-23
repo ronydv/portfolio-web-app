@@ -11,7 +11,8 @@ import Unauthorized from './components/authentication/Unauthorized';
 import { Role } from './react-app-env.d';
 import Restricted from './components/authentication/Restricted';
 import PersistLogin from './components/authentication/PersistAuth';
-import ProductDashboard from './components/admin/add-product/ProductDashboard';
+import AddProduct from './components/admin/products-panel/AddProduct';
+import ProductsDashboard from './components/admin/products-panel/ProductsDashboard';
 import MainDashboard from './components/admin/MainDashboard';
 
 
@@ -34,10 +35,9 @@ function App() {
 						{/* dashboard here /> */}
 					</Route>
 					<Route path='/dashboard' element={<MainDashboard/>} >
-						<Route path='products-dashboard'element={<ProductDashboard/>}/>
+						<Route path='products-dashboard'element={<ProductsDashboard/>}/>
+						<Route path='add-product'element={<AddProduct/>}/>
 					</Route>
-
-
 					<Route path='/products' element={<Products />} />
 					<Route path='/services' element={<Services />} />
 				</Route>

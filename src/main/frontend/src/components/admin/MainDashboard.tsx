@@ -1,13 +1,12 @@
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 import { IoPricetags as Products } from "react-icons/io5";
 import { IoAnalyticsOutline as Analytics } from "react-icons/io5";
 import { RiCustomerService2Line as Customers } from "react-icons/ri";
 import classes from './main-dashboard.module.css';
 import { Button, Flex, useColorMode, useColorModeValue } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IconType } from 'react-icons';
-import React from 'react';
-import ProductDashboard from './add-product/ProductDashboard';
+import ProductsDashboard from './products-panel/ProductsDashboard';
 
 type LinkStyle={name:string, path:string, icon:IconType,}
 const linkItems:LinkStyle[]=[
@@ -31,10 +30,15 @@ const MainDashboard = () => {
     const { colorMode } = useColorMode()
     const darkMode = useColorModeValue('gray.600','gray.400');
     const [activeButton, setActiveButton] = useState<string>("Products");
-
+    const location = useLocation();
     const handleButtonClick = (name:string) => {
       setActiveButton(name);
     };
+    
+    useEffect(()=>{
+        if(location.pathname==='/dashboard/products-dashboard') setActiveButton("Products");
+    },[location.pathname])
+
     return (
         <div className={classes.dashboard}>
 
@@ -44,7 +48,7 @@ const MainDashboard = () => {
                     <Flex key={i}>
 
                         <div className={`${classes['active-border']} ${activeButton === item.name && classes.selected}`}/>
-                        <Link to='products-dashboard'>{/* switch path name later */}
+                        <Link to={item.path}>
                             <Button variant='link' leftIcon={<item.icon />}
                                 color={darkMode}
                                 isActive={activeButton === item.name}
@@ -59,8 +63,9 @@ const MainDashboard = () => {
             </div>
 
             <div className={classes.outlet}>
-                {/* render ProductDashboard in the first loading before selecting any navigation item*/}
-                {activeButton==='Products'  ? <ProductDashboard/>: <Outlet />}
+                {/* render ProductDashboard in the first loading before clicking any navigation link*/}
+                {activeButton==='Products' ? <ProductsDashboard setActiveButton={setActiveButton} />
+                                           : <Outlet />}
             </div>
 
         </div>

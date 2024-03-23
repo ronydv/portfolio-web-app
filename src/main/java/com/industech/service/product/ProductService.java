@@ -14,15 +14,36 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 public class ProductService {
+
     @Autowired
     private ProductRepository productRepository;
     @Autowired
     private CategoryService categoryService;
-//TODO: CREATE CUSTOM EXCEPTIONS FOR RESPONSE ENTITIES
+
+    public List<ProductDetails> getAllProducts(){
+        List<Product> products = productRepository.findAll();
+        if (products.isEmpty()) {
+            log.error("No products found -> getAllProducts()");
+            throw new ProductException("No products found", HttpStatus.NOT_FOUND);
+        } else {
+            return products.stream()
+                    .map(product ->{
+                        List<CategoryDetails> categories=new ArrayList<>();
+                        for(ProductCategory productCategory : product.getProductCategories()){
+                            categories.add(new CategoryDetails(productCategory.getCategory()));
+                        }
+                        return new ProductDetails(product,categories);
+                    })
+                    .collect(Collectors.toList());
+        }
+    }
+
     public ProductDetails getProduct(Integer id){
             return productRepository.findById(id)
                     .map( found -> {

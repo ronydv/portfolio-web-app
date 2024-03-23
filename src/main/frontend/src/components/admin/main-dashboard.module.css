@@ -36,10 +36,10 @@
 
 /* right side of the dashboard pane, this contains the components */
 .outlet{
-    display: flex;
+/*     display: flex;
     align-items: flex-start;
-    justify-content: center;
-    flex: 1;
+    justify-content: center; */
     margin-left: 25px;
     padding-top: 30px;
+
 }

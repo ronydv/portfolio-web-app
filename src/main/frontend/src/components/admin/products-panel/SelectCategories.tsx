@@ -1,8 +1,7 @@
 import { Heading, FormLabel,Text, Input, Button, Checkbox, Grid, Tag, ColorMode, Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Spacer, FormControl } from "@chakra-ui/react";
-import { FiChevronDown as ChevronDownIcon } from "react-icons/fi";
 import { RiDeleteBinFill as DeleteIcon } from "react-icons/ri";
-import classes from "./add-product.module.css";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import classes from "./products-panel.module.css";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useFetch } from "../../../hooks/useFetch";
 import useInterceptor from "../../../hooks/useInterceptor";
 import axios from "axios";

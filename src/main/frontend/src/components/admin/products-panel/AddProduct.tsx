@@ -1,13 +1,17 @@
-import { Button, Text, FormControl, FormLabel, Heading, Input, NumberInput, NumberInputField, Spacer, Textarea, useColorMode } from "@chakra-ui/react";
-import classes from "./add-product.module.css";
+import { Button, Text, FormControl, FormLabel, Heading, Input, NumberInput, NumberInputField, Spacer, Textarea, useColorMode, Flex, Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@chakra-ui/react";
+import { FaArrowLeft as LeftIcon } from "react-icons/fa6";
+import { FaChevronRight as ChevronRightIcon } from "react-icons/fa6";
+import classes from "./products-panel.module.css";
 import { FormEvent, useState } from "react";
 import Pricing from "./Pricing";
 import SelectCategories from "./SelectCategories";
 import axios from "axios";
 import useInterceptor from "../../../hooks/useInterceptor";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
-const ProductDashboard = () => {
+const AddProduct = () => {
     const axiosPrivate = useInterceptor();
+    const navigate = useNavigate();
     const { colorMode } = useColorMode();
     const [error, setError]=useState<string>(" ");
     const [product, setProduct]= useState<Product>({});
@@ -36,9 +40,24 @@ const ProductDashboard = () => {
         <div >
             <form onSubmit={handleSubmit}> 
                 <section className={`${classes.title} ${colorMode === 'light' ? classes.light : classes.dark}`}>
-                    <Heading as='h2' size='md' marginRight={10}>Add product</Heading>
+                    <Flex direction={'column'}>
+                        <Heading as='h2' size='md' marginRight={10}>Add product</Heading>
+                        <Breadcrumb spacing='8px' separator={<ChevronRightIcon color='gray.500' />}>
+                            <BreadcrumbItem>
+                                <p>Products</p>
+                            </BreadcrumbItem>
+
+                            <BreadcrumbItem isCurrentPage>
+                                <p >Add Product</p>
+                            </BreadcrumbItem>
+                        </Breadcrumb>
+                    </Flex>
                     <Spacer />
-                    <Button variant='outline' color={'blue.300'} marginRight={5}>Go back</Button>
+                        <Button variant='outline' color={'blue.300'} marginRight={5}
+                            leftIcon={<LeftIcon/>}
+                             onClick={()=>navigate("/dashboard/products-dashboard")}>
+                                Go back
+                        </Button>
                     <Button type="submit">Add Product</Button>
                 </section>
 
@@ -84,4 +103,4 @@ const ProductDashboard = () => {
     );
 }
  
-export default ProductDashboard;
+export default AddProduct;
