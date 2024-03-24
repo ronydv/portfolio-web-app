@@ -2,11 +2,13 @@ import { Link, Outlet, useLocation } from 'react-router-dom';
 import { IoPricetags as Products } from "react-icons/io5";
 import { IoAnalyticsOutline as Analytics } from "react-icons/io5";
 import { RiCustomerService2Line as Customers } from "react-icons/ri";
+import { GiHamburgerMenu as Burger } from "react-icons/gi";
 import classes from './main-dashboard.module.css';
-import { Button, Flex, useColorMode, useColorModeValue } from '@chakra-ui/react';
+import { Button, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Flex, IconButton, useColorMode, useColorModeValue, useDisclosure } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { IconType } from 'react-icons';
 import ProductsDashboard from './products-panel/ProductsDashboard';
+import useMatchMedia from '../../hooks/useMatchMedia';
 
 type LinkStyle={name:string, path:string, icon:IconType,}
 const linkItems:LinkStyle[]=[
@@ -27,49 +29,82 @@ const linkItems:LinkStyle[]=[
     },
 ];
 const MainDashboard = () => {
-    const { colorMode } = useColorMode()
-    const darkMode = useColorModeValue('gray.600','gray.400');
+    const { colorMode } = useColorMode();
+    const isDesktop = useMatchMedia();
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const darkMode = useColorModeValue('gray.600', 'gray.400');
     const [activeButton, setActiveButton] = useState<string>("Products");
     const location = useLocation();
-    const handleButtonClick = (name:string) => {
-      setActiveButton(name);
-    };
-    
-    useEffect(()=>{
-        if(location.pathname==='/dashboard/products-dashboard') setActiveButton("Products");
-    },[location.pathname])
+    const handleButtonClick = (name: string) => setActiveButton(name);
+
+    useEffect(() => {
+        if (location.pathname === '/dashboard/products-dashboard') setActiveButton("Products");
+    }, [location.pathname]);
 
     return (
-        <div className={classes.dashboard}>
+        <div className={`${classes.dashboard} ${!isDesktop && classes.mobile}`}>
 
-            <div className={`${classes.links} ${colorMode === 'light' ? classes.light : classes.dark}`}>
+            {isDesktop ?
+                <div className={`${classes.links} ${colorMode === 'light' ? classes.light : classes.dark}`}>
 
-                {linkItems.map((item, i) => (
-                    <Flex key={i}>
+                    {linkItems.map((item, i) => (
+                        <Flex key={i}>
 
-                        <div className={`${classes['active-border']} ${activeButton === item.name && classes.selected}`}/>
-                        <Link to={item.path}>
-                            <Button variant='link' leftIcon={<item.icon />}
-                                color={darkMode}
-                                isActive={activeButton === item.name}
-                                onClick={() => handleButtonClick(item.name)}>
-                                {item.name}
-                            </Button>
-                        </Link>
+                            <div className={`${classes['active-border']} ${activeButton === item.name && classes.selected}`} />
+                            <Link to={item.path}>
+                                <Button variant='link' leftIcon={<item.icon />}
+                                    color={darkMode}
+                                    isActive={activeButton === item.name}
+                                    onClick={() => handleButtonClick(item.name)}>
+                                    {item.name}
+                                </Button>
+                            </Link>
 
-                    </Flex>
-                ))
-                }
-            </div>
+                        </Flex>
+                    ))
+                    }
+                </div>
+                :
+                <>{/* if it's not desktop mode, render a drawer */}
+                <IconButton isRound={true} variant='ghost' aria-label='Dark Mode'
+                    fontSize='20px' onClick={onOpen}
+                    color={'gray'}
+                    icon={<Burger />} />
+                    <Drawer placement='left' onClose={onClose} isOpen={isOpen}>
+                        <DrawerOverlay />
+                        <DrawerContent>
+                            <DrawerHeader borderBottomWidth='1px'>Dashboard Menu</DrawerHeader>
+                            <DrawerBody>
+                                {linkItems.map((item, i) => (
+                                    <Flex key={i}>
+                                        <div className={`${classes['active-border']} ${activeButton === item.name && classes.selected}`} />
+                                        <Link to={item.path}>
+                                            <Button variant='link' leftIcon={<item.icon />}
+                                                color={darkMode}
+                                                isActive={activeButton === item.name}
+                                                onClick={() => {
+                                                    handleButtonClick(item.name);
+                                                    onClose();
+                                                }}>
+                                                {item.name}
+                                            </Button>
+                                        </Link>
+                                    </Flex>
+                                ))
+                                }
+                            </DrawerBody>
+                        </DrawerContent>
+                    </Drawer>
+                    </>}
 
             <div className={classes.outlet}>
                 {/* render ProductDashboard in the first loading before clicking any navigation link*/}
-                {activeButton==='Products' ? <ProductsDashboard setActiveButton={setActiveButton} />
-                                           : <Outlet />}
+                {activeButton === 'Products' ? <ProductsDashboard setActiveButton={setActiveButton} />
+                    : <Outlet />}
             </div>
 
         </div>
     );
-}
- 
+};
+
 export default MainDashboard;

@@ -55,9 +55,11 @@ const Header = () => {
             <Spacer flex={0.2}/>
 
             <div className={classes.container}>
-                <Link to='/dashboard'>
-                    <Button variant='outline' color={dashboardBtn}>Dashboard</Button>
-                </Link>
+                <Button variant='outline' color={dashboardBtn}
+                            onClick={() => navigate("/dashboard/products-dashboard")}>
+                    Dashboard
+                </Button>
+                
                 
                 {user?.isEnabled ?
                         <Button onClick={closeSession}>Logout</Button>

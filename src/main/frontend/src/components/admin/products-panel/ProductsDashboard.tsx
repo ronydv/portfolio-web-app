@@ -5,24 +5,26 @@ import classes from "./products-panel.module.css";
 import { Link } from "react-router-dom";
 import StatsCards from "./StatsCards";
 import ProductsTable from "./ProductsTable";
+import useMatchMedia from "../../../hooks/useMatchMedia";
 type ActiveButtonProps={
     setActiveButton?: React.Dispatch<React.SetStateAction<string>>
 }
 const ProductsDashboard = ({ setActiveButton }: ActiveButtonProps) => {
+    const isDesktop = useMatchMedia();
     return (
         <section >
             <div className={classes['search-bar']}>
-                <div>
+                <Flex mr={3}>
                     <InputGroup>
-                        <InputRightElement pointerEvents='none'>
-                            <SearchIcon color='gray.300' />
+                        <InputRightElement pointerEvents='none' >
+                            <SearchIcon color='gray.300'/>
                         </InputRightElement>
-                        <Input type='tel' placeholder='Search Product' />
+                        <Input type='text' placeholder='Search Product'/>
                     </InputGroup>
-                </div>
+                </Flex>
                 <Spacer />
                 <Link to="add-product">
-                    <Button variant={'outline'} color={'blue.300'} 
+                    <Button variant={'outline'} color={'blue.300'}
                             onClick={() => setActiveButton && setActiveButton("Add Product")}
                             leftIcon={<AddProductIcon/>}>
                         Add Product
@@ -30,7 +32,6 @@ const ProductsDashboard = ({ setActiveButton }: ActiveButtonProps) => {
                 </Link>
             </div>
             <StatsCards />
-            {/* table here */}
             <ProductsTable/>
         </section>
     );

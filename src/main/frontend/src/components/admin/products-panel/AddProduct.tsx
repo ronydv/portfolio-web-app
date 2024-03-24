@@ -1,6 +1,6 @@
 import { Button, Text, FormControl, FormLabel, Heading, Input, NumberInput, NumberInputField, Spacer, Textarea, useColorMode, Flex, Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@chakra-ui/react";
 import { FaArrowLeft as LeftIcon } from "react-icons/fa6";
-import { FaChevronRight as ChevronRightIcon } from "react-icons/fa6";
+import { MdOutlineChevronRight as ChevronRightIcon } from "react-icons/md";
 import classes from "./products-panel.module.css";
 import { FormEvent, useState } from "react";
 import Pricing from "./Pricing";
@@ -20,7 +20,7 @@ const AddProduct = () => {
         event.preventDefault();
         console.log("product: ", product);
         try {
-            const response = await axiosPrivate.post<Category>("/api/v1/product-management/product",
+            const response = await axiosPrivate.post<Category>("/api/v1/product-management/products",
                 product, {
                 headers: {
                     "Accept": "application/json",

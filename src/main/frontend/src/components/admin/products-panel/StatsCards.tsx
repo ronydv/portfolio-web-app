@@ -3,12 +3,14 @@ import { IoBagHandleSharp as Bag} from "react-icons/io5";
 import { BsCashCoin as Cash} from "react-icons/bs";
 import { PiWarningOctagon as Warning } from "react-icons/pi";
 import classes from "./products-panel.module.css";
+import useMatchMedia from "../../../hooks/useMatchMedia";
 
 const StatsCards = () => {
+    const isDesktop = useMatchMedia();
     return (
         <section className={classes.stats}>
 {/* ------------------------------------------------Total orders card */}            
-            <Card  pl={5}>
+            <Card  pl={5} w={isDesktop ? '':'240px'}>
                 <CardHeader mb={-5}>
                     <IconButton isRound={true} variant='ghost' aria-label='Dark Mode'
                         fontSize='30px' color={'blue.500'} icon={<Bag />} />
@@ -30,7 +32,7 @@ const StatsCards = () => {
                 </CardBody>
             </Card>
 {/* --------------------------------------Revenue card */}
-            <Card  pl={5}>
+            <Card  pl={5} w={isDesktop ? '':'240px'}>
                 <CardHeader mb={-5}>
                     <IconButton isRound={true} variant='ghost' aria-label='Dark Mode'
                         fontSize='30px' color={'green.500'} icon={<Cash />} />
@@ -52,7 +54,7 @@ const StatsCards = () => {
                 </CardBody>
             </Card>
 {/* ---------------------------------Out of Stock */}
-            <Card  pl={5}>
+            <Card  pl={5} w={isDesktop ? '':'240px'}>
                 <CardHeader mb={-5}>
                     <IconButton isRound={true} variant='ghost' aria-label='Dark Mode'
                         fontSize='30px' color={'orange.500'} icon={<Warning />} />

@@ -30,6 +30,7 @@
     padding: 20px 30px;
     display: flex;
     flex-direction: row;
+    row-gap: 5px;
     flex-wrap: wrap;
     border-radius: 8px;
     align-items: center;
@@ -39,6 +40,12 @@
     flex-direction: row;
     column-gap: 20px;
     margin-top: 20px;
+}
+@media screen and (max-width: 768px) {
+    .inputs-container {
+        flex-direction: column; /* Change the flex direction to column for smaller screens */
+        row-gap: 10px; /* Add gap between items in column direction */
+    }
 }
 
 
