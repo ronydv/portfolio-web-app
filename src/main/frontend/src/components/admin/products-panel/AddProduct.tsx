@@ -8,6 +8,7 @@ import SelectCategories from "./SelectCategories";
 import axios from "axios";
 import useInterceptor from "../../../hooks/useInterceptor";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import AddImages from "./AddImages";
 
 const AddProduct = () => {
     const axiosPrivate = useInterceptor();
@@ -95,6 +96,7 @@ const AddProduct = () => {
 
                     <div>
                         <SelectCategories colorMode={colorMode} setProduct={setProduct}/>
+                        <AddImages colorMode={colorMode} setProduct={setProduct}/>
                     </div>
 
                 </div>

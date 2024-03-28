@@ -79,3 +79,23 @@
     border-radius: 8px;
     
 }
+
+
+/* product images section */
+.product-image{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 30px;
+    border-radius: 8px;
+}
+.imagelabel{
+    margin-top: 15px;
+    padding: 8px;
+    background-color: rgba(59, 59, 59, 0.221);
+    border-radius: 5px;
+}
+.imagelabel:hover{
+    background-color: rgba(59, 59, 59, 0.142);
+    cursor: pointer;
+}
