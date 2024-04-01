@@ -1,11 +1,18 @@
 package com.industech.controller.product;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.industech.dto.product.ImageDetails;
 import com.industech.dto.product.ProductDetails;
 import com.industech.service.product.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
@@ -31,8 +38,15 @@ public class ProductController {
     }
 
     @PostMapping("/products")
-    public ResponseEntity<ProductDetails> saveProduct(@RequestBody ProductDetails product){
-        return new ResponseEntity<>(productService.saveProduct(product), CREATED);
+    public ResponseEntity<ProductDetails> saveProduct(@RequestParam("product") String productJson,
+                                                      @RequestParam("images") List<MultipartFile> files) {
+        try{
+            ProductDetails product = new ObjectMapper().readValue(productJson, ProductDetails.class);
+            System.out.println(product);
+            return new ResponseEntity<>(productService.saveProduct(product,files), CREATED);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @PutMapping("/products")

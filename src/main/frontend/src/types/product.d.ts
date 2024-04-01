@@ -9,8 +9,14 @@ type Product = {
     status?: boolean;
     description?:string;
     categories?: Array<Category>;
+    images?:Array<Image>;
 };
 type Category = {
     id?: number;
     name?: string;
+};
+type Image = {
+    id?: number;
+    url: string;
+    name: string;
 };

@@ -1,5 +1,6 @@
 package com.industech.dto.product;
 
+import com.industech.model.product.Image;
 import com.industech.model.product.Product;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,9 +23,9 @@ public class ProductDetails {
     private Integer price;
     private Integer quantity;
     private LocalDateTime addedAt;
-    private Boolean status;
     private String description;
     private List<CategoryDetails> categories = new ArrayList<>();
+    private List<ImageDetails>images=new ArrayList<>();
 
     public ProductDetails() {}
     public ProductDetails(Product product) {
@@ -34,7 +35,6 @@ public class ProductDetails {
         this.price = product.getPrice();
         this.quantity = product.getQuantity();
         this.addedAt = product.getAddedAt();
-        this.status = product.getStatus();
         this.description=product.getDescription();
     }
     public ProductDetails(Product product,List<CategoryDetails> categories) {
@@ -44,13 +44,40 @@ public class ProductDetails {
         this.price = product.getPrice();
         this.quantity = product.getQuantity();
         this.addedAt = product.getAddedAt();
-        this.status = product.getStatus();
         this.description=product.getDescription();
         this.categories = categories;
+    }
+    public ProductDetails(Product product,
+                          List<CategoryDetails> categories, List<ImageDetails> images) {
+        this.id = product.getId();
+        this.brand=product.getBrand();
+        this.name = product.getName();
+        this.price = product.getPrice();
+        this.quantity = product.getQuantity();
+        this.addedAt = product.getAddedAt();
+        this.description=product.getDescription();
+        this.categories = categories;
+        this.images=images;
     }
 
     public void addCategory(CategoryDetails category) {
         this.categories.add(category);
+    }
+    public void addImage(ImageDetails image){this.images.add(image);}
+
+    @Override
+    public String toString() {
+        return "ProductDetails{" +
+                "id=" + id +
+                ", brand='" + brand + '\'' +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                ", addedAt=" + addedAt +
+                ", description='" + description + '\'' +
+                ", categories=" + categories +
+                ", images=" + images +
+                '}';
     }
 }
 

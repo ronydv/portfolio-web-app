@@ -29,29 +29,24 @@ public class Product {
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime addedAt = LocalDateTime.now();
 
-    private Boolean status;
-
     @Column(columnDefinition = "TEXT")
     private String description;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = {PERSIST,MERGE}, orphanRemoval = true)
     private Set<ProductCategory> productCategories=new HashSet<>();
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = {PERSIST, REMOVE}, orphanRemoval = true)
+    private List<Image> images=new ArrayList<>();
+
 
     //////constructor setters, getters and other methods
     public Product(){}
-    public Product(String name, Integer price, Integer quantity){
-        this.name=name;
-        this.price=price;
-        this.quantity=quantity;
-    }
-    public Product(String brand,String name, Integer price,
-                   Integer quantity, Boolean status, String description) {
+    public Product(String brand, String name, Integer price,
+                   Integer quantity, String description) {
         this.brand=brand;
         this.name = name;
         this.price = price;
         this.quantity = quantity;
-        this.status = status;
         this.description=description;
     }
 
@@ -62,6 +57,15 @@ public class Product {
     public void removeCategory(ProductCategory productCategory) {
         productCategories.remove(productCategory);
         productCategory.setProduct(null);
+    }
+
+    public void addImage(Image image){
+        this.images.add(image);
+        image.setProduct(this);
+    }
+    public void removeImage(Image image){
+        this.images.remove(image);
+        image.setProduct(null);
     }
 
     public String toString(){

@@ -1,9 +1,11 @@
 package com.industech.service.product;
 
 import com.industech.dto.product.CategoryDetails;
+import com.industech.dto.product.ImageDetails;
 import com.industech.dto.product.ProductDetails;
 import com.industech.exception.ProductException;
 import com.industech.model.product.Category;
+import com.industech.model.product.Image;
 import com.industech.model.product.Product;
 import com.industech.model.product.ProductCategory;
 import com.industech.repository.product.ProductRepository;
@@ -11,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,11 +61,19 @@ public class ProductService {
                     });
     }
 
-    public ProductDetails saveProduct(ProductDetails productDetails) {
+    public ProductDetails saveProduct(ProductDetails productDetails, List<MultipartFile> files) {
         try {
             Product product = new Product(productDetails.getBrand(),productDetails.getName(),
                                             productDetails.getPrice(), productDetails.getQuantity(),
-                                            productDetails.getStatus(), productDetails.getDescription());
+                                            productDetails.getDescription());
+            //ADD IMAGES
+            List<ImageDetails> images = new ArrayList<>();
+            for(MultipartFile file:files){
+                images.add(new ImageDetails(file.getOriginalFilename()+"adsfa",file.getOriginalFilename()));
+                product.addImage(new Image(file.getOriginalFilename()+"adsfa",file.getOriginalFilename()));
+            }
+
+            //ADD CATEGORIES
             List<CategoryDetails> categories = new ArrayList<>();
             productDetails.getCategories().forEach(categoryName -> {
                 //check if the incoming list of categories exists in the database before adding to the product
@@ -72,7 +83,7 @@ public class ProductService {
                     categories.add(new CategoryDetails(category));// map categories to the DTO
                 }
             });
-            return new ProductDetails(productRepository.save(product), categories);
+            return new ProductDetails(productRepository.save(product), categories, images);
         } catch (Exception e) {//throw exception if a repeated product with same brand already exists
             log.error(e.getMessage());
             throw e.getLocalizedMessage().contains("null or transient value") ?
@@ -88,7 +99,6 @@ public class ProductService {
             toUpdate.setName(product.getName());
             toUpdate.setPrice(product.getPrice());
             toUpdate.setQuantity(product.getQuantity());
-            toUpdate.setStatus(product.getStatus());
             toUpdate.setDescription(product.getDescription());
             List<CategoryDetails>categories=new ArrayList<>();
 

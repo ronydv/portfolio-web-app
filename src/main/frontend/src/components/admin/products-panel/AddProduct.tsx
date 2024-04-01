@@ -2,7 +2,7 @@ import { Button, Text, FormControl, FormLabel, Heading, Input, NumberInput, Numb
 import { FaArrowLeft as LeftIcon } from "react-icons/fa6";
 import { MdOutlineChevronRight as ChevronRightIcon } from "react-icons/md";
 import classes from "./products-panel.module.css";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Pricing from "./Pricing";
 import SelectCategories from "./SelectCategories";
 import axios from "axios";
@@ -10,29 +10,43 @@ import useInterceptor from "../../../hooks/useInterceptor";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import AddImages from "./AddImages";
 
+export type ImageObject = {
+    src: string;
+    alt: string;
+    file: File;
+};
+
 const AddProduct = () => {
     const axiosPrivate = useInterceptor();
     const navigate = useNavigate();
     const { colorMode } = useColorMode();
-    const [error, setError]=useState<string>(" ");
+    const [error, setError]=useState<string>("");
     const [product, setProduct]= useState<Product>({});
-    
+    const [formData, setFormData] = useState<FormData>(new FormData());
+    const [selectedImages, setSelectedImages] = useState<ImageObject[]>([]);//filled in AddImages component
+    const [files, setFiles] = useState<File[]>([]);//filled in AddImages component
+
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        console.log("product: ", product);
         try {
-            const response = await axiosPrivate.post<Category>("/api/v1/product-management/products",
-                product, {
+            formData.append("product", JSON.stringify(product));//add product (key-value)
+            files.forEach((file) => formData.append("images", file));// Append images to FormData
+            console.log(formData);
+            const response = await axiosPrivate.post<Product>("/api/v1/product-management/products",
+                formData, {
                 headers: {
                     "Accept": "application/json",
-                    "Content-Type": "application/json",
+                    "Content-Type": "multipart/form-data",
                 },
             });
+            setFormData(new FormData());
             console.log(response.data);
+            
         } catch (err) {
+            setFormData(new FormData());
             if (axios.isAxiosError(err)){
                 setError(err.response?.data.message);
-                console.log(error);
+                if(err.response?.data?.detail) setError(err.response?.data?.detail);
             }
         }
     }
@@ -67,9 +81,9 @@ const AddProduct = () => {
                         <section className={`${classes['general-information']} ${colorMode === 'light' ? classes.light : classes.dark}`}>
                             <Heading as='h2' size='sm' marginRight={10}>General information</Heading>
 
-                            <FormControl as='fieldset' isInvalid={error.includes('Product.brand')}>
+                            <FormControl as='fieldset' isInvalid={error?.includes('Product.brand')}>
                                 <FormLabel mt={2}>
-                                    {error.includes('Product.brand') || product.brand===""
+                                    {error?.includes('Product.brand') || product.brand===""
                                                                      ? <Text color={'red'}>{'Empty Field'}</Text>
                                                                      : 'Brand'}
                                 </FormLabel>
@@ -96,7 +110,15 @@ const AddProduct = () => {
 
                     <div>
                         <SelectCategories colorMode={colorMode} setProduct={setProduct}/>
-                        <AddImages colorMode={colorMode} setProduct={setProduct}/>
+                        <AddImages colorMode={colorMode} 
+                                   formData={formData} 
+                                   setFormData={setFormData}
+                                   error={error}
+                                   setError={setError}
+                                   selectedImages={selectedImages}
+                                   setSelectedImages={setSelectedImages}
+                                   files={files}
+                                   setFiles={setFiles}/>
                     </div>
 
                 </div>

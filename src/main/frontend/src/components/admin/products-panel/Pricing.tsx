@@ -14,10 +14,10 @@ const Pricing = ({ product, setProduct, colorMode, error, setError }:PricingProp
             <Heading as='h2' size='sm' marginRight={10}>Pricing</Heading>
             <div className={classes['pricing-inputs']}>
                 <div style={{ marginRight: 10 }}>
-                    <FormControl as='fieldset' className={classes.form} isInvalid={error.includes('Product.price')}>
+                    <FormControl as='fieldset' className={classes.form} isInvalid={error?.includes('Product.price')}>
                         <FormLabel mt={2}>
-                            {error.includes('Product.price') ? <Text color={'red'}>{'Empty Field'}</Text>
-                                                             : 'Base Price'}
+                            {error?.includes('Product.price') ? <Text color={'red'}>{'Empty Field'}</Text>
+                                                              : 'Base Price'}
                         </FormLabel>
                         <NumberInput onChange={(e) => {
                             setError("");
