@@ -42,7 +42,6 @@ public class ProductController {
                                                       @RequestParam("images") List<MultipartFile> files) {
         try{
             ProductDetails product = new ObjectMapper().readValue(productJson, ProductDetails.class);
-            System.out.println(product);
             return new ResponseEntity<>(productService.saveProduct(product,files), CREATED);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);

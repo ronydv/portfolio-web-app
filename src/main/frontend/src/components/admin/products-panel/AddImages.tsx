@@ -14,7 +14,7 @@ type AddImagesProps= {
     setSelectedImages: React.Dispatch<React.SetStateAction<ImageObject[]>>,
     files: File[],
     setFiles: React.Dispatch<React.SetStateAction<File[]>>
-}
+}// todo: add image to cloudinary
   const AddImages = ({ colorMode, formData, setFormData, error, setError,
                        selectedImages, setSelectedImages, setFiles }: AddImagesProps) => {
     const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,7 +26,7 @@ type AddImagesProps= {
         }));
         setFiles(files); 
         setSelectedImages([...selectedImages, ...imagesArray]);
-        setFormData(formData);// Update the FormData in the parent component
+        setFormData(formData);// Update the FormData from the AddProduct component
         setError("");
     };
     return (

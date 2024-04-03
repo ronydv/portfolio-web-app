@@ -75,8 +75,8 @@ public class ProductDetails {
                 ", quantity=" + quantity +
                 ", addedAt=" + addedAt +
                 ", description='" + description + '\'' +
-                ", categories=" + categories +
-                ", images=" + images +
+                ",\ncategories=" + categories +
+                ",\nimages=" + images +
                 '}';
     }
 }

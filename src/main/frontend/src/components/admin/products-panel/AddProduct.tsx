@@ -39,7 +39,7 @@ const AddProduct = () => {
                     "Content-Type": "multipart/form-data",
                 },
             });
-            setFormData(new FormData());
+            setFormData(new FormData());//reset formData after submitting
             console.log(response.data);
             
         } catch (err) {

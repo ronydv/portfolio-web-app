@@ -20,4 +20,11 @@ public class CategoryDetails {
         this.id=category.getId();
         this.name=category.getName();
     }
+
+    @Override
+    public String toString() {
+        return "CategoryDetails{" +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

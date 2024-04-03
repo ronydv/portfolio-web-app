@@ -28,6 +28,8 @@ public class ProductService {
     private ProductRepository productRepository;
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private ImageService imageService;
 
     public List<ProductDetails> getAllProducts(){
         List<Product> products = productRepository.findAll();
@@ -66,14 +68,15 @@ public class ProductService {
             Product product = new Product(productDetails.getBrand(),productDetails.getName(),
                                             productDetails.getPrice(), productDetails.getQuantity(),
                                             productDetails.getDescription());
-            //ADD IMAGES
+            //add images
             List<ImageDetails> images = new ArrayList<>();
             for(MultipartFile file:files){
-                images.add(new ImageDetails(file.getOriginalFilename()+"adsfa",file.getOriginalFilename()));
-                product.addImage(new Image(file.getOriginalFilename()+"adsfa",file.getOriginalFilename()));
+                Image image=new Image(imageService.uploadFile(file,"products"),
+                                      file.getOriginalFilename());//add image to the cdn server
+                product.addImage(image);//after getting the links from the images, add it to the product entity
+                images.add(new ImageDetails(image.getUrl(),image.getName()));//mapping image to its DTO class
             }
-
-            //ADD CATEGORIES
+            //add categories
             List<CategoryDetails> categories = new ArrayList<>();
             productDetails.getCategories().forEach(categoryName -> {
                 //check if the incoming list of categories exists in the database before adding to the product

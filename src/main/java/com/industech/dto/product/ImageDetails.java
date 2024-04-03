@@ -13,4 +13,12 @@ public class ImageDetails {
         this.url=url;
         this.name=name;
     }
+
+    @Override
+    public String toString() {
+        return "ImageDetails{" +
+                "url='" + url + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
