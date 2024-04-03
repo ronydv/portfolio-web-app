@@ -70,11 +70,13 @@ public class ProductService {
                                             productDetails.getDescription());
             //add images
             List<ImageDetails> images = new ArrayList<>();
-            for(MultipartFile file:files){
-                Image image=new Image(imageService.uploadFile(file,"products"),
-                                      file.getOriginalFilename());//add image to the cdn server
-                product.addImage(image);//after getting the links from the images, add it to the product entity
-                images.add(new ImageDetails(image.getUrl(),image.getName()));//mapping image to its DTO class
+            if(product.getBrand() != null && product.getPrice() != null){
+                for(MultipartFile file:files){
+                    Image image=new Image(imageService.uploadFile(file,"products"),
+                            file.getOriginalFilename());//add image to the cdn server
+                    product.addImage(image);//after getting the links from the images, add it to the product entity
+                    images.add(new ImageDetails(image.getUrl(),image.getName()));//mapping image to its DTO class
+                }
             }
             //add categories
             List<CategoryDetails> categories = new ArrayList<>();

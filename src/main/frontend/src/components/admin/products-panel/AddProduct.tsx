@@ -25,10 +25,11 @@ const AddProduct = () => {
     const [formData, setFormData] = useState<FormData>(new FormData());
     const [selectedImages, setSelectedImages] = useState<ImageObject[]>([]);//filled in AddImages component
     const [files, setFiles] = useState<File[]>([]);//filled in AddImages component
-
+    const [isLoading, setIsLoading]=useState(false);
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         try {
+            setIsLoading(true);
             formData.append("product", JSON.stringify(product));//add product (key-value)
             files.forEach((file) => formData.append("images", file));// Append images to FormData
             console.log(formData);
@@ -39,10 +40,12 @@ const AddProduct = () => {
                     "Content-Type": "multipart/form-data",
                 },
             });
+            setIsLoading(false);
             setFormData(new FormData());//reset formData after submitting
             console.log(response.data);
             
         } catch (err) {
+            setIsLoading(false);
             setFormData(new FormData());
             if (axios.isAxiosError(err)){
                 setError(err.response?.data.message);
@@ -68,12 +71,16 @@ const AddProduct = () => {
                         </Breadcrumb>
                     </Flex>
                     <Spacer />
-                        <Button variant='outline' color={'blue.300'} marginRight={5}
-                            leftIcon={<LeftIcon/>}
-                             onClick={()=>navigate("/dashboard/products-dashboard")}>
-                                Go back
-                        </Button>
-                    <Button type="submit">Add Product</Button>
+                    <Button variant='outline' color={'blue.300'} marginRight={5}
+                            leftIcon={<LeftIcon />}
+                            onClick={() => navigate("/dashboard/products-dashboard")}>
+                        Go back
+                    </Button>
+                    <Button type="submit"
+                            isLoading={isLoading}
+                            loadingText='Submitting'>
+                        Add Product
+                    </Button>
                 </section>
 
                 <div className={classes['inputs-container']}>
