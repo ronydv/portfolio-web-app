@@ -2,6 +2,7 @@ package com.industech.service.product;
 
 import com.industech.dto.product.CategoryDetails;
 import com.industech.dto.product.ImageDetails;
+import com.industech.dto.product.PaginatedProducts;
 import com.industech.dto.product.ProductDetails;
 import com.industech.exception.ProductException;
 import com.industech.model.product.Category;
@@ -11,6 +12,8 @@ import com.industech.model.product.ProductCategory;
 import com.industech.repository.product.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,29 +41,67 @@ public class ProductService {
             throw new ProductException("No products found", HttpStatus.NOT_FOUND);
         } else {
             return products.stream()
-                    .map(product ->{
-                        List<CategoryDetails> categories=new ArrayList<>();
-                        for(ProductCategory productCategory : product.getProductCategories()){
-                            categories.add(new CategoryDetails(productCategory.getCategory()));
+                    .map(found -> {
+                        ProductDetails product = new ProductDetails(found);
+                        found.getProductCategories().forEach(item -> {
+                            product.addCategory(new CategoryDetails(item.getCategory()));
+                        });
+                        for (Image image : found.getImages()) {
+                            product.addImage(new ImageDetails(image.getUrl(), image.getName()));
                         }
-                        return new ProductDetails(product,categories);
+                        return product;
                     })
                     .collect(Collectors.toList());
         }
     }
 
-    public ProductDetails getProduct(Integer id){
-            return productRepository.findById(id)
-                    .map( found -> {
-                        ProductDetails product= new ProductDetails(found);
-                        found.getProductCategories().forEach( item ->{
+    public PaginatedProducts getProductsByPage(Integer page, Integer pageSize){
+        if (productRepository.findAll().isEmpty()) {
+            log.error("No products found -> getAllProducts()");
+            throw new ProductException("No products found", HttpStatus.NOT_FOUND);
+        } else {
+            PageRequest pageRequest=PageRequest.of((page-1),pageSize);
+            Page<Product> productsByPage=productRepository.findAll(pageRequest);
+            int total= (int) productsByPage.getTotalElements();
+            List<ProductDetails> products=productsByPage.getContent()
+                    .stream()
+                    .map(found -> {
+                        ProductDetails product = new ProductDetails(found);
+                        found.getProductCategories().forEach(item -> {
                             product.addCategory(new CategoryDetails(item.getCategory()));
                         });
+                        for (Image image : found.getImages()) {
+                            product.addImage(new ImageDetails(image.getUrl(), image.getName()));
+                        }
                         return product;
-                    }).orElseGet(()-> {
-                        log.error("\u001B[35mproduct not found\u001B[0m");
-                        throw new ProductException("Product not found", HttpStatus.NOT_FOUND);
+                    }).collect(Collectors.toList());
+            return new PaginatedProducts(products,total);
+        }
+    }
+/*    public List<Blog> getBlogs(Integer page){
+        if(blogRepository.findAll().isEmpty()) throw new RuntimeException("empty list of blogs");
+        else{
+            PageRequest pageRequest=PageRequest.of((page-1),4);
+            Page<Blog> pages =blogRepository.findAll(pageRequest);
+            return pages.getContent();
+        }
+    }*/
+
+    public ProductDetails getProduct(Integer id) {
+        return productRepository.findById(id)
+                .map(found -> {
+                    ProductDetails product = new ProductDetails(found);
+                    found.getProductCategories().forEach(item -> {
+                        product.addCategory(new CategoryDetails(item.getCategory()));
                     });
+                    for (Image image : found.getImages()) {
+                        product.addImage(new ImageDetails(image.getUrl(), image.getName()));
+                    }
+                    return product;
+                }).orElseGet(() -> {
+                    log.error("\u001B[35mproduct not found\u001B[0m");
+                    throw new ProductException("Product not found", HttpStatus.NOT_FOUND);
+                });
     }
 
     public ProductDetails saveProduct(ProductDetails productDetails, List<MultipartFile> files) {

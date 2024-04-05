@@ -65,20 +65,6 @@ public class ProductDetails {
     }
     public void addImage(ImageDetails image){this.images.add(image);}
 
-    @Override
-    public String toString() {
-        return "ProductDetails{" +
-                "id=" + id +
-                ", brand='" + brand + '\'' +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                ", quantity=" + quantity +
-                ", addedAt=" + addedAt +
-                ", description='" + description + '\'' +
-                ",\ncategories=" + categories +
-                ",\nimages=" + images +
-                '}';
-    }
 }
 
 

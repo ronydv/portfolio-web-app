@@ -13,9 +13,9 @@ type CategoriesProps= {
     setProduct: React.Dispatch<React.SetStateAction<Product>>;
 }
 const SelectCategories = ({ colorMode, setProduct }: CategoriesProps) => {
+    const {data}=useFetch<Category>("/api/v1/product-management/categories");
     const axiosPrivate = useInterceptor();
     const [error, setError]=useState("");
-    const {data}=useFetch<Category>("/api/v1/product-management/categories");
     const [category, setCategory]= useState<Category>({});
     const [tags, setTags] = useState<CategoryList>({ names: [] });
     const [categories, setCategories] = useState<Category[]>([]);

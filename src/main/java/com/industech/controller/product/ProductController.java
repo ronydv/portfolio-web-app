@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.industech.dto.product.ImageDetails;
+import com.industech.dto.product.PaginatedProducts;
 import com.industech.dto.product.ProductDetails;
 import com.industech.service.product.ProductService;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,12 @@ public class ProductController {
     @GetMapping("/products")
     public ResponseEntity<List<ProductDetails>> getAllProducts(){
         return new ResponseEntity<>(productService.getAllProducts(), OK);
+    }
+
+    @GetMapping("/products/{page}/{pageSize}")
+    public ResponseEntity<PaginatedProducts> getAllProducts(@PathVariable("page") Integer page,
+                                                            @PathVariable("pageSize") Integer pageSize){
+        return new ResponseEntity<>(productService.getProductsByPage(page,pageSize), OK);
     }
 
     @GetMapping("/products/{id}")

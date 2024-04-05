@@ -99,3 +99,15 @@
     background-color: rgba(59, 59, 59, 0.142);
     cursor: pointer;
 }
+
+
+/* table with pagination container */
+.table-container{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    --pagination-color: var(--chakra-colors-gray-400);
+    --pagination-active-color:#454648;
+    --pagination-hover-color: #454648;
+    --pagination-bg: transparent/* change to app theme */
+}
