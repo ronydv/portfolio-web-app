@@ -1,23 +1,22 @@
 import { TableContainer, Table, Image, TableCaption, Thead, Tr, Th, Tbody, Td, Tfoot, Tag, Flex } from "@chakra-ui/react";
-import { useFetch } from "../../../hooks/useFetch";
 import useMatchMedia from "../../../hooks/useMatchMedia";
 import { useEffect, useState } from "react";
 import ResponsivePagination from 'react-responsive-pagination';
 import classes from "./products-panel.module.css";
 import 'react-responsive-pagination/themes/minimal.css';
-import useInterceptor from "../../../hooks/useInterceptor";
+import { useSingleFetch } from "../../../hooks/useSingleFetch";
 
 type PaginatedProducts={
     products:Array<Product>;
     totalProducts:number
 }
 const ProductsTable = () => {
-    const axiosPrivate = useInterceptor();
-    const pageSize=4;
-    const [currentPage, setCurrentPage] = useState(1);//only for the pagination gui, not used in the page url
-    const [url,setUrl]=useState("");
-    const [paginatedProducts,setPaginatedProducts]=useState<PaginatedProducts>({products:[],totalProducts:0})
     const isDesktop = useMatchMedia();
+    const [currentPage, setCurrentPage] = useState(1);//only for the pagination gui, not used in the page url
+    const pageSize=4;
+    const [url,setUrl]=useState("");
+    const {data}=useSingleFetch<PaginatedProducts>(url);
+    const [paginatedProducts,setPaginatedProducts]=useState<PaginatedProducts>({products:[],totalProducts:0})
 
     //TODO: ADD PAGINATION
     const handlePageChange = (page:number) => setCurrentPage(page);
@@ -32,24 +31,13 @@ const ProductsTable = () => {
             return <Tag size={'md'}  variant='solid' colorScheme='green'>in stock</Tag>
         }
     }
-    useEffect(()=>{/*function to update the url state */
+    useEffect(()=>{/* update the url state to fetch data with the new url */
         setUrl(`/api/v1/product-management/products/${currentPage}/${pageSize}`);
-    },[currentPage]);
+    },[currentPage,url]);
 
-    useEffect(() => {/*function to call the API with the new url */
-        if (url) {
-            const getProducts = async () => {
-                try {
-                    const response = await axiosPrivate.get<PaginatedProducts>(url);
-                    setPaginatedProducts(response.data);
-                } catch (error) {
-                    console.log(error);
-                }
-            };
-            getProducts();
-        }
-    }, [url])
-
+    useEffect(() => {/* after fetching the data with the new url, update the table data */
+        data && setPaginatedProducts(data);
+    }, [data]);
     return (
         <div className={classes['table-container']}>
             <ResponsivePagination
@@ -71,7 +59,7 @@ const ProductsTable = () => {
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {paginatedProducts.products.map((product, i) => (
+                        {paginatedProducts.products?.map((product, i) => (
                             <Tr key={i}>
                                 <Td pr={isDesktop ? '' : '4px'}>
                                     <Flex direction={'row'} columnGap={1} alignItems={'center'}>
