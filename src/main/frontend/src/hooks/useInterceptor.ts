@@ -3,7 +3,7 @@ import { useAuthContext } from "./useAuthContext";
 import useRefreshToken from "./useRefreshToken";
 import { useEffect } from "react";
 
-//use this constanst to reach protected endpoints
+
 const axiosPrivate = axios.create({
 	//baseURL: 'http://localhost:8080',//no need since we are using a proxy in package.json for the spring boot base url
 	headers: { 

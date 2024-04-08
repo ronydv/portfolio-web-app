@@ -1,19 +1,15 @@
 package com.industech.controller.product;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.industech.dto.product.ImageDetails;
 import com.industech.dto.product.PaginatedProducts;
 import com.industech.dto.product.ProductDetails;
 import com.industech.service.product.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.util.List;
-import java.util.Map;
 
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
@@ -28,20 +24,28 @@ public class ProductController {
     }
 
 
+
+
     @GetMapping("/products")
     public ResponseEntity<List<ProductDetails>> getAllProducts(){
         return new ResponseEntity<>(productService.getAllProducts(), OK);
     }
 
     @GetMapping("/products/{page}/{pageSize}")
-    public ResponseEntity<PaginatedProducts> getAllProducts(@PathVariable("page") Integer page,
+    public ResponseEntity<PaginatedProducts> getProductsByPage(@PathVariable("page") Integer page,
                                                             @PathVariable("pageSize") Integer pageSize){
         return new ResponseEntity<>(productService.getProductsByPage(page,pageSize), OK);
     }
+    @GetMapping("/products/{words}/{page}/{pageSize}")
+    public ResponseEntity<PaginatedProducts> getProductsBySearch(@PathVariable("words") String wordsToRegex,
+                                                                 @PathVariable("page") Integer page,
+                                                                 @PathVariable("pageSize") Integer pageSize){
+        return new ResponseEntity<>(productService.searchProducts(wordsToRegex,page,pageSize), OK);
+    }
 
     @GetMapping("/products/{id}")
-    public ResponseEntity<ProductDetails> getProduct(@PathVariable("id") Integer id){
-        return new ResponseEntity<>(productService.getProduct(id), OK);
+    public ResponseEntity<ProductDetails> getProductById(@PathVariable("id") Integer id){
+        return new ResponseEntity<>(productService.getProductById(id), OK);
     }
 
     @PostMapping("/products")

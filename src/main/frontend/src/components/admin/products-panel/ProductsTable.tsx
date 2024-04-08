@@ -6,11 +6,15 @@ import classes from "./products-panel.module.css";
 import 'react-responsive-pagination/themes/minimal.css';
 import { useSingleFetch } from "../../../hooks/useSingleFetch";
 
+
 type PaginatedProducts={
     products:Array<Product>;
     totalProducts:number
 }
-const ProductsTable = () => {
+type ProductsTableProps = {
+    browse: string;
+};
+const ProductsTable = ({browse}:ProductsTableProps) => {
     const isDesktop = useMatchMedia();
     const [currentPage, setCurrentPage] = useState(1);//only for the pagination gui, not used in the page url
     const pageSize=4;
@@ -31,13 +35,17 @@ const ProductsTable = () => {
             return <Tag size={'md'}  variant='solid' colorScheme='green'>in stock</Tag>
         }
     }
-    useEffect(()=>{/* update the url state to fetch data with the new url */
-        setUrl(`/api/v1/product-management/products/${currentPage}/${pageSize}`);
-    },[currentPage,url]);
+    useEffect(()=>{/* update the url state to fetch data with a updated url */
+        if(browse === ""){
+            setUrl(`/api/v1/product-management/products/${currentPage}/${pageSize}`);
+        }else{
+            setUrl(`/api/v1/product-management/products/${browse}/${currentPage}/${pageSize}`);
+        }
+    },[browse,currentPage,url]);
 
-    useEffect(() => {/* after fetching the data with the new url, update the table data */
-        data && setPaginatedProducts(data);
-    }, [data]);
+    useEffect(()=>setCurrentPage(1),[browse])//set the page to 1 whenever the browser value is changed
+    useEffect(() => { data && setPaginatedProducts(data) }, [data]);/* after fetching the data with the new url, update the table */
+
     return (
         <div className={classes['table-container']}>
             <ResponsivePagination

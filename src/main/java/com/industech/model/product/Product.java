@@ -36,7 +36,7 @@ public class Product {
     private Set<ProductCategory> productCategories=new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = {PERSIST, REMOVE}, orphanRemoval = true)
-    private List<Image> images=new ArrayList<>();
+    private Set<Image> images=new HashSet<>();
 
 
     //////constructor setters, getters and other methods
@@ -70,14 +70,15 @@ public class Product {
 
     public String toString(){
         return "Product {\n"
+                +"\tid: "+id+"\n"
                 +"\tbrand: "+brand+"\n"
                 +"\tname: "+name+"\n"
                 +"\tprice: "+price+"\n"
                 +"\tquantity: "+quantity+"\n"
                 +"\tadded at: "+ addedAt.toLocalDate()+"\n"
-                +"\tcategories: "+productCategories.stream()
+/*                +"\tcategories: "+productCategories.stream()
                                     .map(ProductCategory::getCategory)
-                                    .toList()+"\n"
+                                    .toList()+"\n"*/
                 +"}";
     }
 }

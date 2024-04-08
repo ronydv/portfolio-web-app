@@ -20,8 +20,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
 
 @Slf4j
 @Service
@@ -55,39 +57,7 @@ public class ProductService {
         }
     }
 
-    public PaginatedProducts getProductsByPage(Integer page, Integer pageSize){
-        if (productRepository.findAll().isEmpty()) {
-            log.error("No products found -> getAllProducts()");
-            throw new ProductException("No products found", HttpStatus.NOT_FOUND);
-        } else {
-            PageRequest pageRequest=PageRequest.of((page-1),pageSize);
-            Page<Product> productsByPage=productRepository.findAll(pageRequest);
-            int total= (int) productsByPage.getTotalElements();
-            List<ProductDetails> products=productsByPage.getContent()
-                    .stream()
-                    .map(found -> {
-                        ProductDetails product = new ProductDetails(found);
-                        found.getProductCategories().forEach(item -> {
-                            product.addCategory(new CategoryDetails(item.getCategory()));
-                        });
-                        for (Image image : found.getImages()) {
-                            product.addImage(new ImageDetails(image.getUrl(), image.getName()));
-                        }
-                        return product;
-                    }).collect(Collectors.toList());
-            return new PaginatedProducts(products,total);
-        }
-    }
-/*    public List<Blog> getBlogs(Integer page){
-        if(blogRepository.findAll().isEmpty()) throw new RuntimeException("empty list of blogs");
-        else{
-            PageRequest pageRequest=PageRequest.of((page-1),4);
-            Page<Blog> pages =blogRepository.findAll(pageRequest);
-            return pages.getContent();
-        }
-    }*/
-
-    public ProductDetails getProduct(Integer id) {
+    public ProductDetails getProductById(Integer id) {
         return productRepository.findById(id)
                 .map(found -> {
                     ProductDetails product = new ProductDetails(found);
@@ -103,6 +73,55 @@ public class ProductService {
                     throw new ProductException("Product not found", HttpStatus.NOT_FOUND);
                 });
     }
+
+    public PaginatedProducts getProductsByPage(Integer page, Integer pageSize){
+        if (productRepository.findAll().isEmpty()) {
+            log.error("No products found -> getProductsByPage");
+            throw new ProductException("No products found", HttpStatus.NOT_FOUND);
+        } else {
+            PageRequest pageRequest=PageRequest.of((page-1),pageSize);
+            Page<Product> productsByPage=productRepository.findAll(pageRequest);
+            List<ProductDetails> products=productsByPage.getContent()
+                    .stream()
+                    .map(found -> {
+                        ProductDetails product = new ProductDetails(found);
+                        found.getProductCategories().forEach(item -> {
+                            product.addCategory(new CategoryDetails(item.getCategory()));
+                        });
+                        for (Image image : found.getImages()) {
+                            product.addImage(new ImageDetails(image.getUrl(), image.getName()));
+                        }
+                        return product;
+                    }).collect(Collectors.toList());
+            return new PaginatedProducts(products, (int)productsByPage.getTotalElements());
+        }
+    }
+
+    public PaginatedProducts searchProducts(String wordsToRegex, Integer page, Integer pageSize) {
+        List<String> words = Stream.of(wordsToRegex.split(" "))
+                .map(String::trim).toList();
+        log.info("\u001B[35mwords from the client mapped to array: " + words + "\u001B[0m");
+
+        String regex = IntStream.range(0, words.size())
+                .filter(i -> i < words.size())
+                .mapToObj(i -> "(?=.*[[:<:]](" + words.get(i) + ")[[:>:]])")
+                .collect(Collectors.joining("|", "(?i)^", ".*"));
+
+        PageRequest pageRequest = PageRequest.of(page - 1, pageSize);
+        if (productRepository.searchProducts(regex, pageRequest).isEmpty()) {
+            log.error("No products found -> searchProducts");
+            throw new ProductException("No products found", HttpStatus.NOT_FOUND);
+        } else {
+            Page<Product> productsByPage = productRepository.searchProducts(regex, pageRequest);
+            List<ProductDetails> products = productsByPage.getContent()
+                    .stream()
+                    .map(product -> this.getProductById(product.getId()))
+                    .collect(Collectors.toList());
+            return new PaginatedProducts(products, (int)productsByPage.getTotalElements());
+        }
+    }
+
+
 
     public ProductDetails saveProduct(ProductDetails productDetails, List<MultipartFile> files) {
         try {

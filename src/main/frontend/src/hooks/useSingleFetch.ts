@@ -36,9 +36,7 @@ export const useSingleFetch = <T>(url: string): FetchResult<T> => {
                 }
             }
         };
-
         getData();
-
         return () => {
             isMounted = false;
             abortFetch.abort();
