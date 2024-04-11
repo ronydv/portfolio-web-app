@@ -57,24 +57,7 @@ public class ProductService {
         }
     }
 
-    public ProductDetails getProductById(Integer id) {
-        return productRepository.findById(id)
-                .map(found -> {
-                    ProductDetails product = new ProductDetails(found);
-                    found.getProductCategories().forEach(item -> {
-                        product.addCategory(new CategoryDetails(item.getCategory()));
-                    });
-                    for (Image image : found.getImages()) {
-                        product.addImage(new ImageDetails(image.getUrl(), image.getName()));
-                    }
-                    return product;
-                }).orElseGet(() -> {
-                    log.error("\u001B[35mproduct not found\u001B[0m");
-                    throw new ProductException("Product not found", HttpStatus.NOT_FOUND);
-                });
-    }
-
-    public PaginatedProducts getProductsByPage(Integer page, Integer pageSize){
+    public PaginatedProducts getAllProductsByPage(Integer page, Integer pageSize){
         if (productRepository.findAll().isEmpty()) {
             log.error("No products found -> getProductsByPage");
             throw new ProductException("No products found", HttpStatus.NOT_FOUND);
@@ -95,6 +78,23 @@ public class ProductService {
                     }).collect(Collectors.toList());
             return new PaginatedProducts(products, (int)productsByPage.getTotalElements());
         }
+    }
+
+    public ProductDetails getProductById(Integer id) {
+        return productRepository.findById(id)
+                .map(found -> {
+                    ProductDetails product = new ProductDetails(found);
+                    found.getProductCategories().forEach(item -> {
+                        product.addCategory(new CategoryDetails(item.getCategory()));
+                    });
+                    for (Image image : found.getImages()) {
+                        product.addImage(new ImageDetails(image.getUrl(), image.getName()));
+                    }
+                    return product;
+                }).orElseGet(() -> {
+                    log.error("\u001B[35mproduct not found\u001B[0m");
+                    throw new ProductException("Product not found", HttpStatus.NOT_FOUND);
+                });
     }
 
     public PaginatedProducts searchProducts(String wordsToRegex, Integer page, Integer pageSize) {
@@ -121,7 +121,35 @@ public class ProductService {
         }
     }
 
+    public PaginatedProducts findProductsByLowStock(Integer page, Integer pageSize) {
+        PageRequest pageRequest = PageRequest.of(page - 1, pageSize);
+        if (productRepository.findProductsByLowStock(pageRequest).isEmpty()) {
+            log.error("No products found -> searchProducts");
+            throw new ProductException("No products found", HttpStatus.NOT_FOUND);
+        } else {
+            Page<Product> productsByPage = productRepository.findProductsByLowStock(pageRequest);
+            List<ProductDetails> products = productsByPage.getContent()
+                    .stream()
+                    .map(product -> this.getProductById(product.getId()))
+                    .collect(Collectors.toList());
+            return new PaginatedProducts(products, (int)productsByPage.getTotalElements());
+        }
+    }
 
+    public PaginatedProducts findProductsByEmptyStock(Integer page, Integer pageSize) {
+        PageRequest pageRequest = PageRequest.of(page - 1, pageSize);
+        if (productRepository.findProductsByEmptyStock(pageRequest).isEmpty()) {
+            log.error("No products found -> searchProducts");
+            throw new ProductException("No products found", HttpStatus.NOT_FOUND);
+        } else {
+            Page<Product> productsByPage = productRepository.findProductsByEmptyStock(pageRequest);
+            List<ProductDetails> products = productsByPage.getContent()
+                    .stream()
+                    .map(product -> this.getProductById(product.getId()))
+                    .collect(Collectors.toList());
+            return new PaginatedProducts(products, (int)productsByPage.getTotalElements());
+        }
+    }
 
     public ProductDetails saveProduct(ProductDetails productDetails, List<MultipartFile> files) {
         try {

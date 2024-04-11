@@ -32,15 +32,28 @@ public class ProductController {
     }
 
     @GetMapping("/products/{page}/{pageSize}")
-    public ResponseEntity<PaginatedProducts> getProductsByPage(@PathVariable("page") Integer page,
-                                                            @PathVariable("pageSize") Integer pageSize){
-        return new ResponseEntity<>(productService.getProductsByPage(page,pageSize), OK);
+    public ResponseEntity<PaginatedProducts> getAllProductsByPage(@PathVariable("page") Integer page,
+                                                                  @PathVariable("pageSize") Integer pageSize){
+        return new ResponseEntity<>(productService.getAllProductsByPage(page,pageSize), OK);
     }
+
     @GetMapping("/products/{words}/{page}/{pageSize}")
     public ResponseEntity<PaginatedProducts> getProductsBySearch(@PathVariable("words") String wordsToRegex,
                                                                  @PathVariable("page") Integer page,
                                                                  @PathVariable("pageSize") Integer pageSize){
         return new ResponseEntity<>(productService.searchProducts(wordsToRegex,page,pageSize), OK);
+    }
+
+    @GetMapping("/products/{page}/{pageSize}/low-stock")
+    public ResponseEntity<PaginatedProducts> findProductsByLowStock(@PathVariable("page") Integer page,
+                                                                    @PathVariable("pageSize") Integer pageSize){
+        return new ResponseEntity<>(productService.findProductsByLowStock(page,pageSize), OK);
+    }
+
+    @GetMapping("/products/{page}/{pageSize}/empty-stock")
+    public ResponseEntity<PaginatedProducts> findProductsByEmptyStock(@PathVariable("page") Integer page,
+                                                                      @PathVariable("pageSize") Integer pageSize){
+        return new ResponseEntity<>(productService.findProductsByEmptyStock(page,pageSize), OK);
     }
 
     @GetMapping("/products/{id}")

@@ -16,7 +16,7 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
 
     //load product and its related records when fetch=LAZY is used in the associated entities
     // JOIN FETCH p.images will load duplicates entries, use Set<> to avoid duplicates
-    @Query("""
+    @Query(value= """
             SELECT p FROM Product p JOIN FETCH p.productCategories
                                    JOIN FETCH p.images WHERE p.id = :id
             """)
@@ -27,4 +27,14 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
                               OR description ~ (:regex)
             """, nativeQuery = true)
     Page<Product> searchProducts(@Param("regex") String regex, Pageable pages);
+
+    @Query(value = """
+            SELECT p FROM Product p  WHERE p.quantity > 1 AND p.quantity <=5
+            """)
+    Page<Product> findProductsByLowStock(Pageable pages);
+
+    @Query(value = """
+            SELECT p FROM Product p  WHERE p.quantity < 1
+            """)
+    Page<Product> findProductsByEmptyStock(Pageable pages);
 }

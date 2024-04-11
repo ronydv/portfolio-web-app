@@ -36,6 +36,8 @@ public class Main {
 										ProductRepository productRepo) {
 		return args -> {
 			//System.out.println(productService.searchProducts("asdfas raspberry",1,4));
+			//System.out.println(productService.findProductsByLowStock(1,4));
+			//System.out.println(productService.findProductsByEmptyStock(1,4));
 		};
 	}
 }
