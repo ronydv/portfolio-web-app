@@ -14,6 +14,7 @@ import PersistLogin from './components/authentication/PersistAuth';
 import AddProduct from './components/admin/products-panel/AddProduct';
 import ProductsDashboard from './components/admin/products-panel/ProductsDashboard';
 import MainDashboard from './components/admin/MainDashboard';
+import ModifyProduct from './components/admin/products-panel/ModifyProduct';
 
 
   
@@ -37,6 +38,7 @@ function App() {
 					<Route path='/dashboard' element={<MainDashboard/>} >
 						<Route path='products-dashboard'element={<ProductsDashboard/>}/>
 						<Route path='add-product'element={<AddProduct/>}/>
+						<Route path='modify-product'element={<ModifyProduct/>}/>
 					</Route>
 					<Route path='/products' element={<Products />} />
 					<Route path='/services' element={<Services />} />

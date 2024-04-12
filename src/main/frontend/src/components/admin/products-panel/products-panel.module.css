@@ -120,3 +120,7 @@
     --pagination-hover-color: #454648;
     --pagination-bg: transparent/* change to app theme */
 }
+.table-action-icon:hover{
+    cursor: pointer;
+    opacity: 0.7;
+}

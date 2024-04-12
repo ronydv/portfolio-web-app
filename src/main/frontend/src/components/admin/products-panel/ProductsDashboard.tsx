@@ -46,6 +46,7 @@ const ProductsDashboard = ({ setActiveButton }: ActiveButtonProps) => {
                 <Spacer />
                 <Link to="add-product">
                     <Button variant={'outline'} color={'blue.300'}
+                            //switch the value within MainDashboard.tsx to render the <Outlet/>, check <div className={classes.outlet}>
                             onClick={() => setActiveButton && setActiveButton("Add Product")}
                             leftIcon={<AddProductIcon/>}>
                         Add Product
@@ -53,7 +54,7 @@ const ProductsDashboard = ({ setActiveButton }: ActiveButtonProps) => {
                 </Link>
             </div>
             <StatsCards />
-            <ProductsTable browse={browse}/>
+            <ProductsTable browse={browse} setActiveButton={setActiveButton}/>
         </section>
     );
 };
