@@ -38,7 +38,7 @@ function App() {
 					<Route path='/dashboard' element={<MainDashboard/>} >
 						<Route path='products-dashboard'element={<ProductsDashboard/>}/>
 						<Route path='add-product'element={<AddProduct/>}/>
-						<Route path='modify-product'element={<ModifyProduct/>}/>
+						<Route path='modify-product/:id'element={<ModifyProduct/>}/>
 					</Route>
 					<Route path='/products' element={<Products />} />
 					<Route path='/services' element={<Services />} />

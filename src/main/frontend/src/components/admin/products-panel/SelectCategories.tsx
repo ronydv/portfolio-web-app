@@ -11,14 +11,16 @@ type CategoryList={names:string[]}
 type CategoriesProps= {
     colorMode: ColorMode
     setProduct: React.Dispatch<React.SetStateAction<Product>>;
+    product?:Product
 }
-const SelectCategories = ({ colorMode, setProduct }: CategoriesProps) => {
+const SelectCategories = ({ colorMode, setProduct, product }: CategoriesProps) => {
     const {data}=useFetch<Category>("/api/v1/product-management/categories");
     const axiosPrivate = useInterceptor();
     const [error, setError]=useState("");
     const [category, setCategory]= useState<Category>({});
-    const [tags, setTags] = useState<CategoryList>({ names: [] });
     const [categories, setCategories] = useState<Category[]>([]);
+    const [tags, setTags] = useState<CategoryList>({ names: [] });
+    const [mount, setMount] = useState(false);
 
     const handleCheckbox = (e: ChangeEvent<HTMLInputElement>) => {
         const { value, checked } = e.target;
@@ -37,7 +39,7 @@ const SelectCategories = ({ colorMode, setProduct }: CategoriesProps) => {
                     "Content-Type": "application/json",
                 },
             });
-            setCategories([...categories, response.data]);//add the new category to the list of categories
+            setCategories([...categories, response.data]);//add the new category to the list of categories for the accordion
         }catch(error){
             if(axios.isAxiosError(error)) setError(error.response?.data.message);
         }
@@ -52,14 +54,25 @@ const SelectCategories = ({ colorMode, setProduct }: CategoriesProps) => {
         }
     }
 
-    useEffect(() => {setCategories(data);}, [data]);//render the items in the accordion after adding new category
-    useEffect(() => {
-        /* update the categories in the product object through re-rendering this component */
+    useEffect(() => {//render items in the accordion in the first component load
+        setCategories(data);
+        setMount(true);//set mount to true to render tags if this component is being used in ModifyProducts.tsx
+    }, [data]);
+
+    useEffect(() => {//update the categories in the product object through re-rendering this component
         setProduct(prevProduct => {
             const categoryList = tags.names.map(category => ({ name: category }));
             return ({ ...prevProduct, categories: categoryList });
         });
     }, [tags]);
+
+    useEffect(()=>{//render tags in the first component loading if this component is being used in ModifyProducts.tsx
+        if (product && product.categories) {
+            setTags({ names: product.categories.map(category => category.name || '') });
+        }
+        setMount(false);
+        console.log(tags);
+    },[mount]);
 
     return (
         <section className={`${classes.categories} ${colorMode === 'light' ? classes.light : classes.dark}`}>
@@ -86,6 +99,8 @@ const SelectCategories = ({ colorMode, setProduct }: CategoriesProps) => {
                         {categories.map((category, i) => (
                             <div key={i} style={{ display: 'flex' }}>
                                 <Checkbox value={category.name}
+                                    //check the categories from the product props against categories from the accordion panel
+                                    defaultChecked={ product?.categories ? product.categories.some(c => c.name === category.name) : false }
                                     onChange={(e) => handleCheckbox(e)}>
                                     {category.name}
                                 </Checkbox>

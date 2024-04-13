@@ -100,15 +100,16 @@ const ProductsTable = ({ browse, setActiveButton }: ProductsTableProps) => {
                                         <Td pr={isDesktop ? '' : '4px'}>{product.status}{renderStatus(product)}</Td>
                                         <Td pr={isDesktop ? '' : '4px'}>
                                             <Flex columnGap={4}>
-                                                <Link to='modify-product'>
-                                                    <DeleteIcon color="red" className={classes['table-action-icon']}
+                                                <Link to={{pathname:`modify-product/${product.id}`,search:'?action=update'}}>
+                                                    <EditIcon color="#59a0d4" className={classes['table-action-icon']}
                                                             onClick={() => {
-                                                                console.log("delete product:")
+                                                                console.log("edit product:")
+                                                                //switch the conditional in MainDashboard.tsx to render the <Outlet/> inside <div className={classes.outlet}>
                                                                 setActiveButton && setActiveButton("Modify Product")
                                                                 }} />
                                                 </Link>
-                                                <EditIcon color="#59a0d4" className={classes['table-action-icon']}
-                                                            onClick={() => console.log("edit product:")} />
+                                                <DeleteIcon color="red" className={classes['table-action-icon']}
+                                                            onClick={() => console.log("delete product:")} />
                                             </Flex>
                                         </Td>
                                     </Tr>
