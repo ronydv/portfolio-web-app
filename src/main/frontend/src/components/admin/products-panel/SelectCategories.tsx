@@ -71,7 +71,6 @@ const SelectCategories = ({ colorMode, setProduct, product }: CategoriesProps) =
             setTags({ names: product.categories.map(category => category.name || '') });
         }
         setMount(false);
-        console.log(tags);
     },[mount]);
 
     return (

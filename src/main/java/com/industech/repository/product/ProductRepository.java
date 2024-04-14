@@ -15,10 +15,11 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product,Integer> {
 
     //load product and its related records when fetch=LAZY is used in the associated entities
-    // JOIN FETCH p.images will load duplicates entries, use Set<> to avoid duplicates
+    // JOIN FETCH p.images may load duplicates entries, use Set<> to avoid duplicates
+    // use always LEFT JOIN FETCH in case the associated records are empty to avoid exceptions when retrieving data
     @Query(value= """
-            SELECT p FROM Product p JOIN FETCH p.productCategories
-                                   JOIN FETCH p.images WHERE p.id = :id
+            SELECT p FROM Product p LEFT JOIN FETCH p.productCategories
+                                   LEFT JOIN FETCH p.images WHERE p.id = :id
             """)
     Optional<Product> findById(@Param("id") Integer id);
 

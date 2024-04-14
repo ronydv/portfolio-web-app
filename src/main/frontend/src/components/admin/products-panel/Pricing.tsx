@@ -19,7 +19,7 @@ const Pricing = ({ product, setProduct, colorMode, error, setError }:PricingProp
                             {error?.includes('Product.price') ? <Text color={'red'}>{'Empty Field'}</Text>
                                                               : 'Base Price'}
                         </FormLabel>
-                        <Input defaultValue={product.price} placeholder="Initial price (mandatory)" onChange={(e) => {
+                        <Input defaultValue={product && product.price?.toString()} placeholder="Initial price (mandatory)" onChange={(e) => {
                             setError("");
                             setProduct({ ...product, price: parseInt(e.target.value) });
                         }}/>

@@ -87,8 +87,10 @@ public class ProductService {
                     found.getProductCategories().forEach(item -> {
                         product.addCategory(new CategoryDetails(item.getCategory()));
                     });
-                    for (Image image : found.getImages()) {
-                        product.addImage(new ImageDetails(image.getUrl(), image.getName()));
+                    if(!found.getImages().isEmpty()) {
+                        for (Image image : found.getImages()) {
+                            product.addImage(new ImageDetails(image.getUrl(), image.getName()));
+                        }
                     }
                     return product;
                 }).orElseGet(() -> {
