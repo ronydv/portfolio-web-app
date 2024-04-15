@@ -17,6 +17,8 @@ public class Image {
 
     private String name;
 
+    private String publicId;
+
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id",
                 foreignKey = @ForeignKey(name="product_image_fk"))
@@ -26,5 +28,10 @@ public class Image {
     public Image(String url, String name){
         this.url=url;
         this.name=name;
+    }
+    public Image(String url, String name, String publicId){
+        this.url=url;
+        this.name=name;
+        this.publicId=publicId;
     }
 }

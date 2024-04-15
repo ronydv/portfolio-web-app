@@ -16,15 +16,15 @@ type AddImagesProps= {
     setFiles: React.Dispatch<React.SetStateAction<File[]>>
 }// todo: add image to cloudinary
   const AddImages = ({ colorMode, formData, setFormData, error, setError,
-                       selectedImages, setSelectedImages, setFiles }: AddImagesProps) => {
+                       selectedImages, setSelectedImages, files, setFiles }: AddImagesProps) => {
     const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const files = Array.from(e.target.files || []);
-        const imagesArray: ImageObject[] = files.map((file) => ({
+        const newFiles = Array.from(e.target.files || []);
+        const imagesArray: ImageObject[] = newFiles.map((file) => ({
             src: URL.createObjectURL(file),
             alt: file.name,
             file:file,
         }));
-        setFiles(files); 
+        setFiles([...files,...newFiles]); 
         setSelectedImages([...selectedImages, ...imagesArray]);
         setFormData(formData);// Update the FormData from the AddProduct component
         setError("");

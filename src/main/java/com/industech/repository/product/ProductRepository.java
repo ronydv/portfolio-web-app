@@ -35,7 +35,7 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
     Page<Product> findProductsByLowStock(Pageable pages);
 
     @Query(value = """
-            SELECT p FROM Product p  WHERE p.quantity < 1
+            SELECT p FROM Product p  WHERE p.quantity < 1 or p.quantity IS NULL
             """)
     Page<Product> findProductsByEmptyStock(Pageable pages);
 }

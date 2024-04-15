@@ -1,9 +1,6 @@
 package com.industech.service.product;
 
-import com.industech.dto.product.CategoryDetails;
-import com.industech.dto.product.ImageDetails;
-import com.industech.dto.product.PaginatedProducts;
-import com.industech.dto.product.ProductDetails;
+import com.industech.dto.product.*;
 import com.industech.exception.ProductException;
 import com.industech.model.product.Category;
 import com.industech.model.product.Image;
@@ -164,9 +161,11 @@ public class ProductService {
             List<ImageDetails> images = new ArrayList<>();
             if(product.getBrand() != null && product.getPrice() != null){
                 for(MultipartFile file:files){
-                    Image image=new Image(imageService.uploadFile(file,"products"),
-                            file.getOriginalFilename());//add image to the cdn server
-                    product.addImage(image);//after getting the links from the images, add it to the product entity
+                    ImageDetails imageFile=imageService.uploadFile(file,"products");
+                    Image image=new Image(imageFile.getUrl(),
+                                          file.getOriginalFilename(),
+                                          imageFile.getPublicId());//add image to the cdn server
+                    product.addImage(image);
                     images.add(new ImageDetails(image));//mapping image to its DTO class
                 }
             }
