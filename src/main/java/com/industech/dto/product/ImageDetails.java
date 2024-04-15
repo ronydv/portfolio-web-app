@@ -1,5 +1,6 @@
 package com.industech.dto.product;
 
+import com.industech.model.product.Image;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,9 +10,9 @@ public class ImageDetails {
     private String name;
 
     public ImageDetails(){}
-    public ImageDetails(String url, String name){
-        this.url=url;
-        this.name=name;
+    public ImageDetails(Image image){
+        this.url=image.getUrl();
+        this.name=image.getName();
     }
 
     @Override

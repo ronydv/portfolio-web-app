@@ -23,7 +23,7 @@ const ProductsTable = ({ browse, setActiveButton }: ProductsTableProps) => {
     const [currentPage, setCurrentPage] = useState(1);//only for the pagination gui, not used in the page url
     const pageSize = 4;
     const [url, setUrl] = useState("");
-    const { data } = useSingleFetch<PaginatedProducts>(url);
+    const { data, error } = useSingleFetch<PaginatedProducts>(url);
     const [paginatedProducts, setPaginatedProducts] = useState<PaginatedProducts>({ products: [], totalProducts: 0 });
     const [tabIndex, setTabIndex] = useState(0);
 
@@ -51,12 +51,16 @@ const ProductsTable = ({ browse, setActiveButton }: ProductsTableProps) => {
     }, [browse, currentPage, tabIndex, url]);
 
     useEffect(() => setCurrentPage(1), [tabIndex]);//reset the value of the current page whenever the tab is changed
+
     useEffect(() => {//set the page to 1 and switch tab to all products whenever the browser value is changed
         setCurrentPage(1);
         setTabIndex(0);
     }, [browse]);
-    useEffect(() => { data && setPaginatedProducts(data); }, [data]);// after fetching the data with the new url, update the table
 
+    useEffect(() => { // after fetching the data with the new url, update the table, if there is no data, set an error in the table
+        data && setPaginatedProducts(data); 
+        error && setPaginatedProducts({products:[{brand:error.toString()}], totalProducts:0}); 
+    }, [data,error]);
     return (
         <div className={classes['table-container']}>
             <ResponsivePagination

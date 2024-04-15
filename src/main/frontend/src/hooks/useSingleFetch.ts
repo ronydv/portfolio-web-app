@@ -30,6 +30,7 @@ export const useSingleFetch = <T>(url: string): FetchResult<T> => {
             } catch (error: unknown) {
                 if (axios.isAxiosError(error)) {
                     axios.isCancel(error) && console.log("Fetch cancelled: " + error.message);
+                    setError(error.response?.data.message);
                 } else {
                     setIsLoading(false);
                     setError(error);

@@ -49,7 +49,7 @@ public class ProductService {
                             product.addCategory(new CategoryDetails(item.getCategory()));
                         });
                         for (Image image : found.getImages()) {
-                            product.addImage(new ImageDetails(image.getUrl(), image.getName()));
+                            product.addImage(new ImageDetails(image));
                         }
                         return product;
                     })
@@ -71,8 +71,10 @@ public class ProductService {
                         found.getProductCategories().forEach(item -> {
                             product.addCategory(new CategoryDetails(item.getCategory()));
                         });
-                        for (Image image : found.getImages()) {
-                            product.addImage(new ImageDetails(image.getUrl(), image.getName()));
+                        if(!found.getImages().isEmpty()) {
+                            for (Image image : found.getImages()) {
+                                product.addImage(new ImageDetails(image));
+                            }
                         }
                         return product;
                     }).collect(Collectors.toList());
@@ -89,7 +91,7 @@ public class ProductService {
                     });
                     if(!found.getImages().isEmpty()) {
                         for (Image image : found.getImages()) {
-                            product.addImage(new ImageDetails(image.getUrl(), image.getName()));
+                            product.addImage(new ImageDetails(image));
                         }
                     }
                     return product;
@@ -165,7 +167,7 @@ public class ProductService {
                     Image image=new Image(imageService.uploadFile(file,"products"),
                             file.getOriginalFilename());//add image to the cdn server
                     product.addImage(image);//after getting the links from the images, add it to the product entity
-                    images.add(new ImageDetails(image.getUrl(),image.getName()));//mapping image to its DTO class
+                    images.add(new ImageDetails(image));//mapping image to its DTO class
                 }
             }
             //add categories
