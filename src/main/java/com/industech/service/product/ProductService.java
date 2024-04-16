@@ -161,7 +161,7 @@ public class ProductService {
             List<ImageDetails> images = new ArrayList<>();
             if(product.getBrand() != null && product.getPrice() != null){
                 for(MultipartFile file:files){
-                    ImageDetails imageFile=imageService.uploadFile(file,"products");
+                    ImageDetails imageFile=imageService.uploadImage(file,"products");
                     Image image=new Image(imageFile.getUrl(),
                                           file.getOriginalFilename(),
                                           imageFile.getPublicId());//add image to the cdn server
@@ -221,9 +221,20 @@ public class ProductService {
     public String deleteProduct(Integer id){
         return productRepository.findById(id)
                 .map(product -> {
-                    List<ProductCategory> toRemove = new ArrayList<>(product.getProductCategories());
-                    for (ProductCategory productCategory : toRemove) {
-                        product.removeCategory(productCategory);
+                    if(!product.getProductCategories().isEmpty()) {
+                        List<ProductCategory> toRemove = new ArrayList<>(product.getProductCategories());
+                        for (ProductCategory productCategory : toRemove) {
+                            product.removeCategory(productCategory);
+                        }
+                    }
+                    if(!product.getImages().isEmpty()){
+                        List<Image> toRemove = new ArrayList<>(product.getImages());
+                        List<String> publicIds = new ArrayList<>();
+                        toRemove.forEach(image -> publicIds.add(image.getPublicId()));
+                        imageService.deleteImage(publicIds);
+                        for (Image productImage : toRemove) {
+                            product.removeImage(productImage);
+                        }
                     }
                     productRepository.delete(product);
                     return "Product deleted successfully";

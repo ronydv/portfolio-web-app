@@ -107,13 +107,18 @@ const ProductsTable = ({ browse, setActiveButton }: ProductsTableProps) => {
                                                 <Link to={{pathname:`modify-product/${product.id}`,search:'?action=update'}}>
                                                     <EditIcon color="#59a0d4" className={classes['table-action-icon']}
                                                             onClick={() => {
-                                                                console.log("edit product:")
                                                                 //switch the conditional in MainDashboard.tsx to render the <Outlet/> inside <div className={classes.outlet}>
                                                                 setActiveButton && setActiveButton("Modify Product")
-                                                                }} />
+                                                            }} />
                                                 </Link>
-                                                <DeleteIcon color="red" className={classes['table-action-icon']}
-                                                            onClick={() => console.log("delete product:")} />
+
+                                                <Link to={{ pathname: `modify-product/${product.id}`, search:'?action=delete' }}>
+                                                    <DeleteIcon color="red" className={classes['table-action-icon']}
+                                                            onClick={() => {
+                                                                //switch the conditional in MainDashboard.tsx to render the <Outlet/> inside <div className={classes.outlet}>
+                                                                setActiveButton && setActiveButton("Modify Product");
+                                                            }} />
+                                                </Link>
                                             </Flex>
                                         </Td>
                                     </Tr>

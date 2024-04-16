@@ -25,15 +25,24 @@ const ModifyProduct = () => {
         event.preventDefault();
         try {
             setIsLoading(true);
-            console.log("old product: ", product);
-            const response = await axiosPrivate.put<Product>("/api/v1/product-management/products",
-                product, {
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json",
-                },
-            });
-            console.log("new product: ",response.data);
+            if (queryAction === 'update') {
+                const response = await axiosPrivate.put<Product>("/api/v1/product-management/products",
+                    product, {
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json",
+                    },
+                });
+                console.log("new product: ", response.data);
+            } else {
+                const response = await axiosPrivate.delete<Product>(`/api/v1/product-management/products/${id}`, {
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json",
+                    },
+                });
+                console.log("delete product", response.data);
+            }
             setIsLoading(false);
         } catch (err) {
             setIsLoading(false);
@@ -52,7 +61,9 @@ const ModifyProduct = () => {
                 <form onSubmit={handleSubmit}>
                     <section className={`${classes.title} ${colorMode === 'light' ? classes.light : classes.dark}`}>
                         <Flex direction={'column'}>
-                            <Heading as='h2' size='md' marginRight={10}>Modify product</Heading>
+                            <Heading as='h2' size='md' marginRight={10}>
+                                {queryAction==='update'?<p >Modify Product</p>:<p >Delete Product</p>}
+                            </Heading>
                             <Breadcrumb spacing='8px' separator={<ChevronRightIcon color='gray.500' />}>
                                 <BreadcrumbItem>
                                     <p>Products</p>
@@ -61,7 +72,7 @@ const ModifyProduct = () => {
                                     <p>Table</p>
                                 </BreadcrumbItem>
                                 <BreadcrumbItem isCurrentPage>
-                                    <p >Edit Product</p>
+                                    {queryAction==='update'?<p >Edit Product</p>:<p >Delete Product</p>}
                                 </BreadcrumbItem>
                             </Breadcrumb>
                         </Flex>
