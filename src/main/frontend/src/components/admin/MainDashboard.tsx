@@ -7,7 +7,7 @@ import classes from './main-dashboard.module.css';
 import { Button, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Flex, IconButton, useColorMode, useColorModeValue, useDisclosure } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { IconType } from 'react-icons';
-import ProductsDashboard from './products-panel/ProductsDashboard';
+import ProductsDashboard from './products-management/ProductsDashboard';
 import useMatchMedia from '../../hooks/useMatchMedia';
 
 type LinkStyle={name:string, path:string, icon:IconType,}

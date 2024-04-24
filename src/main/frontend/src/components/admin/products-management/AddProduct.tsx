@@ -1,14 +1,14 @@
-import { Button, Text, FormControl, FormLabel, Heading, Input, NumberInput, NumberInputField, Spacer, Textarea, useColorMode, Flex, Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@chakra-ui/react";
+import { Button, Text, FormControl, FormLabel, Heading, Input, NumberInput, NumberInputField, Spacer, Textarea, useColorMode, Flex, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Divider } from "@chakra-ui/react";
 import { FaArrowLeft as LeftIcon } from "react-icons/fa6";
 import { MdOutlineChevronRight as ChevronRightIcon } from "react-icons/md";
 import classes from "./products-panel.module.css";
 import { FormEvent, useEffect, useState } from "react";
-import Pricing from "./Pricing";
 import SelectCategories from "./SelectCategories";
 import axios from "axios";
 import useInterceptor from "../../../hooks/useInterceptor";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import AddImages from "./AddImages";
+import SelectSector from "./SelectSector";
 
 export type ImageObject = {
     src: string;
@@ -43,7 +43,6 @@ const AddProduct = () => {
             setIsLoading(false);
             setFormData(new FormData());//reset formData after submitting
             console.log(response.data);
-            
         } catch (err) {
             setIsLoading(false);
             setFormData(new FormData());
@@ -87,32 +86,17 @@ const AddProduct = () => {
                     <div>
                         <section className={`${classes['general-information']} ${colorMode === 'light' ? classes.light : classes.dark}`}>
                             <Heading as='h2' size='sm' marginRight={10}>General information</Heading>
+                            <Divider/>
 
-                            <FormControl as='fieldset' isInvalid={error?.includes('Product.brand')}>
-                                <FormLabel mt={2}>
-                                    {error?.includes('Product.brand') || product.brand===""
-                                                                     ? <Text color={'red'}>{'Empty Field'}</Text>
-                                                                     : 'Brand'}
-                                </FormLabel>
-                                <Input type='text' onChange={(e) => {
-                                                        setProduct({ ...product, brand: e.target.value });
-                                                        setError("");
-                                }} />
-                            </FormControl>
+                            <Heading as='h3' size='xs' mt={2} mr={10}>Sector</Heading>
+                            <SelectSector setProduct={setProduct}/>
 
                             <FormLabel mt={2}>Product Name</FormLabel>
                             <Input type='text' onChange={(e) => setProduct({...product,name:e.target.value})} />
 
-                            <FormLabel mt={2}>Quantity</FormLabel>
-                            <NumberInput defaultValue={0} onChange={(e) => setProduct({...product,quantity:parseInt(e)})}>
-                                <NumberInputField />
-                            </NumberInput>
-
                             <FormLabel mt={2}>Description</FormLabel>
-                            <Textarea onChange={(e) => setProduct({...product,description:e.target.value})} />
+                            <Textarea minWidth={'25vw'} onChange={(e) => setProduct({...product,description:e.target.value})} />
                         </section>
-                        <Pricing product={product} setProduct={setProduct} setError={setError}
-                                 colorMode={colorMode} error={error}/>
                     </div>
 
                     <div>

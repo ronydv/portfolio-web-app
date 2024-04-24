@@ -17,10 +17,13 @@ const Navbar = () => {
                     color={darkMode}
                     icon={<HomeIcon />} />
             </Link>
-            <IconButton isRound={true} variant='ghost' aria-label='Dark Mode'
-                fontSize='20px'
-                color={darkMode}
-                icon={<StoreIcon />} />
+            
+            <Link to='/products'>
+                <IconButton isRound={true} variant='ghost' aria-label='Dark Mode'
+                    fontSize='20px'
+                    color={darkMode}
+                    icon={<StoreIcon />} />
+            </Link>
 
             <IconButton isRound={true} variant='ghost' aria-label='Dark Mode'
                 fontSize='20px'

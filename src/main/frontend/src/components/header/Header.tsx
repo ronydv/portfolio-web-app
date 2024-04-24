@@ -1,7 +1,6 @@
-import { Button, Heading, Spacer, useColorMode, Text, IconButton, useColorModeValue } from "@chakra-ui/react";
+import { Button, Heading, Spacer, useColorMode, Text, IconButton, useColorModeValue, MenuButton, Menu, MenuItem, MenuList } from "@chakra-ui/react";
 import { FaMoon as Moon} from "react-icons/fa6";
 import { MdSunny as Sun} from "react-icons/md";
-import { FaHome as HomeIcon } from "react-icons/fa";
 import classes from './header.module.css';
 import { Link, useNavigate } from "react-router-dom";
 import useMatchMedia from "../../hooks/useMatchMedia";
@@ -41,8 +40,11 @@ const Header = () => {
                 <Link to={'/'}>
                     <Button marginRight={2} variant='link' color={linksBtn}>Home</Button>
                 </Link>
-                <Link to={'/'}>
-                    <Button marginRight={2} variant='link' color={linksBtn}>Store</Button>
+                <Link to={'/products'}>
+                    <Button marginRight={2} variant='link' color={linksBtn}>Products</Button>
+                </Link>
+                <Link to={'/designs'}>
+                    <Button marginRight={2} variant='link' color={linksBtn}>Designs</Button>
                 </Link>
                 <Link to={'/'}>
                     <Button marginRight={2} variant='link' color={linksBtn}>Contact</Button>

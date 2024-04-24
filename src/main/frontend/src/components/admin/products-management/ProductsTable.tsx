@@ -27,19 +27,8 @@ const ProductsTable = ({ browse, setActiveButton }: ProductsTableProps) => {
     const [paginatedProducts, setPaginatedProducts] = useState<PaginatedProducts>({ products: [], totalProducts: 0 });
     const [tabIndex, setTabIndex] = useState(0);
 
-
     const handlePageChange = (page: number) => setCurrentPage(page);
-    const renderStatus = (product: Product): JSX.Element | undefined => {
-        if (product.quantity! < 1) {
-            return <Tag size={'md'} variant='solid' colorScheme='red'>no stock</Tag>;
-        }
-        if (product.quantity! > 0 && product.quantity! <= 5) {
-            return <Tag size={'md'} variant='solid' colorScheme='yellow'>low stock</Tag>;
-        }
-        if (product.quantity! > 5) {
-            return <Tag size={'md'} variant='solid' colorScheme='green'>in stock</Tag>;
-        }
-    };
+
     useEffect(() => {/* update the url state to fetch data with a updated url */
         if (browse === "") {
             tabIndex === 0 && setUrl(`/api/v1/product-management/products/${currentPage}/${pageSize}`);
@@ -59,7 +48,7 @@ const ProductsTable = ({ browse, setActiveButton }: ProductsTableProps) => {
 
     useEffect(() => { // after fetching the data with the new url, update the table, if there is no data, set an error in the table
         data && setPaginatedProducts(data); 
-        error && setPaginatedProducts({products:[{brand:error.toString()}], totalProducts:0}); 
+        error && setPaginatedProducts({products:[{name:error.toString()}], totalProducts:0}); 
     }, [data,error]);
     return (
         <div className={classes['table-container']}>
@@ -70,9 +59,9 @@ const ProductsTable = ({ browse, setActiveButton }: ProductsTableProps) => {
             />
             <Tabs index={tabIndex} onChange={(index) => setTabIndex(index)}>
                 <TabList>
-                    <Tab>All</Tab>
-                    <Tab>Low Stock</Tab>
-                    <Tab>Out of Stock</Tab>
+                    <Tab>Edit1</Tab>
+                    <Tab>Edit2</Tab>
+                    <Tab>Edit3</Tab>
                 </TabList>
 
                 <TabPanels >
@@ -83,9 +72,6 @@ const ProductsTable = ({ browse, setActiveButton }: ProductsTableProps) => {
                                 <Tr>
                                     <Th pr={isDesktop ? '' : '4px'}>Product</Th>
                                     {isDesktop && <Th>Category</Th>}
-                                    {isDesktop && <Th isNumeric>Stock</Th>}
-                                    {isDesktop && <Th isNumeric>Price</Th>}
-                                    <Th pr={isDesktop ? '' : '4px'} >Status</Th>
                                     <Th pr={isDesktop ? '' : '4px'} >Action</Th>
                                 </Tr>
                             </Thead>
@@ -95,13 +81,12 @@ const ProductsTable = ({ browse, setActiveButton }: ProductsTableProps) => {
                                         <Td pr={isDesktop ? '' : '4px'}>
                                             <Flex direction={'row'} columnGap={1} alignItems={'center'}>
                                                 {isDesktop && <Image src={product?.images?.[0]?.url || ''} width={45} />}
-                                                {product.brand}
+                                                {product.name}
                                             </Flex>
                                         </Td>
-                                        {isDesktop && <Td>{product.categories?.map((category, z) => (<p key={z}>{category.name}</p>))}</Td>}
-                                        {isDesktop && <Td isNumeric>{product.quantity}</Td>}{/* render only if screen is desktop */}
-                                        {isDesktop && <Td isNumeric>{product.price} ₲</Td>}
-                                        <Td pr={isDesktop ? '' : '4px'}>{product.status}{renderStatus(product)}</Td>
+                                        {isDesktop && <Td>{product.categories?.map((category, z) => (<p key={z}>{category.name}</p>))}</Td>}{/* render only if screen is desktop */}
+
+                                        {/* <Td pr={isDesktop ? '' : '4px'}>{product.status}{renderStatus(product)}</Td> */}
                                         <Td pr={isDesktop ? '' : '4px'}>
                                             <Flex columnGap={4}>
                                                 <Link to={{pathname:`modify-product/${product.id}`,search:'?action=update'}}>

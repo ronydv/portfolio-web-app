@@ -29,13 +29,18 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
             """, nativeQuery = true)
     Page<Product> searchProducts(@Param("regex") String regex, Pageable pages);
 
-    @Query(value = """
-            SELECT p FROM Product p  WHERE p.quantity > 1 AND p.quantity <=5
+/*    @Query(value = """
+            SELECT p FROM Product p  WHERE ??
             """)
-    Page<Product> findProductsByLowStock(Pageable pages);
+    Page<Product> findDesigns(Pageable pages);*/
 
-    @Query(value = """
-            SELECT p FROM Product p  WHERE p.quantity < 1 or p.quantity IS NULL
+/*    @Query(value = """
+            SELECT p FROM Product p  WHERE ??
             """)
-    Page<Product> findProductsByEmptyStock(Pageable pages);
+    Page<Product> findAutomations(Pageable pages);*/
+
+    /*    @Query(value = """
+            SELECT p FROM Product p  WHERE ??
+            """)
+    Page<Product> findMachines(Pageable pages);*/
 }

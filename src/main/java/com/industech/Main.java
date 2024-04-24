@@ -4,8 +4,10 @@ import com.industech.dto.product.ProductDetails;
 import com.industech.model.product.Category;
 import com.industech.model.product.Product;
 import com.industech.model.product.ProductCategory;
+import com.industech.model.product.Sector;
 import com.industech.repository.product.CategoryRepository;
 import com.industech.repository.product.ProductRepository;
+import com.industech.repository.product.SectorRepository;
 import com.industech.service.product.CategoryService;
 import com.industech.service.product.ProductService;
 import org.springframework.boot.CommandLineRunner;
@@ -33,11 +35,15 @@ public class Main {
 	CommandLineRunner commandLineRunner(ProductService productService,
 										CategoryService categoryService,
 										CategoryRepository categoryRepo,
+										SectorRepository sectorRepository,
 										ProductRepository productRepo) {
 		return args -> {
-			//System.out.println(productService.searchProducts("asdfas raspberry",1,4));
-			//System.out.println(productService.findProductsByLowStock(1,4));
-			//System.out.println(productService.findProductsByEmptyStock(1,4));
+/*			Optional<Sector> sector=sectorRepository.findSectorByName("designs");
+			Set<Sector> sectors = new HashSet<>();
+			sectors.add(sector.get());
+			Product product=new Product("ProductName","A description",sectors);
+			productRepo.save(product);*/
+			//TODO: create entity for product type
 		};
 	}
 }

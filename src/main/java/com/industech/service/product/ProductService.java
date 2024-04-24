@@ -2,10 +2,7 @@ package com.industech.service.product;
 
 import com.industech.dto.product.*;
 import com.industech.exception.ProductException;
-import com.industech.model.product.Category;
-import com.industech.model.product.Image;
-import com.industech.model.product.Product;
-import com.industech.model.product.ProductCategory;
+import com.industech.model.product.*;
 import com.industech.repository.product.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -32,6 +31,8 @@ public class ProductService {
     private CategoryService categoryService;
     @Autowired
     private ImageService imageService;
+    @Autowired
+    private SectorService sectorService;
 
     public List<ProductDetails> getAllProducts(){
         List<Product> products = productRepository.findAll();
@@ -122,52 +123,24 @@ public class ProductService {
         }
     }
 
-    public PaginatedProducts findProductsByLowStock(Integer page, Integer pageSize) {
-        PageRequest pageRequest = PageRequest.of(page - 1, pageSize);
-        if (productRepository.findProductsByLowStock(pageRequest).isEmpty()) {
-            log.error("No products found -> searchProducts");
-            throw new ProductException("No products found", HttpStatus.NOT_FOUND);
-        } else {
-            Page<Product> productsByPage = productRepository.findProductsByLowStock(pageRequest);
-            List<ProductDetails> products = productsByPage.getContent()
-                    .stream()
-                    .map(product -> this.getProductById(product.getId()))
-                    .collect(Collectors.toList());
-            return new PaginatedProducts(products, (int)productsByPage.getTotalElements());
-        }
-    }
-
-    public PaginatedProducts findProductsByEmptyStock(Integer page, Integer pageSize) {
-        PageRequest pageRequest = PageRequest.of(page - 1, pageSize);
-        if (productRepository.findProductsByEmptyStock(pageRequest).isEmpty()) {
-            log.error("No products found -> searchProducts");
-            throw new ProductException("No products found", HttpStatus.NOT_FOUND);
-        } else {
-            Page<Product> productsByPage = productRepository.findProductsByEmptyStock(pageRequest);
-            List<ProductDetails> products = productsByPage.getContent()
-                    .stream()
-                    .map(product -> this.getProductById(product.getId()))
-                    .collect(Collectors.toList());
-            return new PaginatedProducts(products, (int)productsByPage.getTotalElements());
-        }
-    }
-
     public ProductDetails saveProduct(ProductDetails productDetails, List<MultipartFile> files) {
+        if(productDetails.getSector()== null || productDetails.getSector().isEmpty()){
+            throw new ProductException("Product's sector is empty", HttpStatus.BAD_REQUEST);
+        }
         try {
-            Product product = new Product(productDetails.getBrand(),productDetails.getName(),
-                                            productDetails.getPrice(), productDetails.getQuantity(),
-                                            productDetails.getDescription());
+            Product product = new Product(productDetails.getName(), productDetails.getDescription());
+            //add sector
+            Sector sector= sectorService.getSector(productDetails.getSector());
+            if(sector!=null) product.setSectors(new HashSet<>(Set.of(sector)));
             //add images
             List<ImageDetails> images = new ArrayList<>();
-            if(product.getBrand() != null && product.getPrice() != null){
-                for(MultipartFile file:files){
-                    ImageDetails imageFile=imageService.uploadImage(file,"products");
-                    Image image=new Image(imageFile.getUrl(),
-                                          file.getOriginalFilename(),
-                                          imageFile.getPublicId());//add image to the cdn server
-                    product.addImage(image);
-                    images.add(new ImageDetails(image));//mapping image to its DTO class
-                }
+            for(MultipartFile file:files){
+                ImageDetails imageFile=imageService.uploadImage(file,"products");
+                Image image=new Image(imageFile.getUrl(),
+                                      file.getOriginalFilename(),
+                                      imageFile.getPublicId());//add image to the cdn server
+                product.addImage(image);
+                images.add(new ImageDetails(image));//mapping image to its DTO class
             }
             //add categories
             List<CategoryDetails> categories = new ArrayList<>();
@@ -180,21 +153,16 @@ public class ProductService {
                 }
             });
             return new ProductDetails(productRepository.save(product), categories, images);
-        } catch (Exception e) {//throw exception if a repeated product with same brand already exists
+        } catch (Exception e) {
             log.error(e.getMessage());
-            throw e.getLocalizedMessage().contains("null or transient value") ?
-                    new ProductException("Empty body, " + e.getMessage(), HttpStatus.BAD_REQUEST) :
-                    new ProductException("Error while saving product", HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new ProductException("Error while saving product", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     public ProductDetails updateProduct(ProductDetails product){
         try{
             Product toUpdate=productRepository.getReferenceById(product.getId());
-            toUpdate.setBrand(product.getBrand());
             toUpdate.setName(product.getName());
-            toUpdate.setPrice(product.getPrice());
-            toUpdate.setQuantity(product.getQuantity());
             toUpdate.setDescription(product.getDescription());
             List<CategoryDetails>categories=new ArrayList<>();
 

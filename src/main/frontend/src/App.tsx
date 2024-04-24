@@ -2,7 +2,7 @@ import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } 
 import './App.css';
 import Layout from './Layout';
 import Home from './components/home/Home';
-import Products from './components/store/Products';
+import Products from './components/store/products/Products';
 import Services from './components/store/Services';
 import Login from './components/authentication/Login';
 import Signup from './components/authentication/Signup';
@@ -11,10 +11,10 @@ import Unauthorized from './components/authentication/Unauthorized';
 import { Role } from './react-app-env.d';
 import Restricted from './components/authentication/Restricted';
 import PersistLogin from './components/authentication/PersistAuth';
-import AddProduct from './components/admin/products-panel/AddProduct';
-import ProductsDashboard from './components/admin/products-panel/ProductsDashboard';
+import AddProduct from './components/admin/products-management/AddProduct';
+import ProductsDashboard from './components/admin/products-management/ProductsDashboard';
 import MainDashboard from './components/admin/MainDashboard';
-import ModifyProduct from './components/admin/products-panel/ModifyProduct';
+import ModifyProduct from './components/admin/products-management/ModifyProduct';
 
 
   

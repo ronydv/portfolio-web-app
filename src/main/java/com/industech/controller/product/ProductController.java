@@ -44,17 +44,12 @@ public class ProductController {
         return new ResponseEntity<>(productService.searchProducts(wordsToRegex,page,pageSize), OK);
     }
 
-    @GetMapping("/products/{page}/{pageSize}/low-stock")
+/*    @GetMapping("/products/{page}/{pageSize}/sector??")
     public ResponseEntity<PaginatedProducts> findProductsByLowStock(@PathVariable("page") Integer page,
                                                                     @PathVariable("pageSize") Integer pageSize){
         return new ResponseEntity<>(productService.findProductsByLowStock(page,pageSize), OK);
-    }
+    }*/
 
-    @GetMapping("/products/{page}/{pageSize}/empty-stock")
-    public ResponseEntity<PaginatedProducts> findProductsByEmptyStock(@PathVariable("page") Integer page,
-                                                                      @PathVariable("pageSize") Integer pageSize){
-        return new ResponseEntity<>(productService.findProductsByEmptyStock(page,pageSize), OK);
-    }
 
     @GetMapping("/products/{id}")
     public ResponseEntity<ProductDetails> getProductById(@PathVariable("id") Integer id){

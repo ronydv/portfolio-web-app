@@ -16,18 +16,7 @@ public class Product {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)
-    private String brand;
-
     private String name;
-
-    @Column(nullable = false)
-    private Integer price;
-
-    private Integer quantity;
-
-    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-    private LocalDateTime addedAt = LocalDateTime.now();
 
     @Column(columnDefinition = "TEXT")
     private String description;
@@ -38,16 +27,24 @@ public class Product {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = {PERSIST, REMOVE}, orphanRemoval = true)
     private Set<Image> images=new HashSet<>();
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "product_sector",
+            joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id",
+                          foreignKey = @ForeignKey(name = "product_id_fk")),
+            inverseJoinColumns = @JoinColumn(name="sector_id", referencedColumnName = "id",
+                          foreignKey = @ForeignKey(name = "sector_id_fk")))
+    private Set<Sector> sectors=new HashSet<>();
 
     //////constructor setters, getters and other methods
     public Product(){}
-    public Product(String brand, String name, Integer price,
-                   Integer quantity, String description) {
-        this.brand=brand;
+    public Product(String name, String description) {
         this.name = name;
-        this.price = price;
-        this.quantity = quantity;
         this.description=description;
+    }
+    public Product(String name, String description, Set<Sector> sectors) {
+        this.name = name;
+        this.description=description;
+        this.sectors=sectors;
     }
 
     public void addCategory(ProductCategory productCategory){
@@ -71,11 +68,8 @@ public class Product {
     public String toString(){
         return "Product {\n"
                 +"\tid: "+id+"\n"
-                +"\tbrand: "+brand+"\n"
                 +"\tname: "+name+"\n"
-                +"\tprice: "+price+"\n"
-                +"\tquantity: "+quantity+"\n"
-                +"\tadded at: "+ addedAt.toLocalDate()+"\n"
+                +"\tname: "+sectors+"\n"
 /*                +"\tcategories: "+productCategories.stream()
                                     .map(ProductCategory::getCategory)
                                     .toList()+"\n"*/

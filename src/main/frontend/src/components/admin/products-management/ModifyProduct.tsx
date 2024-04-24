@@ -5,7 +5,6 @@ import { MdOutlineChevronRight as ChevronRightIcon } from "react-icons/md";
 import classes from "./products-panel.module.css";
 import { FormEvent, useEffect, useState } from "react";
 import { useSingleFetch } from "../../../hooks/useSingleFetch";
-import Pricing from "./Pricing";
 import SelectCategories from "./SelectCategories";
 import axios from "axios";
 import useInterceptor from "../../../hooks/useInterceptor";
@@ -95,7 +94,7 @@ const ModifyProduct = () => {
                                 <Heading as='h2' size='sm' marginRight={10}>General information</Heading>
 
                                 <FormControl as='fieldset' isInvalid={error?.includes('Product.brand')}>
-                                    <FormLabel mt={2}>
+{/*                                     <FormLabel mt={2}>
                                         {error?.includes('Product.brand') || product.brand === ""
                                             ? <Text color={'red'}>{'Empty Field'}</Text>
                                             : 'Brand'}
@@ -103,7 +102,7 @@ const ModifyProduct = () => {
                                     <Input defaultValue={product.brand} type='text' onChange={(e) => {
                                         setProduct({ ...product, brand: e.target.value });
                                         setError("");
-                                    }} />
+                                    }} /> */}
                                 </FormControl>
 
                                 <FormLabel mt={2}>Product Name</FormLabel>
@@ -111,18 +110,11 @@ const ModifyProduct = () => {
                                     setProduct({ ...product, name: e.target.value });
                                 }} />
 
-                                <FormLabel mt={2}>Quantity</FormLabel>
-                                <Input defaultValue={product.quantity} type='number' onChange={(e) => {
-                                    setProduct({ ...product, quantity: parseInt(e.target.value) });
-                                }} />
-
                                 <FormLabel mt={2}>Description</FormLabel>
                                 <Textarea defaultValue={product.description} onChange={(e) => {
                                     setProduct({ ...product, description: e.target.value });
                                 }} />
                             </section>
-                            <Pricing product={product} setProduct={setProduct} setError={setError}
-                                colorMode={colorMode} error={error} />
                         </div>
 
                         <div>

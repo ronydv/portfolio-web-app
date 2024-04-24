@@ -1,15 +1,11 @@
 /* used in ProductDashboard.tsx */
 type Product = {
     id?: number;
-    brand?:string;
     name?: string;
-    price?: number;
-    quantity?: number;
-    addedAt?: string;
-    status?: boolean;
     description?:string;
     categories?: Array<Category>;
     images?:Array<Image>;
+    sector?:String
 };
 type Category = {
     id?: number;
@@ -20,3 +16,6 @@ type Image = {
     url: string;
     name: string;
 };
+type Sector={
+    name:string;
+}
