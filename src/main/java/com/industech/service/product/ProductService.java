@@ -160,18 +160,24 @@ public class ProductService {
     }
 
     public ProductDetails updateProduct(ProductDetails product){
+        if(product.getSector()== null || product.getSector().isEmpty()){
+            log.error("\u001B[35mProduct's sector is empty\u001B[0m");
+            throw new ProductException("Product's sector is empty", HttpStatus.BAD_REQUEST);
+        }
         try{
             Product toUpdate=productRepository.getReferenceById(product.getId());
             toUpdate.setName(product.getName());
             toUpdate.setDescription(product.getDescription());
-            List<CategoryDetails>categories=new ArrayList<>();
-
+            //search sector in the database and add it to the element to be updated
+            Sector sector= sectorService.getSector(product.getSector());
+            if(sector!=null) toUpdate.setSectors(new HashSet<>(Set.of(sector)));
             //remove association with product_categories table before inserting new data
             if(!toUpdate.getProductCategories().isEmpty()){
                 List<ProductCategory> toRemove = new ArrayList<>(toUpdate.getProductCategories());
                 toRemove.forEach(toUpdate::removeCategory);
             }
             //add incoming categories to the product to be updated
+            List<CategoryDetails>categories=new ArrayList<>();
             product.getCategories().forEach(item -> {
                 Category category = categoryService.getCategory(item.getName());
                 if(category != null ){

@@ -5,7 +5,7 @@ type Product = {
     description?:string;
     categories?: Array<Category>;
     images?:Array<Image>;
-    sector?:String
+    sector?:string
 };
 type Category = {
     id?: number;

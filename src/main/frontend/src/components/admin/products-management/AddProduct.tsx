@@ -88,8 +88,7 @@ const AddProduct = () => {
                             <Heading as='h2' size='sm' marginRight={10}>General information</Heading>
                             <Divider/>
 
-                            <Heading as='h3' size='xs' mt={2} mr={10}>Sector</Heading>
-                            <SelectSector setProduct={setProduct}/>
+                            <SelectSector setProduct={setProduct} error={error} setError={setError}/>
 
                             <FormLabel mt={2}>Product Name</FormLabel>
                             <Input type='text' onChange={(e) => setProduct({...product,name:e.target.value})} />

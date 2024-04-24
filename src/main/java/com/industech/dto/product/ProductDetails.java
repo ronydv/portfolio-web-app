@@ -1,12 +1,10 @@
 package com.industech.dto.product;
 
-import com.industech.model.product.Image;
 import com.industech.model.product.Product;
 import com.industech.model.product.Sector;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,12 +29,14 @@ public class ProductDetails {
         this.id = product.getId();
         this.name = product.getName();
         this.description=product.getDescription();
+        this.sector= product.getSectors().stream().map(Sector::getName).findFirst().get();
     }
     public ProductDetails(Product product,List<CategoryDetails> categories) {
         this.id = product.getId();
         this.name = product.getName();
         this.description=product.getDescription();
         this.categories = categories;
+        this.sector= product.getSectors().stream().map(Sector::getName).findFirst().get();
     }
     public ProductDetails(Product product,
                           List<CategoryDetails> categories, List<ImageDetails> images) {
@@ -53,6 +53,14 @@ public class ProductDetails {
     }
     public void addImage(ImageDetails image){this.images.add(image);}
 
+    public String toString(){
+        return "Product {\n"
+                +"\tid: "+id+"\n"
+                +"\tname: "+name+"\n"
+                +"\tcategories: "+categories.stream().toList() +"\n"
+                +"\tname: "+sector+"\n"
+                +"}";
+    }
 }
 
 

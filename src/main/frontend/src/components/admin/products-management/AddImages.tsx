@@ -14,7 +14,7 @@ type AddImagesProps= {
     setSelectedImages: React.Dispatch<React.SetStateAction<ImageObject[]>>,
     files: File[],
     setFiles: React.Dispatch<React.SetStateAction<File[]>>
-}// todo: add image to cloudinary
+}
   const AddImages = ({ colorMode, formData, setFormData, error, setError,
                        selectedImages, setSelectedImages, files, setFiles }: AddImagesProps) => {
     const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
