@@ -31,10 +31,11 @@ public class ProductController {
         return new ResponseEntity<>(productService.getAllProducts(), OK);
     }
 
-    @GetMapping("/products/{page}/{pageSize}")
-    public ResponseEntity<PaginatedProducts> getAllProductsByPage(@PathVariable("page") Integer page,
-                                                                  @PathVariable("pageSize") Integer pageSize){
-        return new ResponseEntity<>(productService.getAllProductsByPage(page,pageSize), OK);
+    @GetMapping("/products/{page}/{pageSize}/sector/{sector}")
+    public ResponseEntity<PaginatedProducts> getAllProductsBySector(@PathVariable("page") Integer page,
+                                                                  @PathVariable("pageSize") Integer pageSize,
+                                                                  @PathVariable("sector") String sector){
+        return new ResponseEntity<>(productService.getAllProductsBySector(page,pageSize,sector), OK);
     }
 
     @GetMapping("/products/{words}/{page}/{pageSize}")
@@ -43,13 +44,6 @@ public class ProductController {
                                                                  @PathVariable("pageSize") Integer pageSize){
         return new ResponseEntity<>(productService.searchProducts(wordsToRegex,page,pageSize), OK);
     }
-
-/*    @GetMapping("/products/{page}/{pageSize}/sector??")
-    public ResponseEntity<PaginatedProducts> findProductsByLowStock(@PathVariable("page") Integer page,
-                                                                    @PathVariable("pageSize") Integer pageSize){
-        return new ResponseEntity<>(productService.findProductsByLowStock(page,pageSize), OK);
-    }*/
-
 
     @GetMapping("/products/{id}")
     public ResponseEntity<ProductDetails> getProductById(@PathVariable("id") Integer id){

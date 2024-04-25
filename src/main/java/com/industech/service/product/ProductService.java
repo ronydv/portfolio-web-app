@@ -3,6 +3,7 @@ package com.industech.service.product;
 import com.industech.dto.product.*;
 import com.industech.exception.ProductException;
 import com.industech.model.product.*;
+import com.industech.repository.product.CustomRepository;
 import com.industech.repository.product.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -27,6 +29,8 @@ public class ProductService {
 
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private CustomRepository customRepository;
     @Autowired
     private CategoryService categoryService;
     @Autowired
@@ -55,29 +59,29 @@ public class ProductService {
         }
     }
 
-    public PaginatedProducts getAllProductsByPage(Integer page, Integer pageSize){
-        if (productRepository.findAll().isEmpty()) {
-            log.error("No products found -> getProductsByPage");
+    //modify this to get products by sector
+    public PaginatedProducts getAllProductsBySector(Integer page, Integer pageSize, String sector) {
+        PageRequest pageRequest = PageRequest.of(page - 1, pageSize);
+        ProductsBySector productsBySector = customRepository.findProductsBySector(sector, pageRequest);
+        if (productsBySector.products().isEmpty()) {
+            log.error("getAllProductsBySector() No products found for sector: {}", sector);
             throw new ProductException("No products found", HttpStatus.NOT_FOUND);
-        } else {
-            PageRequest pageRequest=PageRequest.of((page-1),pageSize);
-            Page<Product> productsByPage=productRepository.findAll(pageRequest);
-            List<ProductDetails> products=productsByPage.getContent()
-                    .stream()
-                    .map(found -> {
-                        ProductDetails product = new ProductDetails(found);
-                        found.getProductCategories().forEach(item -> {
-                            product.addCategory(new CategoryDetails(item.getCategory()));
-                        });
-                        if(!found.getImages().isEmpty()) {
-                            for (Image image : found.getImages()) {
-                                product.addImage(new ImageDetails(image));
-                            }
-                        }
-                        return product;
-                    }).collect(Collectors.toList());
-            return new PaginatedProducts(products, (int)productsByPage.getTotalElements());
         }
+        List<ProductDetails>products=productsBySector.products()
+                .stream()
+                .map(found -> {
+                    ProductDetails product = new ProductDetails(found);
+                    found.getProductCategories().forEach(item -> {
+                        product.addCategory(new CategoryDetails(item.getCategory()));
+                    });
+                    if (!found.getImages().isEmpty()) {
+                        for (Image image : found.getImages()) {
+                            product.addImage(new ImageDetails(image));
+                        }
+                    }
+                    return product;
+                }).collect(Collectors.toList());
+        return new PaginatedProducts(products, (int) productsBySector.total());
     }
 
     public ProductDetails getProductById(Integer id) {

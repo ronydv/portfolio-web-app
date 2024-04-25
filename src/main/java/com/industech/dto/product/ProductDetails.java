@@ -58,7 +58,7 @@ public class ProductDetails {
                 +"\tid: "+id+"\n"
                 +"\tname: "+name+"\n"
                 +"\tcategories: "+categories.stream().toList() +"\n"
-                +"\tname: "+sector+"\n"
+                +"\tsector: "+sector+"\n"
                 +"}";
     }
 }

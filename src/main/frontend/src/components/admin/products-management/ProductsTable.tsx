@@ -24,7 +24,7 @@ const ProductsTable = ({ browse, setActiveButton }: ProductsTableProps) => {
     const pageSize = 4;
     const [url, setUrl] = useState("");
     const { data, error } = useSingleFetch<PaginatedProducts>(url);
-    const [paginatedProducts, setPaginatedProducts] = useState<PaginatedProducts>({ products: [], totalProducts: 0 });
+    const [paginatedProductsRepository, setPaginatedProducts] = useState<PaginatedProducts>({ products: [], totalProducts: 0 });
     const [tabIndex, setTabIndex] = useState(0);
 
     const handlePageChange = (page: number) => setCurrentPage(page);
@@ -53,7 +53,7 @@ const ProductsTable = ({ browse, setActiveButton }: ProductsTableProps) => {
     return (
         <div className={classes['table-container']}>
             <ResponsivePagination
-                total={Math.ceil(paginatedProducts.totalProducts / pageSize)}
+                total={Math.ceil(paginatedProductsRepository.totalProducts / pageSize)}
                 current={currentPage}
                 onPageChange={page => handlePageChange(page)}
             />
@@ -76,7 +76,7 @@ const ProductsTable = ({ browse, setActiveButton }: ProductsTableProps) => {
                                 </Tr>
                             </Thead>
                             <Tbody>
-                                {paginatedProducts.products?.map((product, i) => (
+                                {paginatedProductsRepository.products?.map((product, i) => (
                                     <Tr key={i}>
                                         <Td pr={isDesktop ? '' : '4px'}>
                                             <Flex direction={'row'} columnGap={1} alignItems={'center'}>
