@@ -2,6 +2,7 @@ package com.industech.dto.product;
 
 import com.industech.model.product.Product;
 import com.industech.model.product.Sector;
+import com.industech.model.product.Type;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,6 +23,7 @@ public class ProductDetails {
     private List<CategoryDetails> categories = new ArrayList<>();
     private List<ImageDetails>images=new ArrayList<>();
     private String sector;
+    private String productType;
 
 
     public ProductDetails() {}
@@ -29,14 +31,24 @@ public class ProductDetails {
         this.id = product.getId();
         this.name = product.getName();
         this.description=product.getDescription();
-        this.sector= product.getSectors().stream().map(Sector::getName).findFirst().get();
+        if(!product.getSectors().isEmpty()){
+            this.sector= product.getSectors().stream().map(Sector::getName).findFirst().get();
+        }
+        if(!product.getTypes().isEmpty()){
+            this.productType=product.getTypes().stream().map(Type::getProductType).findFirst().get();
+        }
     }
     public ProductDetails(Product product,List<CategoryDetails> categories) {
         this.id = product.getId();
         this.name = product.getName();
         this.description=product.getDescription();
         this.categories = categories;
-        this.sector= product.getSectors().stream().map(Sector::getName).findFirst().get();
+        if(!product.getSectors().isEmpty()){
+            this.sector= product.getSectors().stream().map(Sector::getName).findFirst().get();
+        }
+        if(!product.getTypes().isEmpty()){
+            this.productType=product.getTypes().stream().map(Type::getProductType).findFirst().get();
+        }
     }
     public ProductDetails(Product product,
                           List<CategoryDetails> categories, List<ImageDetails> images) {
@@ -45,7 +57,12 @@ public class ProductDetails {
         this.description=product.getDescription();
         this.categories = categories;
         this.images=images;
-        this.sector= product.getSectors().stream().map(Sector::getName).findFirst().get();
+        if(!product.getSectors().isEmpty()){
+            this.sector= product.getSectors().stream().map(Sector::getName).findFirst().get();
+        }
+        if(!product.getTypes().isEmpty()){
+            this.productType=product.getTypes().stream().map(Type::getProductType).findFirst().get();
+        }
     }
 
     public void addCategory(CategoryDetails category) {
@@ -59,6 +76,7 @@ public class ProductDetails {
                 +"\tname: "+name+"\n"
                 +"\tcategories: "+categories.stream().toList() +"\n"
                 +"\tsector: "+sector+"\n"
+                +"\tproduct type: "+productType+"\n"
                 +"}";
     }
 }

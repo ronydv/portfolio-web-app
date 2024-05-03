@@ -67,15 +67,11 @@
 
 
 
-/* pricing section */
-.pricing{
+/* product-type section */
+.product-type{
     margin-top: 15px;
     padding: 20px 30px;
     border-radius: 8px;
-}
-.pricing-inputs{
-    display: flex;
-    flex-direction: row;
 }
 
 
@@ -120,7 +116,7 @@
     --pagination-hover-color: #454648;
     --pagination-bg: transparent/* change to app theme */
 }
-.table-action-icon:hover{
+.action-icon:hover{
     cursor: pointer;
     opacity: 0.7;
 }

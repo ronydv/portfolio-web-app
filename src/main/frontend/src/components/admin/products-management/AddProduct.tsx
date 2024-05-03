@@ -9,6 +9,7 @@ import useInterceptor from "../../../hooks/useInterceptor";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import AddImages from "./AddImages";
 import SelectSector from "./SelectSector";
+import SelectType from "./SelectType";
 
 export type ImageObject = {
     src: string;
@@ -96,10 +97,20 @@ const AddProduct = () => {
                             <FormLabel mt={2}>Description</FormLabel>
                             <Textarea minWidth={'25vw'} onChange={(e) => setProduct({...product,description:e.target.value})} />
                         </section>
+
+                        <section className={`${classes['product-type']} ${colorMode === 'light' ? classes.light : classes.dark}`}>
+                            <SelectType product={product} 
+                                        setProduct={setProduct}
+                                        setError={setError}
+                                        error={error}/>
+                        </section>
                     </div>
 
+
                     <div>
-                        <SelectCategories colorMode={colorMode} setProduct={setProduct}/>
+                        <SelectCategories colorMode={colorMode}
+                                          setProduct={setProduct}/>
+                                          
                         <AddImages colorMode={colorMode} 
                                    formData={formData} 
                                    setFormData={setFormData}

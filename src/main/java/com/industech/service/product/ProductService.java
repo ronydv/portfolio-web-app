@@ -14,10 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -37,6 +34,8 @@ public class ProductService {
     private ImageService imageService;
     @Autowired
     private SectorService sectorService;
+    @Autowired
+    private TypeService typeService;
 
     public List<ProductDetails> getAllProducts(){
         List<Product> products = productRepository.findAll();
@@ -59,7 +58,6 @@ public class ProductService {
         }
     }
 
-    //modify this to get products by sector
     public PaginatedProducts getAllProductsBySector(Integer page, Integer pageSize, String sector) {
         PageRequest pageRequest = PageRequest.of(page - 1, pageSize);
         ProductsBySector productsBySector = customRepository.findProductsBySector(sector, pageRequest);
@@ -131,11 +129,22 @@ public class ProductService {
         if(productDetails.getSector()== null || productDetails.getSector().isEmpty()){
             throw new ProductException("Product's sector is empty", HttpStatus.BAD_REQUEST);
         }
+        if(productDetails.getProductType()== null || productDetails.getProductType().isEmpty()){
+            throw new ProductException("Product's sector is empty", HttpStatus.BAD_REQUEST);
+        }
         try {
             Product product = new Product(productDetails.getName(), productDetails.getDescription());
+            //add product type
+            Type type= typeService.getType(productDetails.getProductType());
+            if(type != null) product.setTypes(new HashSet<>(Set.of(type) ) );
+            else {
+                String formatType=productDetails.getProductType().substring(0, 1).toUpperCase() +
+                                  productDetails.getProductType().substring(1).toLowerCase();
+                product.setTypes(new HashSet<>(Set.of(new Type(formatType) ) ) );
+            }
             //add sector
             Sector sector= sectorService.getSector(productDetails.getSector());
-            if(sector!=null) product.setSectors(new HashSet<>(Set.of(sector)));
+            if(sector != null) product.setSectors(new HashSet<>(Set.of(sector)));
             //add images
             List<ImageDetails> images = new ArrayList<>();
             for(MultipartFile file:files){

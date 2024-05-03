@@ -6,6 +6,7 @@ type Product = {
     categories?: Array<Category>;
     images?:Array<Image>;
     sector?:string
+    productType?:string;
 };
 type Category = {
     id?: number;
@@ -18,4 +19,8 @@ type Image = {
 };
 type Sector={
     name:string;
+}
+type Type={
+    id?:number;
+    productType?:string;
 }

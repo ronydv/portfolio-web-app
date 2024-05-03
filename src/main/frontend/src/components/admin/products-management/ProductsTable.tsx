@@ -8,6 +8,7 @@ import classes from "./products-panel.module.css";
 import 'react-responsive-pagination/themes/minimal.css';
 import { useSingleFetch } from "../../../hooks/useSingleFetch";
 import { Link } from "react-router-dom";
+import { useFetch } from "../../../hooks/useFetch";
 
 
 type PaginatedProducts={
@@ -23,6 +24,7 @@ const ProductsTable = ({ browse, setActiveButton }: ProductsTableProps) => {
     const [currentPage, setCurrentPage] = useState(1);//only for the pagination gui, not used in the page url
     const pageSize = 4;
     const [url, setUrl] = useState("");
+    const {data:sectors}=useFetch<Sector>("/api/v1/product-management/sector");
     const { data, error } = useSingleFetch<PaginatedProducts>(url);
     const [paginatedProductsRepository, setPaginatedProducts] = useState<PaginatedProducts>({ products: [], totalProducts: 0 });
     const [tabIndex, setTabIndex] = useState(0);
@@ -31,24 +33,28 @@ const ProductsTable = ({ browse, setActiveButton }: ProductsTableProps) => {
 
     useEffect(() => {/* update the url state to fetch data with a updated url */
         if (browse === "") {
-            tabIndex === 0 && setUrl(`/api/v1/product-management/products/${currentPage}/${pageSize}`);
+            sectors.forEach((sector, i)=>{
+                tabIndex === i && setUrl(`/api/v1/product-management/products/${currentPage}/${pageSize}/sector/${sector.name}`);
+            });
         } else {
             setUrl(`/api/v1/product-management/products/${browse}/${currentPage}/${pageSize}`);
         }
-        tabIndex === 1 && setUrl(`/api/v1/product-management/products/${currentPage}/${pageSize}/low-stock`);
-        tabIndex === 2 && setUrl(`/api/v1/product-management/products/${currentPage}/${pageSize}/empty-stock`);
-    }, [browse, currentPage, tabIndex, url]);
+        sectors.forEach((sector, i)=>{//allow switch tabs even if the browse tab is currently with values
+            tabIndex === i && setUrl(`/api/v1/product-management/products/${currentPage}/${pageSize}/sector/${sector.name}`);
+        });
+    }, [sectors, browse, currentPage, tabIndex, url]);
 
     useEffect(() => setCurrentPage(1), [tabIndex]);//reset the value of the current page whenever the tab is changed
 
-    useEffect(() => {//set the page to 1 and switch tab to all products whenever the browser value is changed
+    useEffect(() => {//reset the value of the current page and switch tab whenever the browser value is changed
         setCurrentPage(1);
-        setTabIndex(0);
+        if(browse !== "")setTabIndex((sectors.length));//sector.lenght = to the last value of the tab which is <Tab>Browse Result:</Tab>
+        else setTabIndex(0);
     }, [browse]);
 
     useEffect(() => { // after fetching the data with the new url, update the table, if there is no data, set an error in the table
         data && setPaginatedProducts(data); 
-        error && setPaginatedProducts({products:[{name:error.toString()}], totalProducts:0}); 
+        error && setPaginatedProducts({products:[{}], totalProducts:0}); 
     }, [data,error]);
     return (
         <div className={classes['table-container']}>
@@ -57,21 +63,21 @@ const ProductsTable = ({ browse, setActiveButton }: ProductsTableProps) => {
                 current={currentPage}
                 onPageChange={page => handlePageChange(page)}
             />
-            <Tabs index={tabIndex} onChange={(index) => setTabIndex(index)}>
+            <Tabs index={tabIndex} onChange={(index) => setTabIndex(index)} size={isDesktop ?'md':'sm' }>
                 <TabList>
-                    <Tab>Edit1</Tab>
-                    <Tab>Edit2</Tab>
-                    <Tab>Edit3</Tab>
+                    {sectors.map((sector,i) => <Tab key={i}>{sector.name}</Tab>)}
+                    {browse && <Tab>Browse Result:</Tab>}
                 </TabList>
 
                 <TabPanels >
                     <TableContainer pt={1}>
                         <Table variant='simple' size={isDesktop ? 'md' : 'sm'}>
-                            {/* <TableCaption>Products</TableCaption> */}
+                            <TableCaption>Products</TableCaption>
                             <Thead>
                                 <Tr>
                                     <Th pr={isDesktop ? '' : '4px'}>Product</Th>
                                     {isDesktop && <Th>Category</Th>}
+                                    {isDesktop && <Th>Sector</Th>}
                                     <Th pr={isDesktop ? '' : '4px'} >Action</Th>
                                 </Tr>
                             </Thead>
@@ -85,12 +91,11 @@ const ProductsTable = ({ browse, setActiveButton }: ProductsTableProps) => {
                                             </Flex>
                                         </Td>
                                         {isDesktop && <Td>{product.categories?.map((category, z) => (<p key={z}>{category.name}</p>))}</Td>}{/* render only if screen is desktop */}
-
-                                        {/* <Td pr={isDesktop ? '' : '4px'}>{product.status}{renderStatus(product)}</Td> */}
+                                        {isDesktop && <Td>{product.sector}</Td>}
                                         <Td pr={isDesktop ? '' : '4px'}>
                                             <Flex columnGap={4}>
                                                 <Link to={{pathname:`modify-product/${product.id}`,search:'?action=update'}}>
-                                                    <EditIcon color="#59a0d4" className={classes['table-action-icon']}
+                                                    <EditIcon color="#59a0d4" className={classes['action-icon']}
                                                             onClick={() => {
                                                                 //switch the conditional in MainDashboard.tsx to render the <Outlet/> inside <div className={classes.outlet}>
                                                                 setActiveButton && setActiveButton("Modify Product")
@@ -98,7 +103,7 @@ const ProductsTable = ({ browse, setActiveButton }: ProductsTableProps) => {
                                                 </Link>
 
                                                 <Link to={{ pathname: `modify-product/${product.id}`, search:'?action=delete' }}>
-                                                    <DeleteIcon color="red" className={classes['table-action-icon']}
+                                                    <DeleteIcon color="red" className={classes['action-icon']}
                                                             onClick={() => {
                                                                 //switch the conditional in MainDashboard.tsx to render the <Outlet/> inside <div className={classes.outlet}>
                                                                 setActiveButton && setActiveButton("Modify Product");

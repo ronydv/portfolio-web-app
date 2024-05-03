@@ -35,16 +35,26 @@ public class Product {
                           foreignKey = @ForeignKey(name = "sector_id_fk")))
     private Set<Sector> sectors=new HashSet<>();
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {PERSIST})
+    @JoinTable(name = "product_type",
+            joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id",
+                    foreignKey = @ForeignKey(name = "product_id_fk")),
+            inverseJoinColumns = @JoinColumn(name="type_id", referencedColumnName = "id",
+                    foreignKey = @ForeignKey(name = "type_id_fk")))
+    private Set<Type> types=new HashSet<>();
+
     //////constructor setters, getters and other methods
     public Product(){}
     public Product(String name, String description) {
         this.name = name;
         this.description=description;
     }
-    public Product(String name, String description, Set<Sector> sectors) {
+    public Product(String name, String description,
+                   Set<Sector> sectors, Set<Type> types) {
         this.name = name;
         this.description=description;
         this.sectors=sectors;
+        this.types=types;
     }
 
     public void addCategory(ProductCategory productCategory){
@@ -68,8 +78,9 @@ public class Product {
     public String toString(){
         return "Product {\n"
                 +"\tid: "+id+"\n"
-                +"\tname: "+name+"\n"
-                +"\tname: "+sectors+"\n"
+                +"\tproduct name: "+name+"\n"
+                +"\tsector: "+sectors+"\n"
+                +"\tproduct type: "+types+"\n"
 /*                +"\tcategories: "+productCategories.stream()
                                     .map(ProductCategory::getCategory)
                                     .toList()+"\n"*/

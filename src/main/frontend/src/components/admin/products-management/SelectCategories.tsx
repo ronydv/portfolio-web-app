@@ -45,7 +45,6 @@ const SelectCategories = ({ colorMode, setProduct, product }: CategoriesProps) =
         }
     }
     const deleteCategory = async (category:Category)=>{
-        console.log("category deleted: ",category);
         try {              
             await axiosPrivate.delete<Category>(`/api/v1/product-management/categories/${category.id}`);
             setCategories(prevCategories => prevCategories.filter(c => c.id !== category.id));
@@ -104,7 +103,7 @@ const SelectCategories = ({ colorMode, setProduct, product }: CategoriesProps) =
                                     {category.name}
                                 </Checkbox>
                                 <Spacer />
-                                <DeleteIcon color="red" onClick={() => deleteCategory(category)} />
+                                <DeleteIcon className={classes['action-icon']} color="red" onClick={() => deleteCategory(category)} />
                             </div>
                         ))}
                     </AccordionPanel>

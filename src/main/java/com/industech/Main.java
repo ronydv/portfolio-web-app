@@ -10,7 +10,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
@@ -29,9 +28,7 @@ public class Main {
 										CustomRepository customRepository,
 										ProductRepository productRepo) {
 		return args -> {
-/*			System.out.println(productService.
-					getAllProductsBySector(1,4,"automations"));*/
-			//TODO: create entity for product type
+
 		};
 	}
 }

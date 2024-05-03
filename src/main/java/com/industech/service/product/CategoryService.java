@@ -45,10 +45,12 @@ public class CategoryService {
     public CategoryDetails saveCategory(String categoryName){
         try{
             if(categoryRepository.findByName(categoryName).isEmpty() && !categoryName.isBlank()){
-                Category category= categoryRepository.save(new Category(categoryName));
+                String formatName=categoryName.substring(0, 1).toUpperCase() +
+                                  categoryName.substring(1).toLowerCase();
+                Category category= categoryRepository.save(new Category(formatName));
                 return new CategoryDetails(category);
             }else{
-                String message=(categoryName.isBlank() ?"categoryName is empty":"already exists");
+                String message= categoryName.isBlank() ? "categoryName is empty":"already exists";
                 log.error("\u001B[33mCategory: \u001B[35m'"+categoryName+"'\u001B[0m " + message+"\u001B[0m");
                 throw new ProductException(message);//throw exception for  duplicate entries
             }
