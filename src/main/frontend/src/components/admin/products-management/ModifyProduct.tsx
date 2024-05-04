@@ -9,6 +9,7 @@ import SelectCategories from "./SelectCategories";
 import axios from "axios";
 import useInterceptor from "../../../hooks/useInterceptor";
 import SelectSector from "./SelectSector";
+import SelectType from "./SelectType";
 const ModifyProduct = () => {
     const axiosPrivate = useInterceptor();
     const { colorMode } = useColorMode();
@@ -20,7 +21,7 @@ const ModifyProduct = () => {
     const [product, setProduct]= useState<Product>({});
     const [error, setError]=useState<string>("");
     const [isLoading, setIsLoading]=useState(false);
-    
+    const [typesUrl, setTypesUrl]=useState("");
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         try {
@@ -34,6 +35,7 @@ const ModifyProduct = () => {
                     },
                 });
                 console.log("new product: ", response.data);
+                setTypesUrl("");
             } else {
                 const response = await axiosPrivate.delete<Product>(`/api/v1/product-management/products/${id}`, {
                     headers: {
@@ -85,7 +87,7 @@ const ModifyProduct = () => {
                         <Button type="submit"
                             isLoading={isLoading}
                             loadingText='Submitting'>
-                            Save Changes
+                            {queryAction ==='delete'? 'Delete' : 'Save Changes'}
                         </Button>
                     </section>
 
@@ -111,6 +113,14 @@ const ModifyProduct = () => {
                                     setProduct({ ...product, description: e.target.value });
                                 }} />
                             </section>
+                            <section className={`${classes['product-type']} ${colorMode === 'light' ? classes.light : classes.dark}`}>
+                            <SelectType product={product} 
+                                        setProduct={setProduct}
+                                        setError={setError}
+                                        error={error}
+                                        setTypesUrl={setTypesUrl}
+                                        typesUrl={typesUrl}/>
+                        </section>
                         </div>
 
                         <div>

@@ -130,17 +130,17 @@ public class ProductService {
             throw new ProductException("Product's sector is empty", HttpStatus.BAD_REQUEST);
         }
         if(productDetails.getProductType()== null || productDetails.getProductType().isEmpty()){
-            throw new ProductException("Product's sector is empty", HttpStatus.BAD_REQUEST);
+            throw new ProductException("Product's type is empty", HttpStatus.BAD_REQUEST);
         }
         try {
             Product product = new Product(productDetails.getName(), productDetails.getDescription());
             //add product type
-            Type type= typeService.getType(productDetails.getProductType());
+            String upperCaseType=productDetails.getProductType().substring(0, 1).toUpperCase() +
+                    productDetails.getProductType().substring(1).toLowerCase();
+            Type type= typeService.getType(upperCaseType);
             if(type != null) product.setTypes(new HashSet<>(Set.of(type) ) );
             else {
-                String formatType=productDetails.getProductType().substring(0, 1).toUpperCase() +
-                                  productDetails.getProductType().substring(1).toLowerCase();
-                product.setTypes(new HashSet<>(Set.of(new Type(formatType) ) ) );
+                product.setTypes(new HashSet<>(Set.of(new Type(upperCaseType) ) ) );
             }
             //add sector
             Sector sector= sectorService.getSector(productDetails.getSector());
@@ -174,13 +174,23 @@ public class ProductService {
 
     public ProductDetails updateProduct(ProductDetails product){
         if(product.getSector()== null || product.getSector().isEmpty()){
-            log.error("\u001B[35mProduct's sector is empty\u001B[0m");
             throw new ProductException("Product's sector is empty", HttpStatus.BAD_REQUEST);
+        }
+        if(product.getProductType()== null || product.getProductType().isEmpty()){
+            throw new ProductException("Product's type is empty", HttpStatus.BAD_REQUEST);
         }
         try{
             Product toUpdate=productRepository.getReferenceById(product.getId());
             toUpdate.setName(product.getName());
             toUpdate.setDescription(product.getDescription());
+            //update type
+            String upperCaseType=product.getProductType().substring(0, 1).toUpperCase() +
+                    product.getProductType().substring(1).toLowerCase();
+            Type type= typeService.getType(upperCaseType);
+            if(type != null) toUpdate.setTypes(new HashSet<>(Set.of(type) ) );
+            else {
+                toUpdate.setTypes(new HashSet<>(Set.of(new Type(upperCaseType) ) ) );
+            }
             //search sector in the database and add it to the element to be updated
             Sector sector= sectorService.getSector(product.getSector());
             if(sector!=null) toUpdate.setSectors(new HashSet<>(Set.of(sector)));

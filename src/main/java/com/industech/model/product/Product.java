@@ -35,7 +35,7 @@ public class Product {
                           foreignKey = @ForeignKey(name = "sector_id_fk")))
     private Set<Sector> sectors=new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {PERSIST})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {PERSIST,MERGE})
     @JoinTable(name = "product_type",
             joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id",
                     foreignKey = @ForeignKey(name = "product_id_fk")),

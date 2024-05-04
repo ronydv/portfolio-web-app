@@ -1,4 +1,4 @@
-import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Checkbox, ColorMode, Heading, Input, Radio, RadioGroup, Select, Spacer, Stack } from "@chakra-ui/react";
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, Text, AccordionPanel, Heading, Input, Radio, RadioGroup, Spacer, Stack } from "@chakra-ui/react";
 import classes from "./products-panel.module.css";
 import { RiDeleteBinFill as DeleteIcon } from "react-icons/ri";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -10,17 +10,21 @@ type SelectTypeProps= {
     setProduct: React.Dispatch<React.SetStateAction<Product>>;
     error:string
     setError: React.Dispatch<React.SetStateAction<string>>
+    setTypesUrl: React.Dispatch<React.SetStateAction<string>>
+    typesUrl: string
 }
 
-const SelectType =({ product, setProduct, error, setError }:SelectTypeProps) => {
+const SelectType =({ product, setProduct, error, setError, setTypesUrl, typesUrl }:SelectTypeProps) => {
     const axiosPrivate = useInterceptor();
-    const [url, setUrl]=useState("");
-    const {data}=useFetch<Type>("/api/v1/product-management/types");
+    const {data}=useFetch<Type>(typesUrl);
     const [types, setTypes]= useState<Type[]>([]);
+    const [selectedType, setSelectedType] = useState<string>('');
+
 
     const handleRadio = (e: string) => {
         setProduct({ ...product, productType: e });
-        console.log(product);
+        setSelectedType(e);
+        setError("");
     }
     const deleteType = async (type: Type)=>{
         console.log(type);
@@ -36,20 +40,29 @@ const SelectType =({ product, setProduct, error, setError }:SelectTypeProps) => 
         setTypes(data);
     }, [data]);
 
+    useEffect(()=>{
+        setTypesUrl("/api/v1/product-management/types");
+    },[typesUrl]);
+    
+
+
     return (
         <>
-            <Heading as='h2' size='sm' marginRight={10} mb={2}>Product Type</Heading>
+            <Heading as='h2' size='sm' marginRight={10} mb={2}>
+                {error?.includes('type') ? <Text color={'red'}>{error}</Text>: <Text>Product Type</Text> }
+                </Heading>
             <Accordion /* allowToggle={true} */ mt={3}>
                 <AccordionItem>
                     <AccordionButton>
 
                         <Input type="text" placeholder="Add type or select existing type"
+                               defaultValue={product?.productType ? product?.productType: selectedType}
                                onChange={(e)=>{handleRadio(e.target.value)}}/>
                         <AccordionIcon />
                     </AccordionButton>
 
                     <AccordionPanel pb={4} style={{ maxHeight: '200px', overflowY: 'auto' }}>
-                        <RadioGroup defaultValue='2' onChange={(e)=>{handleRadio(e)}}>
+                        <RadioGroup onChange={(e)=>{handleRadio(e)}}>
                             <Stack spacing={1} direction='column'>
                                 {types.map((type, i) => (
                                     <div key={i} style={{ display: 'flex' }}>

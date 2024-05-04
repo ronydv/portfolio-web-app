@@ -35,7 +35,8 @@ public class ProductDetails {
             this.sector= product.getSectors().stream().map(Sector::getName).findFirst().get();
         }
         if(!product.getTypes().isEmpty()){
-            this.productType=product.getTypes().stream().map(Type::getProductType).findFirst().get();
+            this.productType=product.getTypes().stream().map(Type::getProductType)
+                    .findFirst().orElse("null");
         }
     }
     public ProductDetails(Product product,List<CategoryDetails> categories) {
@@ -47,7 +48,8 @@ public class ProductDetails {
             this.sector= product.getSectors().stream().map(Sector::getName).findFirst().get();
         }
         if(!product.getTypes().isEmpty()){
-            this.productType=product.getTypes().stream().map(Type::getProductType).findFirst().get();
+            this.productType=product.getTypes().stream().map(Type::getProductType)
+                    .findFirst().orElse("null");
         }
     }
     public ProductDetails(Product product,
@@ -61,7 +63,8 @@ public class ProductDetails {
             this.sector= product.getSectors().stream().map(Sector::getName).findFirst().get();
         }
         if(!product.getTypes().isEmpty()){
-            this.productType=product.getTypes().stream().map(Type::getProductType).findFirst().get();
+            this.productType=product.getTypes().stream().map(Type::getProductType)
+                    .findFirst().orElse("null");
         }
     }
 

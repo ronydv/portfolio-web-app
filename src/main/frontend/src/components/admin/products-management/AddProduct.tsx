@@ -27,6 +27,7 @@ const AddProduct = () => {
     const [selectedImages, setSelectedImages] = useState<ImageObject[]>([]);//filled in AddImages component
     const [files, setFiles] = useState<File[]>([]);//filled in AddImages component
     const [isLoading, setIsLoading]=useState(false);
+    const [typesUrl, setTypesUrl]=useState("");
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         try {
@@ -43,6 +44,7 @@ const AddProduct = () => {
             });
             setIsLoading(false);
             setFormData(new FormData());//reset formData after submitting
+            setTypesUrl("");//every times this is set to "" a useEffect runs for re-rendering the types in SelectType.tsx
             console.log(response.data);
         } catch (err) {
             setIsLoading(false);
@@ -53,7 +55,7 @@ const AddProduct = () => {
             }
         }
     }
-    
+    //Todo: manage exception for SelectType
     return (
         <div >
             <form onSubmit={handleSubmit}> 
@@ -102,7 +104,9 @@ const AddProduct = () => {
                             <SelectType product={product} 
                                         setProduct={setProduct}
                                         setError={setError}
-                                        error={error}/>
+                                        error={error}
+                                        setTypesUrl={setTypesUrl}
+                                        typesUrl={typesUrl}/>
                         </section>
                     </div>
 

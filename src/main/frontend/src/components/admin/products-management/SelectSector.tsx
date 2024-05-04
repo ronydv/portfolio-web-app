@@ -20,7 +20,7 @@ const SelectSector = ({product,setProduct, error, setError}:SelectSectorProps) =
     return (
         <div style={{marginTop:'3px'}}>
             <Heading as='h3' size='xs' mt={2} mb={2} mr={10}>
-                {error ? <Text color={'red'}>{error}</Text>: <Text>Sector</Text> }
+                {error?.includes('sector') ? <Text color={'red'}>{error}</Text>: <Text>Sector</Text> }
             </Heading>
             <Select placeholder={product?.sector ? product.sector :'Select sector'}
                     onChange={(e)=>{handleSector(e)}}>
