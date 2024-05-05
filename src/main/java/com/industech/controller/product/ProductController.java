@@ -70,4 +70,9 @@ public class ProductController {
     public ResponseEntity<String> deleteProduct(@PathVariable("id") Integer id){
         return new ResponseEntity<>(productService.deleteProduct(id),OK);
     }
+
+    @GetMapping("/products/sector/{sector}")
+    public ResponseEntity<Long> getTotalProductsBySector(@PathVariable("sector")String sector){
+        return new ResponseEntity<>(productService.getTotalProductsBySector(sector),OK);
+    }
 }

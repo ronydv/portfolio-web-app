@@ -28,7 +28,7 @@ public class Main {
 										CustomRepository customRepository,
 										ProductRepository productRepo) {
 		return args -> {
-
+			//System.out.println(productRepo.getTotalBySector("machinery").get());
 		};
 	}
 }

@@ -240,4 +240,10 @@ public class ProductService {
                     throw new ProductException("Product to delete doesn't exists", HttpStatus.NOT_FOUND);
                 });
     }
+
+    public Long getTotalProductsBySector(String sector){
+        if(productRepository.getTotalBySector(sector).isPresent()){
+            return productRepository.getTotalBySector(sector).get();
+        }else throw new ProductException("could not fetch amount by sector",HttpStatus.BAD_REQUEST);
+    }
 }

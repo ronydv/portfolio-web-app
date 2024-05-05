@@ -27,4 +27,10 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
             """, nativeQuery = true)
     Page<Product> searchProducts(@Param("regex") String regex, Pageable pages);
 
+    @Query(value= """
+            SELECT COUNT(p.id) FROM Product p INNER JOIN p.sectors s
+                                                   WHERE s.name = :sector
+            """)
+    Optional<Long> getTotalBySector(@Param("sector") String sector);
+
 }
