@@ -1,4 +1,4 @@
-import { TableContainer, Table, Image, TableCaption, Thead, Tr, Th, Tbody, Td, Tfoot, Tag, Flex, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
+import { TableContainer, Table, Image, TableCaption, Thead, Tr, Th, Tbody, Td, Tag, Flex, Tab, TabList, TabPanels, Tabs } from "@chakra-ui/react";
 import useMatchMedia from "../../../hooks/useMatchMedia";
 import { useEffect, useState } from "react";
 import ResponsivePagination from 'react-responsive-pagination';
@@ -9,11 +9,16 @@ import 'react-responsive-pagination/themes/minimal.css';
 import { useSingleFetch } from "../../../hooks/useSingleFetch";
 import { Link } from "react-router-dom";
 import { useFetch } from "../../../hooks/useFetch";
+import useColorGenerator from "../../../hooks/useColorGenerator";
 
 
 type PaginatedProducts={
     products:Array<Product>;
     totalProducts:number
+}
+type TypeColor={
+    type?:string,
+    color?:string;
 }
 type ProductsTableProps = {
     browse: string;
@@ -21,14 +26,16 @@ type ProductsTableProps = {
 }
 const ProductsTable = ({ browse, setActiveButton }: ProductsTableProps) => {
     const isDesktop = useMatchMedia();
+    const {data:sectors}=useFetch<Sector>("/api/v1/product-management/sector");
+    const {data:types}=useFetch<Type>("/api/v1/product-management/types");
     const [currentPage, setCurrentPage] = useState(1);//only for the pagination gui, not used in the page url
     const pageSize = 4;
     const [url, setUrl] = useState("");
-    const {data:sectors}=useFetch<Sector>("/api/v1/product-management/sector");
     const { data, error } = useSingleFetch<PaginatedProducts>(url);
-    const [paginatedProductsRepository, setPaginatedProducts] = useState<PaginatedProducts>({ products: [], totalProducts: 0 });
+    const [paginatedProducts, setPaginatedProducts] = useState<PaginatedProducts>({ products: [], totalProducts: 0 });
     const [tabIndex, setTabIndex] = useState(0);
-
+    const createColor=useColorGenerator();
+    const [typeColors,setTypeColors]=useState<TypeColor[]>([{}])
     const handlePageChange = (page: number) => setCurrentPage(page);
 
     useEffect(() => {/* update the url state to fetch data with a updated url */
@@ -56,10 +63,33 @@ const ProductsTable = ({ browse, setActiveButton }: ProductsTableProps) => {
         data && setPaginatedProducts(data); 
         error && setPaginatedProducts({products:[{}], totalProducts:0}); 
     }, [data,error]);
+
+    useEffect(() => {// generate random colors but for specific product type to distinct them in the table
+        if (types) {
+            const newTypeColors: TypeColor[] = types.map(type => ({ 
+                            type: type.productType, 
+                            color: createColor() 
+            }));
+            setTypeColors(newTypeColors);
+        }
+    }, [types]);
+
+    const typeTag = (productType: string) => {
+        console.log(typeColors);
+        for(let i=0; i<typeColors.length;i++){
+            if(typeColors[i].type===productType){
+                return (
+                    <Tag key={i} size={'md'} variant='solid' colorScheme={typeColors[i].color}>
+                        {productType}
+                    </Tag>
+                );
+            }
+        }
+    }
     return (
         <div className={classes['table-container']}>
             <ResponsivePagination
-                total={Math.ceil(paginatedProductsRepository.totalProducts / pageSize)}
+                total={Math.ceil(paginatedProducts.totalProducts / pageSize)}
                 current={currentPage}
                 onPageChange={page => handlePageChange(page)}
             />
@@ -76,13 +106,14 @@ const ProductsTable = ({ browse, setActiveButton }: ProductsTableProps) => {
                             <Thead>
                                 <Tr>
                                     <Th pr={isDesktop ? '' : '4px'}>Product</Th>
+                                    {isDesktop && <Th>Type</Th>}
                                     {isDesktop && <Th>Category</Th>}
                                     {isDesktop && <Th>Sector</Th>}
                                     <Th pr={isDesktop ? '' : '4px'} >Action</Th>
                                 </Tr>
                             </Thead>
                             <Tbody>
-                                {paginatedProductsRepository.products?.map((product, i) => (
+                                {paginatedProducts.products?.map((product, i) => (
                                     <Tr key={i}>
                                         <Td pr={isDesktop ? '' : '4px'}>
                                             <Flex direction={'row'} columnGap={1} alignItems={'center'}>
@@ -90,7 +121,8 @@ const ProductsTable = ({ browse, setActiveButton }: ProductsTableProps) => {
                                                 {product.name}
                                             </Flex>
                                         </Td>
-                                        {isDesktop && <Td>{product.categories?.map((category, z) => (<p key={z}>{category.name}</p>))}</Td>}{/* render only if screen is desktop */}
+                                        {isDesktop && <Td>{typeTag(product.productType!)}</Td>}
+                                        {isDesktop && <Td>{product.categories?.map((category, z) => <p key={z}>{category.name}</p>)}</Td>}{/* render only if screen is desktop */}
                                         {isDesktop && <Td>{product.sector}</Td>}
                                         <Td pr={isDesktop ? '' : '4px'}>
                                             <Flex columnGap={4}>

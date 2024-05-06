@@ -5,7 +5,6 @@ import { LiaMicrochipSolid as Automations } from "react-icons/lia";
 import classes from "./products-panel.module.css";
 import useMatchMedia from "../../../hooks/useMatchMedia";
 import { IconType } from "react-icons";
-import { useSingleFetch } from "../../../hooks/useSingleFetch";
 import { useFetch } from "../../../hooks/useFetch";
 import { useEffect, useState } from "react";
 import useInterceptor from "../../../hooks/useInterceptor";
