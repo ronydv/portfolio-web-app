@@ -2,8 +2,8 @@ import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } 
 import './App.css';
 import Layout from './Layout';
 import Home from './components/home/Home';
-import Products from './components/store/products/Products';
-import Services from './components/store/Services';
+import Products from './components/catalog/Catalog';
+import Services from './components/catalog/Catalog';
 import Login from './components/authentication/Login';
 import Signup from './components/authentication/Signup';
 
