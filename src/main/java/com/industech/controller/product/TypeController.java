@@ -21,6 +21,10 @@ public class TypeController {
     public ResponseEntity<List<TypeDetails>> getAllTypes(){
         return new ResponseEntity<>(typeService.getProductTypes(), OK);
     }
+    @GetMapping("/types/{sector}")
+    public ResponseEntity<List<TypeDetails>> getTypesBySector(@PathVariable("sector")String sector){
+        return new ResponseEntity<>(typeService.getTypesBySector(sector), OK);
+    }
 
     @DeleteMapping("/types/{id}")
     public ResponseEntity<String> deleteType(@PathVariable("id") Integer id){

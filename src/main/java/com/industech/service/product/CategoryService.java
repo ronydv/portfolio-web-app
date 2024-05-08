@@ -1,9 +1,11 @@
 package com.industech.service.product;
 
 import com.industech.dto.product.CategoryDetails;
+import com.industech.dto.product.TypeDetails;
 import com.industech.exception.ProductException;
 import com.industech.model.product.Category;
 import com.industech.model.product.ProductCategory;
+import com.industech.model.product.Type;
 import com.industech.repository.product.CategoryRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,17 @@ public class CategoryService {
         if (categories.isEmpty()) {
             log.error("No categories found -> getCategories()");
             throw new ProductException("No categories found", HttpStatus.NOT_FOUND);
+        } else {
+            return categories.stream()
+                    .map(CategoryDetails::new)
+                    .collect(Collectors.toList());
+        }
+    }
+    public List<CategoryDetails> getCategoriesBySector(String sector){
+        List<Category> categories = categoryRepository.findCategoriesBySector(sector);
+        if(categories.isEmpty()){
+            log.error("No categories found in sector: "+sector+" -> getCategoriesBySector()");
+            throw new ProductException("No categories found in sector: "+sector, HttpStatus.NOT_FOUND);
         } else {
             return categories.stream()
                     .map(CategoryDetails::new)

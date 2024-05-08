@@ -56,13 +56,13 @@ const SelectType =({ product, setProduct, error, setError, setTypesUrl, typesUrl
                     <AccordionButton>
 
                         <Input type="text" placeholder="Add type or select existing type"
-                               defaultValue={product?.productType ? product?.productType: selectedType}
+                               value={product?.productType ? product?.productType: selectedType}
                                onChange={(e)=>{handleRadio(e.target.value)}}/>
                         <AccordionIcon />
                     </AccordionButton>
 
                     <AccordionPanel pb={4} style={{ maxHeight: '200px', overflowY: 'auto' }}>
-                        <RadioGroup onChange={(e)=>{handleRadio(e)}}>
+                        <RadioGroup onChange={(e)=>{handleRadio(e)}} value={selectedType}>
                             <Stack spacing={1} direction='column'>
                                 {types.map((type, i) => (
                                     <div key={i} style={{ display: 'flex' }}>

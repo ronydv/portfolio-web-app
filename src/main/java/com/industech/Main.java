@@ -1,11 +1,9 @@
 package com.industech;
 
-import com.industech.repository.product.CategoryRepository;
-import com.industech.repository.product.CustomRepository;
-import com.industech.repository.product.ProductRepository;
-import com.industech.repository.product.SectorRepository;
+import com.industech.repository.product.*;
 import com.industech.service.product.CategoryService;
 import com.industech.service.product.ProductService;
+import com.industech.service.product.TypeService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -26,9 +24,11 @@ public class Main {
 										CategoryRepository categoryRepo,
 										SectorRepository sectorRepository,
 										CustomRepository customRepository,
+										TypeRepository typeRepository,
+										TypeService typeService,
 										ProductRepository productRepo) {
 		return args -> {
-			//System.out.println(productRepo.getTotalBySector("machinery").get());
+			//System.out.println(categoryService.getCategoriesBySector("designs"));
 		};
 	}
 }

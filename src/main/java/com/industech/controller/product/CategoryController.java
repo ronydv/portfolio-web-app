@@ -1,6 +1,7 @@
 package com.industech.controller.product;
 
 import com.industech.dto.product.CategoryDetails;
+import com.industech.dto.product.TypeDetails;
 import com.industech.service.product.CategoryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,10 @@ public class CategoryController {
     @GetMapping("/categories")
     public ResponseEntity<List<CategoryDetails>> getCategories(){
         return new ResponseEntity<>(categoryService.getCategories(),OK);
+    }
+    @GetMapping("/categories/{sector}")
+    public ResponseEntity<List<CategoryDetails>> getCategoriesBySector(@PathVariable("sector")String sector){
+        return new ResponseEntity<>(categoryService.getCategoriesBySector(sector), OK);
     }
 
     @PostMapping("/categories")

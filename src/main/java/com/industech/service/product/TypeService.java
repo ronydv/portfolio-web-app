@@ -1,11 +1,8 @@
 package com.industech.service.product;
 
-import com.industech.dto.product.SectorDetails;
 import com.industech.dto.product.TypeDetails;
 import com.industech.exception.ProductException;
 import com.industech.model.product.Product;
-import com.industech.model.product.ProductCategory;
-import com.industech.model.product.Sector;
 import com.industech.model.product.Type;
 import com.industech.repository.product.TypeRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +33,18 @@ public class TypeService {
         if (types.isEmpty()) {
             log.error("No product types found -> getproductTypes()");
             throw new ProductException("No product types found", HttpStatus.NOT_FOUND);
+        } else {
+            return types.stream()
+                    .map(type -> new TypeDetails(type.getId(),type.getProductType()))
+                    .collect(Collectors.toList());
+        }
+    }
+
+    public List<TypeDetails> getTypesBySector(String sector){
+        List<Type> types = typeRepository.findTypesBySector(sector);
+        if(types.isEmpty()){
+            log.error("No types found in sector: "+sector+" -> getTypesBySector()");
+            throw new ProductException("No types found in sector: "+sector, HttpStatus.NOT_FOUND);
         } else {
             return types.stream()
                     .map(type -> new TypeDetails(type.getId(),type.getProductType()))

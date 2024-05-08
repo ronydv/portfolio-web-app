@@ -75,7 +75,6 @@ const ProductsTable = ({ browse, setActiveButton }: ProductsTableProps) => {
     }, [types]);
 
     const typeTag = (productType: string) => {
-        console.log(typeColors);
         for(let i=0; i<typeColors.length;i++){
             if(typeColors[i].type===productType){
                 return (
