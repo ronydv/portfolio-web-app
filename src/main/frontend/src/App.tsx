@@ -2,7 +2,7 @@ import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } 
 import './App.css';
 import Layout from './Layout';
 import Home from './components/home/Home';
-import Products from './components/catalog/Catalog';
+import Catalog from './components/catalog/Catalog';
 import Services from './components/catalog/Catalog';
 import Login from './components/authentication/Login';
 import Signup from './components/authentication/Signup';
@@ -40,7 +40,7 @@ function App() {
 						<Route path='add-product'element={<AddProduct/>}/>
 						<Route path='modify-product/:id'element={<ModifyProduct/>}/>
 					</Route>
-					<Route path='/products' element={<Products />} />
+					<Route path='/products' element={<Catalog />} />
 					<Route path='/services' element={<Services />} />
 				</Route>
 			</Route>

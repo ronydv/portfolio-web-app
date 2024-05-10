@@ -1,30 +1,54 @@
-import { Stack, Checkbox, Divider, Text } from '@chakra-ui/react';
+import { Stack, Checkbox, Divider, Text, useColorMode, Flex } from '@chakra-ui/react';
 import classes from './catalog.module.css';
 import { useFetch } from '../../hooks/useFetch';
+import { useEffect, useState } from 'react';
 
+type CatalogFilterProps={
+    sector: string;
+}
+const CatalogFilter = ({sector}:CatalogFilterProps) => {//componnet to get categories and product types by sector
+    const { colorMode } = useColorMode();
+    const [categoryUrl, setCategoryUrl]=useState<string>("");
+    const [typeUrl, setTypeUrl]=useState<string>("");
+    const {data:categories}=useFetch<Category>(categoryUrl);
+    const {data:types}=useFetch<Type>(typeUrl);
 
-
-const CatalogFilter = () => {
-    const {data:types}=useFetch<Type>("/api/v1/product-management/types/designs");
-    const {data:categories}=useFetch<Category>("/api/v1/product-management/categories/designs");
+    useEffect(()=>{//set url with sector everytime the sector state is modified in ProductGrid.tsx
+        setCategoryUrl(`/api/v1/product-management/categories/${sector}`);
+        setTypeUrl(`/api/v1/product-management/types/${sector}`);
+    },[sector,categoryUrl,typeUrl]);
+    
     return (
-        <div className={classes.filter}>
+        
+        <div className={`${classes.filter} ${colorMode === 'light' ? classes.light : classes.dark}`}>
             {/* categories sector */}
-            <Text mb={2} fontSize='lg'>Categories: </Text>
-            <Stack mb={3}>
-                <Checkbox>All products</Checkbox>
+            <Flex direction={'row'}>
+                <div className={classes['filter-title-border']} />
+                <Text fontSize='lg'>Categories: </Text>
+            </Flex>
+            <Stack mb={3} paddingLeft={5}>
                 {categories.map((category, i) => (
-                    <Checkbox key={i} value={category.name}>{category.name}</Checkbox>
+                    <Checkbox
+                        key={i}
+                        value={category.name}
+                        onChange={(e) => console.log(e.target.value)}>{category.name}
+                    </Checkbox>
                 ))}
             </Stack>
 
-            <Divider />
             {/* product type sector */}
-            <Text mt={2} mb={2} fontSize='lg'>Type: </Text>
-            <Stack mb={3}>
-                <Checkbox>All products</Checkbox>
+            <Flex direction={'row'}>
+                <div className={classes['filter-title-border']} />
+                <Text fontSize='lg'>Types: </Text>
+            </Flex>
+            <Stack mb={3} paddingLeft={5}>
                 {types.map((type, i) => (
-                    <Checkbox key={i} value={type.productType}>{type.productType}</Checkbox>
+                    <Checkbox
+                        key={i}
+                        value={type.productType}
+                        onChange={(e) => console.log(e.target.value)}
+                    >{type.productType}
+                    </Checkbox>
                 ))}
             </Stack>
 

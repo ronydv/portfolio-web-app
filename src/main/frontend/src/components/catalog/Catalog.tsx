@@ -2,17 +2,19 @@ import { Button, Checkbox, Flex, Text, Input, InputGroup, InputRightElement, Sta
 import classes from './catalog.module.css';
 import { IoIosSearch as SearchIcon } from "react-icons/io";
 import CatalogFilter from './CatalogFilter';
+import ProductsGrid from './ProductsGrid';
+import { useState } from 'react';
 
 
-const Products = () => {
+const Catalog = () => {
     const buttonBrands = useColorModeValue('gray.600','gray.400');
-    
+    const [sector,setSector]=useState<string>("");
     return ( 
         <div className={classes.container}>
-            <CatalogFilter/>
+            <CatalogFilter sector={sector}/>
 
-            <div style={{paddingLeft:20}}>
-                <InputGroup maxWidth={'60%'} mt={5} mb={5}>
+            <div className={classes['right-container']}>
+                <InputGroup maxWidth={'60%'} mb={5}>
                     <Input type='text' placeholder='Search Product' />
                     <InputRightElement  >
                         <SearchIcon className={classes['search-icon']} />
@@ -20,11 +22,11 @@ const Products = () => {
                 </InputGroup>
 
                 <section>
-                        products list
+                    <ProductsGrid setSector={setSector} />
                 </section>
             </div>
         </div>
      );
 }
  
-export default Products;
+export default Catalog;

@@ -29,7 +29,7 @@ export const useFetch = <T>(url: string): FetchResult<T> => {
                 }
             } catch (error: unknown) {
                 if (axios.isAxiosError(error)) {
-                    axios.isCancel(error) && console.log("fetch:" + error.message + ", unmount component");
+                    /* axios.isCancel(error) && console.log("fetch:" + error.message + ", unmount component"); */
                 } else {
                     //if the data is not found or there is another kind of error, set the template loading to false and replace it with error
                     setIsLoading(false);

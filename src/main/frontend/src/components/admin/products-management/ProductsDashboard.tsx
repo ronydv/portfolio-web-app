@@ -1,11 +1,10 @@
-import { Box, Button, Card, CardBody, CardHeader, Flex, Heading, Input, InputGroup, InputLeftElement, InputRightElement, Spacer, Text } from "@chakra-ui/react";
+import {Button, Flex, Input, InputGroup, InputRightElement, Spacer } from "@chakra-ui/react";
 import { IoIosSearch as SearchIcon } from "react-icons/io";
 import { FaCartPlus as AddProductIcon } from "react-icons/fa";
 import classes from "./products-panel.module.css";
 import { Link } from "react-router-dom";
 import StatsCards from "./StatsCards";
 import ProductsTable from "./ProductsTable";
-import useMatchMedia from "../../../hooks/useMatchMedia";
 import { useRef, useState } from "react";
 type ActiveButtonProps={
     setActiveButton?: React.Dispatch<React.SetStateAction<string>>
