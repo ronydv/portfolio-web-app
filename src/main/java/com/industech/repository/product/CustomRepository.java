@@ -26,14 +26,6 @@ public class CustomRepository {
             """;
         Query queryIds = entityManager.createQuery(productsBySector, Integer.class)
                 .setParameter("sector", sector);
-        String countRecords = """
-                   SELECT COUNT(p.id) FROM Product p
-                        LEFT JOIN p.sectors s
-                            WHERE s.name = :sector
-        """;
-        Query queryAmount=entityManager.createQuery(countRecords,Long.class)
-                .setParameter("sector",sector);
-        long total=(long)queryAmount.getSingleResult();
         int pageNumber =pageRequest.getPageNumber();
         int pageSize = pageRequest.getPageSize();
         queryIds.setFirstResult((pageNumber) * pageSize);
@@ -48,6 +40,64 @@ public class CustomRepository {
         """;
         Query queryProducts=entityManager.createQuery(products,Product.class)
                 .setParameter("productIds",productIds);
+
+        String countRecords = """
+                   SELECT COUNT(p.id) FROM Product p
+                        LEFT JOIN p.sectors s
+                            WHERE s.name = :sector
+        """;
+        Query queryAmount=entityManager.createQuery(countRecords,Long.class)
+                .setParameter("sector",sector);
+        long total=(long)queryAmount.getSingleResult();
+        return new ProductsBySector(new ArrayList<Product>(queryProducts.getResultList()),total);
+    }
+
+    public ProductsBySector findProductsBySectorCategoriesAndTypes(String sector,
+                                                                   List<String>categories,
+                                                                   List<String>types,
+                                                                   Pageable pageRequest) {
+        String productsBySectorCategoryAndType = """
+            SELECT p.id FROM Product p LEFT JOIN p.sectors s
+                                   LEFT JOIN p.productCategories pc
+                                   LEFT JOIN pc.category c
+                                   LEFT JOIN p.types t
+                                        WHERE s.name = :sector
+                                          AND (COALESCE(:categories) IS NULL OR c.name IN :categories)
+                                          AND (COALESCE(:types) IS NULL OR t.productType IN :types)
+            """;
+        Query queryIds = entityManager.createQuery(productsBySectorCategoryAndType, Integer.class)
+                .setParameter("sector",sector)
+                .setParameter("categories",categories)
+                .setParameter("types",types);
+        int pageNumber =pageRequest.getPageNumber();
+        int pageSize = pageRequest.getPageSize();
+        queryIds.setFirstResult((pageNumber) * pageSize);
+        queryIds.setMaxResults(pageSize);
+
+        List<Long> productIds=queryIds.getResultList();
+        String products = """
+                    SELECT p FROM Product p
+                        LEFT JOIN FETCH p.productCategories
+                        LEFT JOIN FETCH p.images
+                            WHERE p.id IN :productIds
+        """;
+        Query queryProducts=entityManager.createQuery(products,Product.class)
+                .setParameter("productIds",productIds);
+
+        String countRecords = """
+            SELECT COUNT(p.id) FROM Product p LEFT JOIN p.sectors s
+                                   LEFT JOIN p.productCategories pc
+                                   LEFT JOIN pc.category c
+                                   LEFT JOIN p.types t
+                                        WHERE s.name = :sector
+                                          AND (COALESCE(:categories) IS NULL OR c.name IN :categories)
+                                          AND (COALESCE(:types) IS NULL OR t.productType IN :types)
+            """;
+        Query queryAmount=entityManager.createQuery(countRecords,Long.class)
+                .setParameter("sector",sector)
+                .setParameter("categories",categories)
+                .setParameter("types",types);
+        long total=(long)queryAmount.getSingleResult();
         return new ProductsBySector(new ArrayList<Product>(queryProducts.getResultList()),total);
     }
 }

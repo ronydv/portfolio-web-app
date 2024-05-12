@@ -12,10 +12,6 @@ import { useFetch } from "../../../hooks/useFetch";
 import useColorGenerator from "../../../hooks/useColorGenerator";
 
 
-type PaginatedProducts={
-    products:Array<Product>;
-    totalProducts:number
-}
 type TypeColor={
     type?:string,
     color?:string;

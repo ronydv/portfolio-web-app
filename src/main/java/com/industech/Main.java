@@ -8,7 +8,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Transactional
 @SpringBootApplication
@@ -28,7 +32,20 @@ public class Main {
 										TypeService typeService,
 										ProductRepository productRepo) {
 		return args -> {
-			//System.out.println(categoryService.getCategoriesBySector("designs"));
+			List<String> categories = new ArrayList<>();
+			/*categories.add("Cat-a");*/
+			List<String> types = new ArrayList<>();
+			types.add("Type 1");
+/*			System.out.println("is categories empty? "+categories.isEmpty());
+
+			System.out.println(productRepo.findProductsBySectorCategoriesAndTypes("designs",
+					categories.isEmpty()  ? null:categories,
+					types.isEmpty() ? null:types));*/
+
+			PageRequest pageRequest = PageRequest.of(0, 4);
+			System.out.println(customRepository.findProductsBySectorCategoriesAndTypes("designs",
+					categories.isEmpty()  ? null:categories,
+					types.isEmpty() ? null:types,pageRequest));
 		};
 	}
 }

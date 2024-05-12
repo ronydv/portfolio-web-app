@@ -81,9 +81,9 @@ public class Product {
                 +"\tproduct name: "+name+"\n"
                 +"\tsector: "+sectors+"\n"
                 +"\tproduct type: "+types+"\n"
-/*                +"\tcategories: "+productCategories.stream()
+                +"\tcategories: "+productCategories.stream()
                                     .map(ProductCategory::getCategory)
-                                    .toList()+"\n"*/
+                                    .toList()+"\n"
                 +"}";
     }
 }

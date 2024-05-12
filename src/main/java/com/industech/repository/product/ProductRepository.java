@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -32,5 +34,21 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
                                                    WHERE s.name = :sector
             """)
     Optional<Long> getTotalBySector(@Param("sector") String sector);
+
+
+    @Query("""
+        SELECT DISTINCT p FROM Product p JOIN p.sectors s
+                                         LEFT JOIN FETCH p.productCategories pc
+                                         LEFT JOIN pc.category c
+                                         LEFT JOIN p.types t
+                                            WHERE s.name = :sector
+                                            AND (:categories IS NULL OR c.name IN :categories)
+                                            AND (:types IS NULL OR t.productType IN :types)
+        """)
+    List<Product> findProductsBySectorCategoriesAndTypes(@Param("sector") String sector,
+                                                         @Param("categories") List<String> categories,
+                                                         @Param("types") List<String> types);
+
+
 
 }

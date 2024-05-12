@@ -9,9 +9,14 @@ import { useState } from 'react';
 const Catalog = () => {
     const buttonBrands = useColorModeValue('gray.600','gray.400');
     const [sector,setSector]=useState<string>("");
+    const [selectedCategories, setSelectedCategories]=useState<string[]>([]);
+    const [selectedTypes, setSelectedTypes]=useState<string[]>([]);
+    
     return ( 
         <div className={classes.container}>
-            <CatalogFilter sector={sector}/>
+            <CatalogFilter sector={sector}
+                           setSelectedCategories={setSelectedCategories}
+                           setSelectedTypes={setSelectedTypes}/>
 
             <div className={classes['right-container']}>
                 <InputGroup maxWidth={'60%'} mb={5}>
@@ -22,7 +27,9 @@ const Catalog = () => {
                 </InputGroup>
 
                 <section>
-                    <ProductsGrid setSector={setSector} />
+                    <ProductsGrid setSector={setSector}
+                                  selectedCategories={selectedCategories}
+                                  selectedTypes={selectedTypes}/>
                 </section>
             </div>
         </div>

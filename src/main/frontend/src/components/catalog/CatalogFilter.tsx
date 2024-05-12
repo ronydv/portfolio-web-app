@@ -1,22 +1,41 @@
 import { Stack, Checkbox, Divider, Text, useColorMode, Flex } from '@chakra-ui/react';
 import classes from './catalog.module.css';
 import { useFetch } from '../../hooks/useFetch';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 type CatalogFilterProps={
     sector: string;
+    setSelectedCategories: React.Dispatch<React.SetStateAction<string[]>>;
+    setSelectedTypes: React.Dispatch<React.SetStateAction<string[]>>;
 }
-const CatalogFilter = ({sector}:CatalogFilterProps) => {//componnet to get categories and product types by sector
+//componnet to get categories and product types by sector
+const CatalogFilter = ({sector, setSelectedCategories, setSelectedTypes}:CatalogFilterProps) => {
     const { colorMode } = useColorMode();
     const [categoryUrl, setCategoryUrl]=useState<string>("");
     const [typeUrl, setTypeUrl]=useState<string>("");
     const {data:categories}=useFetch<Category>(categoryUrl);
     const {data:types}=useFetch<Type>(typeUrl);
 
+
     useEffect(()=>{//set url with sector everytime the sector state is modified in ProductGrid.tsx
         setCategoryUrl(`/api/v1/product-management/categories/${sector}`);
         setTypeUrl(`/api/v1/product-management/types/${sector}`);
     },[sector,categoryUrl,typeUrl]);
+
+    const handleCategoriesCheckbox=(e: ChangeEvent<HTMLInputElement>)=>{
+        const { value, checked } = e.target;
+        setSelectedCategories((prev) => {
+            if(checked) return [...prev, value];
+            else return prev.filter((category) => category !== value );
+        });
+    }
+    const handleTypesCheckbox=(e: ChangeEvent<HTMLInputElement>)=>{
+        const { value, checked } = e.target;
+        setSelectedTypes((prev) => {
+            if(checked) return [...prev, value];
+            else return prev.filter((type) => type !== value );
+        });
+    }
     
     return (
         
@@ -31,7 +50,7 @@ const CatalogFilter = ({sector}:CatalogFilterProps) => {//componnet to get categ
                     <Checkbox
                         key={i}
                         value={category.name}
-                        onChange={(e) => console.log(e.target.value)}>{category.name}
+                        onChange={(e) => handleCategoriesCheckbox(e)}>{category.name}
                     </Checkbox>
                 ))}
             </Stack>
@@ -46,7 +65,7 @@ const CatalogFilter = ({sector}:CatalogFilterProps) => {//componnet to get categ
                     <Checkbox
                         key={i}
                         value={type.productType}
-                        onChange={(e) => console.log(e.target.value)}
+                        onChange={(e) => handleTypesCheckbox(e)}
                     >{type.productType}
                     </Checkbox>
                 ))}

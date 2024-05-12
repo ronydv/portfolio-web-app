@@ -24,3 +24,7 @@ type Type={
     id?:number;
     productType?:string;
 }
+type PaginatedProducts={
+    products:Array<Product>;
+    totalProducts:number
+}
