@@ -32,20 +32,14 @@ public class Main {
 										TypeService typeService,
 										ProductRepository productRepo) {
 		return args -> {
-			List<String> categories = new ArrayList<>();
-			/*categories.add("Cat-a");*/
+/*			List<String> categories = new ArrayList<>();
+			categories.add("Cat-b");
 			List<String> types = new ArrayList<>();
-			types.add("Type 1");
-/*			System.out.println("is categories empty? "+categories.isEmpty());
+			types.add("Type 2");
+*//*			System.out.println("is categories empty? "+categories.isEmpty());*//*
 
-			System.out.println(productRepo.findProductsBySectorCategoriesAndTypes("designs",
-					categories.isEmpty()  ? null:categories,
-					types.isEmpty() ? null:types));*/
-
-			PageRequest pageRequest = PageRequest.of(0, 4);
-			System.out.println(customRepository.findProductsBySectorCategoriesAndTypes("designs",
-					categories.isEmpty()  ? null:categories,
-					types.isEmpty() ? null:types,pageRequest));
+			System.out.println(productService.getProductsByCategoriesAndTypes(1,4,"designs",
+					categories,types));*/
 		};
 	}
 }

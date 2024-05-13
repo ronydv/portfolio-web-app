@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
@@ -35,7 +36,18 @@ public class ProductController {
     public ResponseEntity<PaginatedProducts> getAllProductsBySector(@PathVariable("page") Integer page,
                                                                   @PathVariable("pageSize") Integer pageSize,
                                                                   @PathVariable("sector") String sector){
-        return new ResponseEntity<>(productService.getAllProductsBySector(page,pageSize,sector), OK);
+        return new ResponseEntity<>(productService.getProductsBySector(page,pageSize,sector), OK);
+    }
+    @GetMapping("/products/{page}/{pageSize}/sector/{sector}/filter/{categories}/{types}")
+    public ResponseEntity<PaginatedProducts> getProductsByCategoriesAndTypes(@PathVariable("page") Integer page,
+                                                                    @PathVariable("pageSize") Integer pageSize,
+                                                                    @PathVariable("sector") String sector,
+                                                                    @PathVariable("categories")List<String>categories,
+                                                                    @PathVariable("types") List<String>types){
+        if (categories.get(0).contains("null")) categories = Collections.emptyList();
+        if (types.get(0).contains("null")) types = Collections.emptyList();
+        return new ResponseEntity<>(productService.
+                getProductsByCategoriesAndTypes(page,pageSize,sector,categories,types), OK);
     }
 
     @GetMapping("/products/{words}/{page}/{pageSize}")

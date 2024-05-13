@@ -21,18 +21,24 @@ const ProductsGrid = ({setSector, selectedCategories, selectedTypes}:ProductsGri
     const [paginatedProducts, setPaginatedProducts] = useState<PaginatedProducts>({ products: [], totalProducts: 0 });
 
     const filter =(sector:string)=>{
-        if(selectedCategories.length === 0 && selectedTypes.length === 0){
-            console.log("fetch products without filtering in sector: ",sector);
-            setUrl(`/api/v1/product-management/products/${currentPage}/${pageSize}/sector/${sector}`);
-        }else {
-            selectedCategories.length > 0 && console.log("filtering products by categories in sector: ",sector);
-            selectedTypes.length > 0 && console.log("filtering products by types in sector: ",sector);
+        switch (true) {
+            case selectedCategories.length > 0 && selectedTypes.length === 0:
+                console.log("filtering products by categories");
+                setUrl(`/api/v1/product-management/products/${currentPage}/${pageSize}/sector/${sector}/filter/${selectedCategories}/null`);
+                break;
+            case selectedCategories.length === 0 && selectedTypes.length > 0:
+                console.log("filtering products by types");
+                setUrl(`/api/v1/product-management/products/${currentPage}/${pageSize}/sector/${sector}/filter/null/${selectedTypes}`);
+                break;
+            case selectedCategories.length > 0 && selectedTypes.length > 0:
+                console.log("filtering products by categories and types: ",selectedCategories,selectedTypes);
+                setUrl(`/api/v1/product-management/products/${currentPage}/${pageSize}/sector/${sector}/filter/${selectedCategories}/${selectedTypes}`);
+                break;
+            default:
+                console.log("fetch products without filtering");
+                setUrl(`/api/v1/product-management/products/${currentPage}/${pageSize}/sector/${sector}`);
         }
     }
-    //array of categories and types to add in the endpoint to set in a sql query in the backend
-    useEffect(() => {
-        console.log("add in the endpoint to set in a sql. ", selectedCategories, selectedTypes);
-    }, [selectedCategories, selectedTypes]);
 
     useEffect(()=>{//fetch data according to the selected tab, categories or types
         sectors.forEach((sector, i)=>{

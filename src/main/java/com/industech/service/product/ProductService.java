@@ -11,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
@@ -58,11 +57,42 @@ public class ProductService {
         }
     }
 
-    public PaginatedProducts getAllProductsBySector(Integer page, Integer pageSize, String sector) {
+    public PaginatedProducts getProductsBySector(Integer page, Integer pageSize, String sector) {
         PageRequest pageRequest = PageRequest.of(page - 1, pageSize);
         ProductsBySector productsBySector = customRepository.findProductsBySector(sector, pageRequest);
         if (productsBySector.products().isEmpty()) {
             log.error("getAllProductsBySector() No products found for sector: {}", sector);
+            throw new ProductException("No products found", HttpStatus.NOT_FOUND);
+        }
+        List<ProductDetails>products=productsBySector.products()
+                .stream()
+                .map(found -> {
+                    ProductDetails product = new ProductDetails(found);
+                    found.getProductCategories().forEach(item -> {
+                        product.addCategory(new CategoryDetails(item.getCategory()));
+                    });
+                    if (!found.getImages().isEmpty()) {
+                        for (Image image : found.getImages()) {
+                            product.addImage(new ImageDetails(image));
+                        }
+                    }
+                    return product;
+                }).collect(Collectors.toList());
+        return new PaginatedProducts(products, (int) productsBySector.total());
+    }
+
+    public PaginatedProducts getProductsByCategoriesAndTypes(Integer page,
+                                                             Integer pageSize, String sector,
+                                                             List<String>categories, List<String>types) {
+
+        PageRequest pageRequest = PageRequest.of(page - 1, pageSize);
+        ProductsBySector productsBySector = customRepository
+                .findProductsByCategoriesAndTypes(sector,
+                        categories== null || categories.isEmpty() ? null:categories,
+                        types== null || types.isEmpty() ? null:types, pageRequest);
+
+        if (productsBySector.products().isEmpty()) {
+            log.error("getProductsByCategoriesAndTypes(), No products found for sector: {}", sector);
             throw new ProductException("No products found", HttpStatus.NOT_FOUND);
         }
         List<ProductDetails>products=productsBySector.products()

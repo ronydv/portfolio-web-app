@@ -52,11 +52,11 @@ public class CustomRepository {
         return new ProductsBySector(new ArrayList<Product>(queryProducts.getResultList()),total);
     }
 
-    public ProductsBySector findProductsBySectorCategoriesAndTypes(String sector,
-                                                                   List<String>categories,
-                                                                   List<String>types,
-                                                                   Pageable pageRequest) {
-        String productsBySectorCategoryAndType = """
+    public ProductsBySector findProductsByCategoriesAndTypes(String sector,
+                                                             List<String>categories,
+                                                             List<String>types,
+                                                             Pageable pageRequest) {
+        String productsByCategoriesAndTypes = """
             SELECT p.id FROM Product p LEFT JOIN p.sectors s
                                    LEFT JOIN p.productCategories pc
                                    LEFT JOIN pc.category c
@@ -65,7 +65,7 @@ public class CustomRepository {
                                           AND (COALESCE(:categories) IS NULL OR c.name IN :categories)
                                           AND (COALESCE(:types) IS NULL OR t.productType IN :types)
             """;
-        Query queryIds = entityManager.createQuery(productsBySectorCategoryAndType, Integer.class)
+        Query queryIds = entityManager.createQuery(productsByCategoriesAndTypes, Integer.class)
                 .setParameter("sector",sector)
                 .setParameter("categories",categories)
                 .setParameter("types",types);
