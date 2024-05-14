@@ -35,10 +35,9 @@ public class Main {
 /*			List<String> categories = new ArrayList<>();
 			categories.add("Cat-b");
 			List<String> types = new ArrayList<>();
-			types.add("Type 2");
-*//*			System.out.println("is categories empty? "+categories.isEmpty());*//*
+			types.add("Type 4");
 
-			System.out.println(productService.getProductsByCategoriesAndTypes(1,4,"designs",
+			System.out.println(productService.getProductsByCategoriesAndTypes(1,22,"automations",
 					categories,types));*/
 		};
 	}

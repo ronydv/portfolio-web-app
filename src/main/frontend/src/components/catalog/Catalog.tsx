@@ -3,33 +3,54 @@ import classes from './catalog.module.css';
 import { IoIosSearch as SearchIcon } from "react-icons/io";
 import CatalogFilter from './CatalogFilter';
 import ProductsGrid from './ProductsGrid';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 
 const Catalog = () => {
     const buttonBrands = useColorModeValue('gray.600','gray.400');
-    const [sector,setSector]=useState<string>("");
+    const [browse, setBrowse] = useState('');
     const [selectedCategories, setSelectedCategories]=useState<string[]>([]);
     const [selectedTypes, setSelectedTypes]=useState<string[]>([]);
+    const inputRef = useRef<HTMLInputElement>(null);
+    const [sector,setSector]=useState<string>("");
+
+    const handleSearch = ()=>{
+        const inputValue = inputRef.current!.value;
+        if(inputValue !== undefined){
+            setBrowse(inputValue);
+        }
+    }
+    const handleChangeSearch=(e: React.ChangeEvent<HTMLInputElement>)=>{
+        if(e.target.value === ""){
+            setBrowse(e.target.value);
+        }
+    }
     
     return ( 
         <div className={classes.container}>
             <CatalogFilter sector={sector}
+                           selectedCategories={selectedCategories}
+                           selectedTypes={selectedTypes}
                            setSelectedCategories={setSelectedCategories}
                            setSelectedTypes={setSelectedTypes}/>
 
             <div className={classes['right-container']}>
                 <InputGroup maxWidth={'60%'} mb={5}>
-                    <Input type='text' placeholder='Search Product' />
+                    <Input type='text' placeholder='Search Product' ref={inputRef}
+                        onChange={(e) => handleChangeSearch(e)}
+                        onKeyDown={(e) => e.key === "Enter" && handleSearch()} />
                     <InputRightElement  >
                         <SearchIcon className={classes['search-icon']} />
                     </InputRightElement>
                 </InputGroup>
 
                 <section>
-                    <ProductsGrid setSector={setSector}
+                    <ProductsGrid browse={browse}
+                                  setSector={setSector}
                                   selectedCategories={selectedCategories}
-                                  selectedTypes={selectedTypes}/>
+                                  selectedTypes={selectedTypes}
+                                  setSelectedCategories={setSelectedCategories}
+                                  setSelectedTypes={setSelectedTypes}/>
                 </section>
             </div>
         </div>

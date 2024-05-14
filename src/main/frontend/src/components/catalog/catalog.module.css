@@ -8,7 +8,7 @@
 /* styling for the left panel that contains the filter component  */
 .filter{
     border-radius: 5px 5px 0 0;
-    padding-top: 20px;
+    padding-top: 40px;
     margin-top: 30px;
     display: flex;
     flex-direction: column;

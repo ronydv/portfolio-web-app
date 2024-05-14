@@ -92,8 +92,9 @@ public class ProductService {
                         types== null || types.isEmpty() ? null:types, pageRequest);
 
         if (productsBySector.products().isEmpty()) {
-            log.error("getProductsByCategoriesAndTypes(), No products found for sector: {}", sector);
-            throw new ProductException("No products found", HttpStatus.NOT_FOUND);
+            log.error("No products found for sector: {} filtering by: {},{}", sector,categories,types);
+            throw new ProductException("No products found sector: {"+sector+"} filtering by:" +
+                    " {"+categories+"},{"+types+"}", HttpStatus.NOT_FOUND);
         }
         List<ProductDetails>products=productsBySector.products()
                 .stream()

@@ -57,7 +57,7 @@ public class CustomRepository {
                                                              List<String>types,
                                                              Pageable pageRequest) {
         String productsByCategoriesAndTypes = """
-            SELECT p.id FROM Product p LEFT JOIN p.sectors s
+            SELECT DISTINCT p.id FROM Product p LEFT JOIN p.sectors s
                                    LEFT JOIN p.productCategories pc
                                    LEFT JOIN pc.category c
                                    LEFT JOIN p.types t
@@ -85,7 +85,7 @@ public class CustomRepository {
                 .setParameter("productIds",productIds);
 
         String countRecords = """
-            SELECT COUNT(p.id) FROM Product p LEFT JOIN p.sectors s
+            SELECT COUNT(DISTINCT p.id) FROM Product p LEFT JOIN p.sectors s
                                    LEFT JOIN p.productCategories pc
                                    LEFT JOIN pc.category c
                                    LEFT JOIN p.types t

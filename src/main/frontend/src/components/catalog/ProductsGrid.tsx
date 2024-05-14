@@ -6,11 +6,15 @@ import { useEffect, useState } from "react";
 import { useFetch } from "../../hooks/useFetch";
 import { useSingleFetch } from "../../hooks/useSingleFetch";
 type ProductsGridProps={
+    browse: string;
     setSector: React.Dispatch<React.SetStateAction<string>>
     selectedCategories: string[];
     selectedTypes: string[];
+    setSelectedCategories: React.Dispatch<React.SetStateAction<string[]>>;
+    setSelectedTypes: React.Dispatch<React.SetStateAction<string[]>>;
 }
-const ProductsGrid = ({setSector, selectedCategories, selectedTypes}:ProductsGridProps) => {
+const ProductsGrid = ({browse, setSector, selectedCategories, selectedTypes,
+                        setSelectedCategories, setSelectedTypes}:ProductsGridProps) => {
     const {data:sectors}=useFetch<Sector>("/api/v1/product-management/sector");
     const [tabIndex, setTabIndex] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);//only for the pagination gui, not used in the page url
@@ -18,41 +22,61 @@ const ProductsGrid = ({setSector, selectedCategories, selectedTypes}:ProductsGri
     const pageSize = 4;
     const [url, setUrl]=useState("");
     const { data:products, error } = useSingleFetch<PaginatedProducts>(url);
-    const [paginatedProducts, setPaginatedProducts] = useState<PaginatedProducts>({ products: [], totalProducts: 0 });
 
     const filter =(sector:string)=>{
         switch (true) {
             case selectedCategories.length > 0 && selectedTypes.length === 0:
-                console.log("filtering products by categories");
                 setUrl(`/api/v1/product-management/products/${currentPage}/${pageSize}/sector/${sector}/filter/${selectedCategories}/null`);
                 break;
             case selectedCategories.length === 0 && selectedTypes.length > 0:
-                console.log("filtering products by types");
                 setUrl(`/api/v1/product-management/products/${currentPage}/${pageSize}/sector/${sector}/filter/null/${selectedTypes}`);
                 break;
             case selectedCategories.length > 0 && selectedTypes.length > 0:
-                console.log("filtering products by categories and types: ",selectedCategories,selectedTypes);
                 setUrl(`/api/v1/product-management/products/${currentPage}/${pageSize}/sector/${sector}/filter/${selectedCategories}/${selectedTypes}`);
                 break;
             default:
-                console.log("fetch products without filtering");
                 setUrl(`/api/v1/product-management/products/${currentPage}/${pageSize}/sector/${sector}`);
         }
     }
 
     useEffect(()=>{//fetch data according to the selected tab, categories or types
-        sectors.forEach((sector, i)=>{
-            if(tabIndex === i){
+        if (browse === "") {
+            sectors.forEach((sector, i) => {
+                if (tabIndex === i) {
+                    setSector(sector.name);//update sector to set within the url for CatalogFilter.tsx
+                    filter(sector.name);
+                }
+            });
+        }else {
+            setUrl(`/api/v1/product-management/products/${browse}/${currentPage}/${pageSize}`);
+        }
+        sectors.forEach((sector, i) => {//allow switch tabs even if the browse tab is currently with values
+            if (tabIndex === i) {
                 setSector(sector.name);//update sector to set within the url for CatalogFilter.tsx
-                filter(sector.name)
+                filter(sector.name);
             }
         });
-    },[sectors, tabIndex, selectedCategories, selectedTypes]);
+    },[sectors, browse, currentPage, tabIndex, selectedCategories, selectedTypes, url]);
+    
+    useEffect(() => {//reset the value of the current page and values of the filters whenever the tab is changed
+        setCurrentPage(1);
+        setSelectedCategories([]);//when this is empty, it uncheck the checkboxes from CatalogFilter.tsx
+        setSelectedTypes([]);
+    }, [tabIndex]);
+
+    useEffect(() => {//reset the value of the current page and switch tab whenever the browser value is changed
+        setCurrentPage(1);
+        if(browse !== "")setTabIndex(sectors.length);//sector.lenght is the last value of the tab which is <Tab>Browse Result:</Tab>
+        else setTabIndex(0);
+    }, [browse]);
+
+    useEffect(()=>setCurrentPage(1),[selectedCategories, selectedTypes]);//reset page whenever the filter is used
     return ( 
         <div className={classes['grid-container']}>
             <Tabs colorScheme='red' index={tabIndex} onChange={(index) => setTabIndex(index)}>
                 <TabList>
                     {sectors.map((sector,i) => <Tab key={i}>{sector.name}</Tab>)}
+                    {browse && <Tab>Browse Result:</Tab>}
                 </TabList>
 
                 <TabPanels>
@@ -65,6 +89,8 @@ const ProductsGrid = ({setSector, selectedCategories, selectedTypes}:ProductsGri
                         <div key={i}>
                             {`Product{`}<br/>
                             &emsp;name:{product.name}<br/>
+                            &emsp;categories:{product.categories?.map((cat,i)=><label key={i}>{cat.name}</label>)}<br/>
+                            &emsp;type:{product.productType}<br/>
                             <p>{`}`}</p>
                         </div>
                     ))}
