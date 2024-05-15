@@ -73,7 +73,7 @@ const AddProduct = () => {
                         </Breadcrumb>
                     </Flex>
                     <Spacer />
-                    <Button variant='outline' color={'blue.300'} marginRight={5}
+                    <Button variant='outline' colorScheme={'blue'} marginRight={5}
                             leftIcon={<LeftIcon />}
                             onClick={() => navigate("/dashboard/products-dashboard")}>
                         Go back

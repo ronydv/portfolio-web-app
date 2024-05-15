@@ -27,9 +27,11 @@ const Header = () => {
             <div className={classes.container} >
             
                 <Heading as='h1' size='lg' whiteSpace={"nowrap"} 
-                         fontSize={{ base: "30px", lg: "30px" }}
+                         fontSize={{ base: "25px", lg: "25px" }} /* {{ base: "30px", lg: "30px" }} */
                          lineHeight={{base:'1.2',lg: "1.2"}}>
-                    <Text as='span' bgGradient='linear(to-t, #e53e3e, #941414)'bgClip='text'>Indus</Text>
+                    <Text as='span' 
+                          bgGradient= 'linear(to-t, var(--chakra-colors-teal-600),var(--chakra-colors-teal-800))'/* 'linear(to-t, #e53e3e, #941414)' */
+                          bgClip='text' fontFamily={'abnes'}>Indus</Text>
                     <span className={classes.span}>tech</span>
                 </Heading>
             </div>
@@ -66,7 +68,7 @@ const Header = () => {
                 {user?.isEnabled ?
                         <Button onClick={closeSession}>Logout</Button>
                         :
-                        <Link to='/login'><Button variant='outline'> Log in</Button></Link>
+                        <Link to='/login'><Button variant='outline' colorScheme="teal"/*"red"*/> Log in</Button></Link>
                 }
 
                 <Link to='/signup'><Button> Sign up</Button></Link>

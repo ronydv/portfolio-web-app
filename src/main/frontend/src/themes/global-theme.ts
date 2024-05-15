@@ -39,25 +39,32 @@ export const indexTheme = extendTheme({
 	components: {
 		Button: {
 			variants: {
-				solid: (props: StyleFunctionProps) => ({
+				'industech': (props: StyleFunctionProps) => ({
+					color: props.colorMode === 'dark' ? 'gray.800':'white',
 					boxShadow:props.colorMode === 'dark' ? 
 								'0 0 6px 1px rgb(0, 0, 0, 0.6)':'0 0 6px 1px rgb(0, 0, 0, 0.200)',
 					bgGradient:props.colorMode === 'dark' ?
-								'linear(to-t, #e53e3e, #ae1717)':'linear(to-t, red.500, red.600)',
+								/* 'linear(to-t, #e53e3e, #ae1717)':'linear(to-t, red.500, red.600)', */
+								'linear(to-t, teal.300, teal.400)':'linear(to-t, teal.500, teal.600)',
 					_hover: {
 						bgGradient:props.colorMode === 'dark' ? 
-								'linear(to-t, red.400, red.600)':'linear(to-t, red.600, red.700)',
+								/* 'linear(to-t, red.400, red.600)':'linear(to-t, red.600, red.700)', */
+								'linear(to-t, teal.400, teal.600)':'linear(to-t, teal.600, teal.700)',
 					  },
+					_active:{
+						bgGradient:props.colorMode === 'dark' ? 
+						/* 'linear(to-t, red.500, red.600)':'linear(to-t, red.700, red.800)', */
+						'linear(to-t, teal.500, teal.600)':'linear(to-t, teal.700, teal.800)',
+					}
 				  }),
-				//other variants
-/* 				outline:(props: StyleFunctionProps) => ({
-					borderColor: props.colorMode === 'dark' ? 'red.400' : 'red.500',
-				  }), */
+				solid: (props: StyleFunctionProps) => ({
+					boxShadow:props.colorMode === 'dark' ? 
+								'0 0 6px 1px rgb(0, 0, 0, 0.6)':'0 0 6px 1px rgb(0, 0, 0, 0.200)',
+				  }),
 			},
 			defaultProps: {
 				size: 'sm', // default is md
-				variant: 'solid', // default is solid
-				colorScheme: 'red', // default is gray
+				variant: 'industech',
 			},
 		},
 		Input: inputTheme,

@@ -76,8 +76,8 @@ const ProductsGrid = ({browse, setSector, selectedCategories, selectedTypes,setS
 
     useEffect(()=>setCurrentPage(1),[selectedCategories, selectedTypes]);//reset page whenever the filter is used
     return ( 
-        <div className={classes['grid-container']}>
-            <Tabs colorScheme='red' index={tabIndex} onChange={(index) => setTabIndex(index)}>
+        <div className={classes['product-list-container']}>
+            <Tabs colorScheme='blue'/* 'red' */ index={tabIndex} onChange={(index) => setTabIndex(index)}>
                 <TabList>
                     {sectors.map((sector,i) => <Tab key={i}>{sector.name}</Tab>)}
                     {browse && <Tab>Browse Result:</Tab>}

@@ -8,7 +8,6 @@ import { useFetch } from '../../hooks/useFetch';
 
 
 const Catalog = () => {
-    const buttonBrands = useColorModeValue('gray.600','gray.400');
     const {data:sectors}=useFetch<Sector>("/api/v1/product-management/sector");
     const [tabIndex, setTabIndex] = useState(0);
     const [browse, setBrowse] = useState('');

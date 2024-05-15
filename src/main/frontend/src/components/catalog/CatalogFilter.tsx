@@ -1,4 +1,4 @@
-import { Stack, Checkbox, Divider, Text, useColorMode, Flex } from '@chakra-ui/react';
+import { Stack, Checkbox, Divider, Text, useColorMode, Flex, useColorModeValue } from '@chakra-ui/react';
 import classes from './catalog.module.css';
 import { useFetch } from '../../hooks/useFetch';
 import { ChangeEvent, useEffect, useState } from 'react';
@@ -15,6 +15,7 @@ type CatalogFilterProps={
 //componnet to get categories and product types by sector
 const CatalogFilter = ({sector, selectedCategories, selectedTypes, setSelectedCategories, 
                         setSelectedTypes, tabIndex, sectors}:CatalogFilterProps) => {
+    const colorGray = useColorModeValue('gray.600','gray.400');
     const { colorMode } = useColorMode();
     const [categoryUrl, setCategoryUrl]=useState<string>("");
     const [typeUrl, setTypeUrl]=useState<string>("");
@@ -54,12 +55,12 @@ const CatalogFilter = ({sector, selectedCategories, selectedTypes, setSelectedCa
         <div className={`${classes.filter} ${colorMode === 'light' ? classes.light : classes.dark}`}>
             {/* categories sector */}
             <Flex direction={'row'}>
-                <div className={classes['filter-title-border']} />
-                <Text fontSize='lg'>Categories: </Text>
+                {/* <div className={classes['filter-title-border']} /> */}
+                <Text fontSize='lg' color={colorGray} pl={3} fontFamily={'sans-serif'} fontWeight={600}>Categories: </Text>
             </Flex>
             <Stack mb={3} paddingLeft={5}>
                 {categories.map((category, i) => (
-                    <Checkbox colorScheme='red'
+                    <Checkbox colorScheme='blue'/* 'red' */
                         key={i}
                         value={category.name}
                         isDisabled={disableCheckbox}
@@ -71,8 +72,8 @@ const CatalogFilter = ({sector, selectedCategories, selectedTypes, setSelectedCa
 
             {/* product type sector */}
             <Flex direction={'row'}>
-                <div className={classes['filter-title-border']} />
-                <Text fontSize='lg'>Types: </Text>
+                {/* <div className={classes['filter-title-border']} /> */}
+                <Text fontSize='lg' color={colorGray} pl={3} fontFamily={'sans-serif'} fontWeight={600}>Types: </Text>
             </Flex>
             <Stack mb={3} paddingLeft={5}>
                 {types.map((type, i) => (

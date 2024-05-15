@@ -1,3 +1,7 @@
+@font-face {
+    font-family: 'abnes';
+    src: url('/src/fonts/FontsFree-Net-abnes.ttf') format('truetype');
+}
 .header{
     display: flex;
     flex-wrap: wrap;
@@ -16,12 +20,14 @@
 
 /* styling the span of the brand title */
 .span{
-    background: linear-gradient(0deg, #e53e3e, #941414);
+    /* background: linear-gradient(0deg, #e53e3e, #941414); */
+    background: linear-gradient(0deg, var(--chakra-colors-teal-600), var(--chakra-colors-teal-800));
+    font-family: abnes;
     padding: 0px 5px;
     vertical-align: 3px;
     margin-left:3px;
     display: inline-block;/* fit the background to the font size */
     border-radius: 4px;
-    font-size: 24px;
+    font-size: 20px;  /* 24px; */
     color: beige;
 }
