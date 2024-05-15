@@ -9,9 +9,12 @@ type CatalogFilterProps={
     selectedTypes: string[];
     setSelectedCategories: React.Dispatch<React.SetStateAction<string[]>>;
     setSelectedTypes: React.Dispatch<React.SetStateAction<string[]>>;
+    tabIndex:number;
+    sectors: Sector[];
 }
 //componnet to get categories and product types by sector
-const CatalogFilter = ({sector, selectedCategories, selectedTypes, setSelectedCategories, setSelectedTypes}:CatalogFilterProps) => {
+const CatalogFilter = ({sector, selectedCategories, selectedTypes, setSelectedCategories, 
+                        setSelectedTypes, tabIndex, sectors}:CatalogFilterProps) => {
     const { colorMode } = useColorMode();
     const [categoryUrl, setCategoryUrl]=useState<string>("");
     const [typeUrl, setTypeUrl]=useState<string>("");
@@ -19,12 +22,17 @@ const CatalogFilter = ({sector, selectedCategories, selectedTypes, setSelectedCa
     const {data:types}=useFetch<Type>(typeUrl);
     const isCategorySelected = (category: string):boolean => selectedCategories?.includes(category);
     const isTypeSelected = (type: string):boolean => selectedTypes?.includes(type);
-
+    const [disableCheckbox, setDisableCheckbox]=useState<boolean>(false);
 
     useEffect(()=>{//set url with sector everytime the sector state is modified in ProductGrid.tsx
         setCategoryUrl(`/api/v1/product-management/categories/${sector}`);
         setTypeUrl(`/api/v1/product-management/types/${sector}`);
     },[sector,categoryUrl,typeUrl]);
+
+    useEffect(()=>{//disable checkboxes whenever the tab for browse elements is opened
+        sectors.length > 0 && tabIndex === (sectors.length) ? 
+                setDisableCheckbox(true):setDisableCheckbox(false);
+    },[tabIndex])
 
     const handleCategoriesCheckbox=(e: ChangeEvent<HTMLInputElement>)=>{
         const { value, checked } = e.target;
@@ -54,6 +62,7 @@ const CatalogFilter = ({sector, selectedCategories, selectedTypes, setSelectedCa
                     <Checkbox colorScheme='red'
                         key={i}
                         value={category.name}
+                        isDisabled={disableCheckbox}
                         isChecked={isCategorySelected(category?.name!)}//false if the setSelectedCategories is set to empty in the useEffect of ProductGrid.tsx
                         onChange={(e) => handleCategoriesCheckbox(e)}>{category.name}
                     </Checkbox>
@@ -70,6 +79,7 @@ const CatalogFilter = ({sector, selectedCategories, selectedTypes, setSelectedCa
                     <Checkbox colorScheme='red'
                         key={i}
                         value={type.productType}
+                        isDisabled={disableCheckbox}
                         isChecked={isTypeSelected(type?.productType!)}
                         onChange={(e) => handleTypesCheckbox(e)}
                     >{type.productType}

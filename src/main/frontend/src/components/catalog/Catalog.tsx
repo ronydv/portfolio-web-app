@@ -4,10 +4,13 @@ import { IoIosSearch as SearchIcon } from "react-icons/io";
 import CatalogFilter from './CatalogFilter';
 import ProductsGrid from './ProductsGrid';
 import { useRef, useState } from 'react';
+import { useFetch } from '../../hooks/useFetch';
 
 
 const Catalog = () => {
     const buttonBrands = useColorModeValue('gray.600','gray.400');
+    const {data:sectors}=useFetch<Sector>("/api/v1/product-management/sector");
+    const [tabIndex, setTabIndex] = useState(0);
     const [browse, setBrowse] = useState('');
     const [selectedCategories, setSelectedCategories]=useState<string[]>([]);
     const [selectedTypes, setSelectedTypes]=useState<string[]>([]);
@@ -32,7 +35,9 @@ const Catalog = () => {
                            selectedCategories={selectedCategories}
                            selectedTypes={selectedTypes}
                            setSelectedCategories={setSelectedCategories}
-                           setSelectedTypes={setSelectedTypes}/>
+                           setSelectedTypes={setSelectedTypes}
+                           tabIndex={tabIndex}
+                           sectors={sectors}/>
 
             <div className={classes['right-container']}>
                 <InputGroup maxWidth={'60%'} mb={5}>
@@ -40,7 +45,8 @@ const Catalog = () => {
                         onChange={(e) => handleChangeSearch(e)}
                         onKeyDown={(e) => e.key === "Enter" && handleSearch()} />
                     <InputRightElement  >
-                        <SearchIcon className={classes['search-icon']} />
+                    <SearchIcon className={classes['search-icon']}
+                                        onClick={handleSearch}/>
                     </InputRightElement>
                 </InputGroup>
 
@@ -50,7 +56,10 @@ const Catalog = () => {
                                   selectedCategories={selectedCategories}
                                   selectedTypes={selectedTypes}
                                   setSelectedCategories={setSelectedCategories}
-                                  setSelectedTypes={setSelectedTypes}/>
+                                  setSelectedTypes={setSelectedTypes}
+                                  tabIndex={tabIndex}
+                                  setTabIndex={setTabIndex}
+                                  sectors={sectors}/>
                 </section>
             </div>
         </div>

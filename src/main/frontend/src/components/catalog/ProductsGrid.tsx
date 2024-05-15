@@ -5,6 +5,7 @@ import 'react-responsive-pagination/themes/minimal.css';
 import { useEffect, useState } from "react";
 import { useFetch } from "../../hooks/useFetch";
 import { useSingleFetch } from "../../hooks/useSingleFetch";
+import ProductCard from "./ProductCard";
 type ProductsGridProps={
     browse: string;
     setSector: React.Dispatch<React.SetStateAction<string>>
@@ -12,11 +13,14 @@ type ProductsGridProps={
     selectedTypes: string[];
     setSelectedCategories: React.Dispatch<React.SetStateAction<string[]>>;
     setSelectedTypes: React.Dispatch<React.SetStateAction<string[]>>;
+    tabIndex: number;
+    setTabIndex: React.Dispatch<React.SetStateAction<number>>;
+    sectors: Sector[];
 }
-const ProductsGrid = ({browse, setSector, selectedCategories, selectedTypes,
-                        setSelectedCategories, setSelectedTypes}:ProductsGridProps) => {
-    const {data:sectors}=useFetch<Sector>("/api/v1/product-management/sector");
-    const [tabIndex, setTabIndex] = useState(0);
+const ProductsGrid = ({browse, setSector, selectedCategories, selectedTypes,setSelectedCategories, 
+                       setSelectedTypes, tabIndex, setTabIndex, sectors}:ProductsGridProps) => {
+    /* const {data:sectors}=useFetch<Sector>("/api/v1/product-management/sector"); */
+    
     const [currentPage, setCurrentPage] = useState(1);//only for the pagination gui, not used in the page url
     const handlePageChange = (page: number) => setCurrentPage(page);
     const pageSize = 4;
@@ -87,11 +91,12 @@ const ProductsGrid = ({browse, setSector, selectedCategories, selectedTypes,
                     />
                     {products?.products.map((product, i)=>(
                         <div key={i}>
-                            {`Product{`}<br/>
+{/*                             {`Product{`}<br/>
                             &emsp;name:{product.name}<br/>
                             &emsp;categories:{product.categories?.map((cat,i)=><label key={i}>{cat.name}</label>)}<br/>
                             &emsp;type:{product.productType}<br/>
-                            <p>{`}`}</p>
+                            <p>{`}`}</p> */}
+                            <ProductCard/>
                         </div>
                     ))}
                 </TabPanels>
