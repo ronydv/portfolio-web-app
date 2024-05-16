@@ -1,4 +1,4 @@
-import { TableContainer, Table, Image, TableCaption, Thead, Tr, Th, Tbody, Td, Tag, Flex, Tab, TabList, TabPanels, Tabs, useColorMode } from "@chakra-ui/react";
+import { TableContainer, Table, Image, TableCaption, Thead, Tr, Th, Tbody, Td, Tag, Flex, Tab, TabList, TabPanels, Tabs, useColorMode, Icon } from "@chakra-ui/react";
 import useMatchMedia from "../../../hooks/useMatchMedia";
 import { useEffect, useState } from "react";
 import ResponsivePagination from 'react-responsive-pagination';
@@ -10,8 +10,12 @@ import { useSingleFetch } from "../../../hooks/useSingleFetch";
 import { Link } from "react-router-dom";
 import { useFetch } from "../../../hooks/useFetch";
 import useColorGenerator from "../../../hooks/useColorGenerator";
+import { SiAltiumdesigner as Designs } from "react-icons/si";
+import { FaGears as Machinery } from "react-icons/fa6";
+import { LiaMicrochipSolid as Automations } from "react-icons/lia";
+import { IconType } from "react-icons";
 
-
+const icons: IconType[]= [Designs, Machinery, Automations];
 type TypeColor={
     type?:string,
     color?:string;
@@ -93,7 +97,10 @@ const ProductsTable = ({ browse, setActiveButton }: ProductsTableProps) => {
             <Tabs index={tabIndex} colorScheme='red'
                   onChange={(index) => setTabIndex(index)} size={isDesktop ?'md':'sm' }>
                 <TabList>
-                    {sectors.map((sector,i) => <Tab key={i}>{sector.name}</Tab>)}
+                    {sectors.map((sector,i) => {
+                        if(isDesktop) return <Tab key={i}>{sector.name}</Tab>
+                        else return <Tab key={i}><Icon as={icons[i]} pr={1}/>{ tabIndex=== i && sector.name}</Tab>
+                    })}
                     {browse && <Tab>Browse Result:</Tab>}
                 </TabList>
 

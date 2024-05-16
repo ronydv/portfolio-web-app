@@ -13,6 +13,9 @@
     display: flex;
     flex-direction: row;
 }
+.container.mobile{
+    flex-direction: column;
+}
 .search-icon{
     color:var(--chakra-colors-gray-400);
 }
@@ -42,6 +45,9 @@
 .right-container{
     padding-top: 30px;
     padding-left: 20px;
+}
+.right-container.no-padding-left{/*mobile version */
+    padding-left: 0px;
 }
 
 

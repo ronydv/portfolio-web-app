@@ -1,11 +1,17 @@
-import { Tabs, TabList, Tab, TabPanels, useColorMode } from "@chakra-ui/react";
+import { Tabs, TabList, Tab, TabPanels, useColorMode, Icon } from "@chakra-ui/react";
 import classes from './catalog.module.css';
 import ResponsivePagination from 'react-responsive-pagination';
 import 'react-responsive-pagination/themes/minimal.css';
 import { useEffect, useState } from "react";
-import { useFetch } from "../../hooks/useFetch";
 import { useSingleFetch } from "../../hooks/useSingleFetch";
+import { SiAltiumdesigner as Designs } from "react-icons/si";
+import { FaGears as Machinery } from "react-icons/fa6";
+import { LiaMicrochipSolid as Automations } from "react-icons/lia";
 import ProductCard from "./ProductCard";
+import { IconType } from "react-icons";
+import useMatchMedia from "../../hooks/useMatchMedia";
+
+const icons: IconType[]= [Designs, Machinery, Automations];
 type ProductsGridProps={
     browse: string;
     setSector: React.Dispatch<React.SetStateAction<string>>
@@ -20,6 +26,7 @@ type ProductsGridProps={
 const ProductsGrid = ({browse, setSector, selectedCategories, selectedTypes,setSelectedCategories, 
                        setSelectedTypes, tabIndex, setTabIndex, sectors}:ProductsGridProps) => {
     
+    const isDesktop = useMatchMedia();
     const { colorMode } = useColorMode();
     const [currentPage, setCurrentPage] = useState(1);//only for the pagination gui, not used in the page url
     const handlePageChange = (page: number) => setCurrentPage(page);
@@ -78,9 +85,13 @@ const ProductsGrid = ({browse, setSector, selectedCategories, selectedTypes,setS
     return ( 
         <div className={`${classes['product-list-container']} 
                          ${colorMode === 'light' ? classes['pagination-light'] : classes['pagination-dark']}`}>
-            <Tabs colorScheme='red' index={tabIndex} onChange={(index) => setTabIndex(index)}>
+            <Tabs colorScheme='red' index={tabIndex} variant='enclosed'
+                  onChange={(index) => setTabIndex(index)}>
                 <TabList>
-                    {sectors.map((sector,i) => <Tab key={i}>{sector.name}</Tab>)}
+                    {sectors.map((sector,i) => {
+                        if(isDesktop) return <Tab key={i}>{sector.name}</Tab>
+                        else return <Tab key={i}><Icon as={icons[i]} pr={1}/>{ tabIndex=== i && sector.name}</Tab>
+                    })}
                     {browse && <Tab>Browse Result:</Tab>}
                 </TabList>
 
