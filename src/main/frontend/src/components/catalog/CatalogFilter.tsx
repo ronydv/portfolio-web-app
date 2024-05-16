@@ -60,7 +60,7 @@ const CatalogFilter = ({sector, selectedCategories, selectedTypes, setSelectedCa
             </Flex>
             <Stack mb={3} paddingLeft={5}>
                 {categories.map((category, i) => (
-                    <Checkbox colorScheme='green'
+                    <Checkbox colorScheme='red'
                         key={i}
                         value={category.name}
                         isDisabled={disableCheckbox}
@@ -77,7 +77,7 @@ const CatalogFilter = ({sector, selectedCategories, selectedTypes, setSelectedCa
             </Flex>
             <Stack mb={3} paddingLeft={5}>
                 {types.map((type, i) => (
-                    <Checkbox colorScheme='green'
+                    <Checkbox colorScheme='red'
                         key={i}
                         value={type.productType}
                         isDisabled={disableCheckbox}

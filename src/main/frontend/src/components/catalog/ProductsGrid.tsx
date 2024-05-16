@@ -92,7 +92,7 @@ const ProductsGrid = ({browse, setSector, selectedCategories, selectedTypes,setS
                     />
                     {products?.products.map((product, i)=>(
                         <div key={i} className={classes['card-container']}>
-                            <ProductCard product={product}/>
+                            <ProductCard product={product} colorMode={colorMode}/>
                         </div>
                     ))}
                 </TabPanels>

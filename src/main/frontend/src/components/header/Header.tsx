@@ -13,7 +13,6 @@ const Header = () => {
     const logout = useLogout();
     const { colorMode, toggleColorMode } = useColorMode()
     const linksBtn = useColorModeValue('gray.600','gray.400');
-    const dashboardBtn = useColorModeValue('green.400','green.300');
     const isDesktop=useMatchMedia();
 
     const closeSession = async () => {
@@ -56,7 +55,7 @@ const Header = () => {
             <Spacer flex={0.2}/>
 
             <div className={classes.container}>
-                <Button variant='outline' color={dashboardBtn}
+                <Button variant='outline' colorScheme="orange"
                             onClick={() => navigate("/dashboard/products-dashboard")}>
                     Dashboard
                 </Button>

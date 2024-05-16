@@ -15,6 +15,7 @@ import AddProduct from './components/admin/products-management/AddProduct';
 import ProductsDashboard from './components/admin/products-management/ProductsDashboard';
 import MainDashboard from './components/admin/MainDashboard';
 import ModifyProduct from './components/admin/products-management/ModifyProduct';
+import ProductDetails from './components/catalog/ProductDetails';
 
 
   
@@ -41,6 +42,7 @@ function App() {
 						<Route path='modify-product/:id'element={<ModifyProduct/>}/>
 					</Route>
 					<Route path='/catalog' element={<Catalog />} />
+					<Route path='/product-details' element={<ProductDetails/>} />
 				</Route>
 			</Route>
 		)//TODO: create protected routes

@@ -1,4 +1,3 @@
-import { useState } from "react";
 
 const useColorGenerator = () => {
     const randomColorUtility = (length: number) => Math.floor(Math.random() * length);

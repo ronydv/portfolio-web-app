@@ -70,7 +70,7 @@ const Login = () => {
 
                     <div>
                         <Checkbox onChange={togglePersist} isChecked={authContext?.persist}
-                                    colorScheme="green" >
+                                    colorScheme="red" >
                             Remember session
                         </Checkbox>
                     </div>

@@ -90,7 +90,8 @@ const ProductsTable = ({ browse, setActiveButton }: ProductsTableProps) => {
                 current={currentPage}
                 onPageChange={page => handlePageChange(page)}
             />
-            <Tabs index={tabIndex} onChange={(index) => setTabIndex(index)} size={isDesktop ?'md':'sm' }>
+            <Tabs index={tabIndex} colorScheme='red'
+                  onChange={(index) => setTabIndex(index)} size={isDesktop ?'md':'sm' }>
                 <TabList>
                     {sectors.map((sector,i) => <Tab key={i}>{sector.name}</Tab>)}
                     {browse && <Tab>Browse Result:</Tab>}
