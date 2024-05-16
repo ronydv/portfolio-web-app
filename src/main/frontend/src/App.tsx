@@ -40,8 +40,7 @@ function App() {
 						<Route path='add-product'element={<AddProduct/>}/>
 						<Route path='modify-product/:id'element={<ModifyProduct/>}/>
 					</Route>
-					<Route path='/products' element={<Catalog />} />
-					<Route path='/services' element={<Services />} />
+					<Route path='/catalog' element={<Catalog />} />
 				</Route>
 			</Route>
 		)//TODO: create protected routes

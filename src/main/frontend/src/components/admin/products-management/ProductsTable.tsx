@@ -1,4 +1,4 @@
-import { TableContainer, Table, Image, TableCaption, Thead, Tr, Th, Tbody, Td, Tag, Flex, Tab, TabList, TabPanels, Tabs } from "@chakra-ui/react";
+import { TableContainer, Table, Image, TableCaption, Thead, Tr, Th, Tbody, Td, Tag, Flex, Tab, TabList, TabPanels, Tabs, useColorMode } from "@chakra-ui/react";
 import useMatchMedia from "../../../hooks/useMatchMedia";
 import { useEffect, useState } from "react";
 import ResponsivePagination from 'react-responsive-pagination';
@@ -22,6 +22,7 @@ type ProductsTableProps = {
 }
 const ProductsTable = ({ browse, setActiveButton }: ProductsTableProps) => {
     const isDesktop = useMatchMedia();
+    const { colorMode } = useColorMode();
     const {data:sectors}=useFetch<Sector>("/api/v1/product-management/sector");
     const {data:types}=useFetch<Type>("/api/v1/product-management/types");
     const [currentPage, setCurrentPage] = useState(1);//only for the pagination gui, not used in the page url
@@ -82,7 +83,8 @@ const ProductsTable = ({ browse, setActiveButton }: ProductsTableProps) => {
         }
     }
     return (
-        <div className={classes['table-container']}>
+        <div className={`${classes['table-container']}
+                         ${colorMode === 'light' ? classes['pagination-light'] : classes['pagination-dark']}`}>
             <ResponsivePagination
                 total={Math.ceil(paginatedProducts.totalProducts / pageSize)}
                 current={currentPage}

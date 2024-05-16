@@ -1,4 +1,4 @@
-import { Tabs, TabList, Tab, TabPanels } from "@chakra-ui/react";
+import { Tabs, TabList, Tab, TabPanels, useColorMode } from "@chakra-ui/react";
 import classes from './catalog.module.css';
 import ResponsivePagination from 'react-responsive-pagination';
 import 'react-responsive-pagination/themes/minimal.css';
@@ -19,8 +19,8 @@ type ProductsGridProps={
 }
 const ProductsGrid = ({browse, setSector, selectedCategories, selectedTypes,setSelectedCategories, 
                        setSelectedTypes, tabIndex, setTabIndex, sectors}:ProductsGridProps) => {
-    /* const {data:sectors}=useFetch<Sector>("/api/v1/product-management/sector"); */
     
+    const { colorMode } = useColorMode();
     const [currentPage, setCurrentPage] = useState(1);//only for the pagination gui, not used in the page url
     const handlePageChange = (page: number) => setCurrentPage(page);
     const pageSize = 4;
@@ -76,27 +76,23 @@ const ProductsGrid = ({browse, setSector, selectedCategories, selectedTypes,setS
 
     useEffect(()=>setCurrentPage(1),[selectedCategories, selectedTypes]);//reset page whenever the filter is used
     return ( 
-        <div className={classes['product-list-container']}>
-            <Tabs colorScheme='blue'/* 'red' */ index={tabIndex} onChange={(index) => setTabIndex(index)}>
+        <div className={`${classes['product-list-container']} 
+                         ${colorMode === 'light' ? classes['pagination-light'] : classes['pagination-dark']}`}>
+            <Tabs colorScheme='red' index={tabIndex} onChange={(index) => setTabIndex(index)}>
                 <TabList>
                     {sectors.map((sector,i) => <Tab key={i}>{sector.name}</Tab>)}
                     {browse && <Tab>Browse Result:</Tab>}
                 </TabList>
 
                 <TabPanels>
-                    <ResponsivePagination
+                    <ResponsivePagination 
                         total={Math.ceil(products?.totalProducts! / pageSize)}
                         current={currentPage}
                         onPageChange={page => handlePageChange(page)}
                     />
                     {products?.products.map((product, i)=>(
-                        <div key={i}>
-{/*                             {`Product{`}<br/>
-                            &emsp;name:{product.name}<br/>
-                            &emsp;categories:{product.categories?.map((cat,i)=><label key={i}>{cat.name}</label>)}<br/>
-                            &emsp;type:{product.productType}<br/>
-                            <p>{`}`}</p> */}
-                            <ProductCard/>
+                        <div key={i} className={classes['card-container']}>
+                            <ProductCard product={product}/>
                         </div>
                     ))}
                 </TabPanels>

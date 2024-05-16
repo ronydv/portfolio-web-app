@@ -18,7 +18,7 @@ const Navbar = () => {
                     icon={<HomeIcon />} />
             </Link>
             
-            <Link to='/products'>
+            <Link to='/catalog'>
                 <IconButton isRound={true} variant='ghost' aria-label='Dark Mode'
                     fontSize='20px'
                     color={darkMode}

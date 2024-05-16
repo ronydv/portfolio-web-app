@@ -1,4 +1,14 @@
 /* main container from the Catalog.tsx, this holds the CatalogFilter and a right panel that contains the ProductGrid component */
+.light{
+    background-color: var(--chakra-colors-gray-50);
+    border:1px solid var(--chakra-colors-gray-100);
+    box-shadow: -2px 10px 15px 3px rgb(0, 0, 0, 0.080);
+}
+.dark{
+    background-color: var(--chakra-colors-gray-900);
+    border:1px solid var(--chakra-colors-gray-900);
+    box-shadow: -2px 10px 15px 3px rgba(0, 0, 0, 0.344);
+}
 .container{
     display: flex;
     flex-direction: row;
@@ -13,6 +23,7 @@
     color:var(--chakra-colors-gray-500);
 }
 
+
 /* styling for the left panel that contains the filter component  */
 .filter{
     border-radius: 5px 5px 0 0;
@@ -25,25 +36,6 @@
     /* align-items: center; */
     min-height: 100vh;
 }
-.filter-title-border{
-    margin-right: 10px;
-    border-radius: 0 5px 5px 0;
-    content: "";
-    width: 5px;
-    height: 100%;
-    background-color: #ca3232;
-    background-color: var(--chakra-colors-teal-500);
-}
-.filter.light{
-    background-color: var(--chakra-colors-gray-50);
-    border:1px solid var(--chakra-colors-gray-100);
-    box-shadow: -2px 10px 15px 3px rgb(0, 0, 0, 0.080);
-}
-.filter.dark{
-    background-color: var(--chakra-colors-gray-900);
-    border:1px solid var(--chakra-colors-gray-900);
-    box-shadow: -2px 10px 15px 3px rgba(0, 0, 0, 0.344);
-}
 
 
 /* styling for the right panel section that contains the search input element and the ProductGrid component */
@@ -54,10 +46,19 @@
 
 
 
-/* grid container from ProductGrid.tsx */
+/* grid container from ProductGrid.tsx, style the pagination inside this container */
 .product-list-container{
-    --pagination-color: var(--chakra-colors-gray-400);
-    --pagination-active-color:#454648;
-    --pagination-hover-color: #454648;
+    --pagination-color: var(--chakra-colors-red-600);
+    --pagination-hover-color: var(--chakra-colors-red-200);/* #454648; */
     --pagination-bg: transparent/* change to app theme */
 }
+.pagination-dark{
+    --pagination-active-color:var(--chakra-colors-gray-800);
+}
+.pagination-light{
+    --pagination-active-color:var(--chakra-colors-gray-100);
+}
+.card-container{
+    margin-bottom: 10px;
+}
+/* 'gray.600','gray.400' */

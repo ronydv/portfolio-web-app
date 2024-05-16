@@ -20,8 +20,8 @@
 
 /* styling the span of the brand title */
 .span{
-    /* background: linear-gradient(0deg, #e53e3e, #941414); */
-    background: linear-gradient(0deg, var(--chakra-colors-teal-600), var(--chakra-colors-teal-800));
+    background: linear-gradient(0deg, #e53e3e, #941414);
+    /* background: linear-gradient(0deg, var(--chakra-colors-teal-600), var(--chakra-colors-teal-800)); */
     font-family: abnes;
     padding: 0px 5px;
     vertical-align: 3px;

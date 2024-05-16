@@ -44,7 +44,7 @@ const ProductsDashboard = ({ setActiveButton }: ActiveButtonProps) => {
                 </Flex>
                 <Spacer />
                 <Link to="add-product">
-                    <Button variant={'outline'} color={'blue.300'}
+                    <Button variant={'outline'} color={'green.400'}
                             //switch the value within MainDashboard.tsx to render the <Outlet/>, check <div className={classes.outlet}>
                             onClick={() => setActiveButton && setActiveButton("Add Product")}
                             leftIcon={<AddProductIcon/>}>

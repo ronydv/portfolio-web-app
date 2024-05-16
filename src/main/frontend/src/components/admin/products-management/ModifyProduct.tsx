@@ -79,14 +79,15 @@ const ModifyProduct = () => {
                             </Breadcrumb>
                         </Flex>
                         <Spacer />
-                        <Button variant='outline' colorScheme={'blue'} marginRight={5}
+                        <Button variant='outline' colorScheme={'green'} marginRight={5}
                             leftIcon={<LeftIcon />}
                             onClick={() => navigate("/dashboard/products-dashboard")}>
                             Go back
                         </Button>
-                        <Button type="submit"
+                        <Button type="submit" variant={'solid'}
                             isLoading={isLoading}
-                            loadingText='Submitting'>
+                            loadingText='Submitting'
+                            colorScheme={queryAction ==='delete'?'purple':'blue'}>
                             {queryAction ==='delete'? 'Delete' : 'Save Changes'}
                         </Button>
                     </section>

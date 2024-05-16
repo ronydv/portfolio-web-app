@@ -1,38 +1,45 @@
-import { Card, Stack, CardBody, Heading, Image, Text, CardFooter, Button, Tag } from "@chakra-ui/react";
-
-const ProductCard = () => {
+import { Card, Stack, CardBody, Heading, Image, Text, CardFooter, Button, Tag, Badge } from "@chakra-ui/react";
+type ProductCardProps={
+    product: Product;
+}
+const ProductCard = ({product}:ProductCardProps) => {
     return (
-        <Card direction={{ base: 'column', sm: 'row' }}
+        <Card direction={{ base: 'column', sm: 'row' }} p={3}
             overflow='hidden'
             variant='outline'>
             <Image objectFit='cover'
                 maxW={{ base: '100%', sm: '200px' }}
-                src='https://images.unsplash.com/photo-1667489022797-ab608913feeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60'
-                alt='Caffe Latte' />
+                src={product.images?.[0]?.url}
+                alt={product.name} />
 
 
             <Stack>
-                <CardBody>
-                        <Heading size='md'>The perfect latte</Heading>
+                <CardBody pb={1}>
+                        <Heading size='md'>{product.name}</Heading>
 
                         <Text py='2'>
-                            Caffè latte is a coffee beverage of Italian origin made with espresso
-                            and steamed milk.
+                            {'Caffè latte is a coffee beverage of Italian origin made with espresso and steamed milk.'}
+                            {product.description}
                         </Text>
-                        <p>{'Type'}</p>
-                        <span style={{color:'var(--chakra-colors-blue-300)', margin:'4px'}}>•</span>{'Cat-a'}
-                        <span style={{color:'var(--chakra-colors-blue-300)',margin:'4px'}}>•</span>{'Cat-a'} 
-                        <span style={{color:'var(--chakra-colors-blue-300)',margin:'4px'}}>•</span>{'Cat-a'}
+                        
+                        <Badge variant='solid' colorScheme='red'>{product.productType}</Badge>
+                        {/* set the categories inside a loop */}
+                        {product.categories?.map((category,i)=>(
+                            <span key={i}>
+                                <span style={{color:'var(--chakra-colors-blue-300)', margin:'4px'}}>•</span>
+                                {category.name}
+                            </span>
+                        ))}
                         <p/>
-                        <Tag mt={1} colorScheme="blue"> 4 images</Tag>
+                        <Tag mt={1} colorScheme="green"> {product.images?.length} images</Tag>
                 </CardBody>
 
                 <CardFooter pt={1}>
-                            <Button variant='solid' colorScheme='teal' mr={4}>
+                            <Button variant='solid' colorScheme='green' mr={4}>
                                 View Details
                             </Button>
-                            <Button variant={'outline'} colorScheme='blue'>
-                                schedule service
+                            <Button >
+                                Schedule service
                             </Button>
                 </CardFooter>
             </Stack>

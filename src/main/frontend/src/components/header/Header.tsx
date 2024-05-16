@@ -13,7 +13,7 @@ const Header = () => {
     const logout = useLogout();
     const { colorMode, toggleColorMode } = useColorMode()
     const linksBtn = useColorModeValue('gray.600','gray.400');
-    const dashboardBtn = useColorModeValue('blue.400','blue.300');
+    const dashboardBtn = useColorModeValue('green.400','green.300');
     const isDesktop=useMatchMedia();
 
     const closeSession = async () => {
@@ -29,10 +29,10 @@ const Header = () => {
                 <Heading as='h1' size='lg' whiteSpace={"nowrap"} 
                          fontSize={{ base: "25px", lg: "25px" }} /* {{ base: "30px", lg: "30px" }} */
                          lineHeight={{base:'1.2',lg: "1.2"}}>
-                    <Text as='span' 
-                          bgGradient= 'linear(to-t, var(--chakra-colors-teal-600),var(--chakra-colors-teal-800))'/* 'linear(to-t, #e53e3e, #941414)' */
-                          bgClip='text' fontFamily={'abnes'}>Indus</Text>
-                    <span className={classes.span}>tech</span>
+                    <Text as='span'
+                          bgGradient='linear(to-t, #e53e3e, #941414)' /*'linear(to-t, var(--chakra-colors-teal-600),var(--chakra-colors-teal-800))' */
+                          bgClip='text' fontFamily={'abnes'}>IndusTEch</Text>
+                    {/* <span className={classes.span}>tech</span> */}
                 </Heading>
             </div>
 
@@ -42,11 +42,8 @@ const Header = () => {
                 <Link to={'/'}>
                     <Button marginRight={2} variant='link' color={linksBtn}>Home</Button>
                 </Link>
-                <Link to={'/products'}>
-                    <Button marginRight={2} variant='link' color={linksBtn}>Products</Button>
-                </Link>
-                <Link to={'/designs'}>
-                    <Button marginRight={2} variant='link' color={linksBtn}>Designs</Button>
+                <Link to={'/catalog'}>
+                    <Button marginRight={2} variant='link' color={linksBtn}>Catalog</Button>
                 </Link>
                 <Link to={'/'}>
                     <Button marginRight={2} variant='link' color={linksBtn}>Contact</Button>
@@ -68,7 +65,7 @@ const Header = () => {
                 {user?.isEnabled ?
                         <Button onClick={closeSession}>Logout</Button>
                         :
-                        <Link to='/login'><Button variant='outline' colorScheme="teal"/*"red"*/> Log in</Button></Link>
+                        <Link to='/login'><Button variant='outline' colorScheme="red"/*"teal"*/> Log in</Button></Link>
                 }
 
                 <Link to='/signup'><Button> Sign up</Button></Link>

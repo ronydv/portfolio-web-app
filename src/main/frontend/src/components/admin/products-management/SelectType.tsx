@@ -66,7 +66,7 @@ const SelectType =({ product, setProduct, error, setError, setTypesUrl, typesUrl
                             <Stack spacing={1} direction='column'>
                                 {types.map((type, i) => (
                                     <div key={i} style={{ display: 'flex' }}>
-                                        <Radio /* colorScheme='red' */ value={type.productType}>{type.productType}</Radio>
+                                        <Radio colorScheme="green" value={type.productType}>{type.productType}</Radio>
                                         <Spacer />
                                         <DeleteIcon color="red" onClick={()=>{deleteType(type)}} className={classes['action-icon']} />
                                     </div>

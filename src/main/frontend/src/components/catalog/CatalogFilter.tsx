@@ -55,12 +55,12 @@ const CatalogFilter = ({sector, selectedCategories, selectedTypes, setSelectedCa
         <div className={`${classes.filter} ${colorMode === 'light' ? classes.light : classes.dark}`}>
             {/* categories sector */}
             <Flex direction={'row'}>
-                {/* <div className={classes['filter-title-border']} /> */}
+                
                 <Text fontSize='lg' color={colorGray} pl={3} fontFamily={'sans-serif'} fontWeight={600}>Categories: </Text>
             </Flex>
             <Stack mb={3} paddingLeft={5}>
                 {categories.map((category, i) => (
-                    <Checkbox colorScheme='blue'/* 'red' */
+                    <Checkbox colorScheme='green'
                         key={i}
                         value={category.name}
                         isDisabled={disableCheckbox}
@@ -77,7 +77,7 @@ const CatalogFilter = ({sector, selectedCategories, selectedTypes, setSelectedCa
             </Flex>
             <Stack mb={3} paddingLeft={5}>
                 {types.map((type, i) => (
-                    <Checkbox colorScheme='red'
+                    <Checkbox colorScheme='green'
                         key={i}
                         value={type.productType}
                         isDisabled={disableCheckbox}
