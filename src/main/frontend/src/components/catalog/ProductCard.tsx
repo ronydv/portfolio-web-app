@@ -7,8 +7,14 @@ type ProductCardProps={
     colorMode: ColorMode;
 }
 const DesktopVersionCard = ({ product,colorMode }: ProductCardProps) => {
+    const description =(): string | undefined =>{
+        if(product){
+            return product.description && 
+                   product.description.length >= 87 ? product.description.slice(0, 87)+'...': product.description;
+        }
+    }
     return (
-        <Card direction={{ base: 'column', sm: 'row' }} p={3}
+        <Card direction={{ base: 'column', sm: 'row' }} p={3} /* maxWidth={'70vw'} */
             overflow='hidden'
             variant={colorMode==='light'?'elevated':'elevatedDark'}>
             <Image objectFit='cover'
@@ -16,14 +22,12 @@ const DesktopVersionCard = ({ product,colorMode }: ProductCardProps) => {
                 src={product.images?.[0]?.url}
                 alt={product.name} />
 
-
             <Stack>
                 <CardBody pb={1}>
                     <Heading size='md'>{product.name}</Heading>
 
                     <Text py='2'>
-                        {'Caffè latte is a coffee beverage of Italian origin made with espresso and steamed milk.'}
-                        {product.description}
+                        {description()}
                     </Text>
 
                     <Badge variant='solid' colorScheme='red'>{product.productType}</Badge>
@@ -39,7 +43,7 @@ const DesktopVersionCard = ({ product,colorMode }: ProductCardProps) => {
                 </CardBody>
 
                 <CardFooter pt={1}>
-                    <Link to={'/product-details'}>
+                    <Link to={`/product-details/${product?.id}`}>
                         <Button variant='solid' colorScheme='orange' mr={4}>
                             View Details
                         </Button>
@@ -53,6 +57,12 @@ const DesktopVersionCard = ({ product,colorMode }: ProductCardProps) => {
     );
 };
 const MobileVersionCard = ({ product,colorMode }: ProductCardProps) => {
+    const description =(): string | undefined =>{
+        if(product){
+            return product.description && 
+                   product.description.length >= 87 ? product.description.slice(0, 87)+'...': product.description;
+        }
+    }
     return (
         <Card maxW='sm' variant={colorMode === 'light' ? 'elevated' : 'elevatedDark'}>
             <CardBody pb={2}>
@@ -64,10 +74,7 @@ const MobileVersionCard = ({ product,colorMode }: ProductCardProps) => {
                 <Stack mt='6' spacing='2'>
                     <Heading size='md'>{product.name}</Heading>
                     <Text>
-                        This sofa is perfect for modern tropical spaces, baroque inspired
-                        spaces, earthy toned spaces and for people who love a chic design with a
-                        sprinkle of vintage design.
-                        {product.description}
+                        {description()}
                     </Text>
                     <Box>
                         <Badge variant='solid' colorScheme='red'>{product.productType}</Badge>
@@ -85,7 +92,7 @@ const MobileVersionCard = ({ product,colorMode }: ProductCardProps) => {
             </CardBody>
             <CardFooter pt={1}>
                 <ButtonGroup spacing='2'>
-                    <Link to={'/product-details'}>
+                    <Link to={`/product-details/${product?.id}`}>
                         <Button variant='solid' colorScheme='orange' mr={4}>
                             View Details
                         </Button>

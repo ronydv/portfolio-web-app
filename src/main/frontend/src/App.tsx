@@ -42,7 +42,7 @@ function App() {
 						<Route path='modify-product/:id'element={<ModifyProduct/>}/>
 					</Route>
 					<Route path='/catalog' element={<Catalog />} />
-					<Route path='/product-details' element={<ProductDetails/>} />
+					<Route path='/product-details/:id' element={<ProductDetails/>} />
 				</Route>
 			</Route>
 		)//TODO: create protected routes
