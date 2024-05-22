@@ -9,15 +9,15 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
-const images = [
+const images = [//todo: delete this array
     "https://res.cloudinary.com/dlm0bynvi/image/upload/v1/products/lu8s20vtbaxoabdoelbb",
     "https://res.cloudinary.com/dlm0bynvi/image/upload/v1/products/bgbsgyq5ddf9ni1bewje",
     "https://res.cloudinary.com/dlm0bynvi/image/upload/v1/products/d7cskjm6b22himamtpxs",
     "https://res.cloudinary.com/dlm0bynvi/image/upload/v1/products/lu8s20vtbaxoabdoelbb",
     "https://res.cloudinary.com/dlm0bynvi/image/upload/v1/products/bgbsgyq5ddf9ni1bewje",
     "https://res.cloudinary.com/dlm0bynvi/image/upload/v1/products/d7cskjm6b22himamtpxs",
-    "https://res.cloudinary.com/dlm0bynvi/image/upload/v1/products/lu8s20vtbaxoabdoelbb",
     "https://res.cloudinary.com/dlm0bynvi/image/upload/v1/products/bgbsgyq5ddf9ni1bewje",
+    "https://res.cloudinary.com/dlm0bynvi/image/upload/v1/products/d7cskjm6b22himamtpxs",
     "https://res.cloudinary.com/dlm0bynvi/image/upload/v1/products/d7cskjm6b22himamtpxs",
   ];
   const responsive = {
@@ -25,16 +25,6 @@ const images = [
       breakpoint: { max: 3000, min: 1024 },
       items: 4,
       slidesToSlide:4
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 464 },
-      items: 3,
-      slidesToSlide:3
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 2,
-      slidesToSlide:2
     }
   };
 const ProductDetails = () => {
@@ -43,7 +33,8 @@ const ProductDetails = () => {
     const darkMode = useColorModeValue('gray.600', 'gray.400');
     const carouselRef = useRef<Carousel>(null);
     const [imageIndex, setImageIndex] = useState<number>(0);
-
+    const [count, setCount]=useState(0);
+    let carouselDirection = '';
     const arrowPrev =(clickHandler: () => void, hasPrev:boolean)=>{
         return (
             <div className={`${classes['carousel-arrow']} ${classes.left} ${!hasPrev && classes.hidden}`}
@@ -60,11 +51,31 @@ const ProductDetails = () => {
             </div>
         )
     }
-    useEffect(()=>{
-        if (imageIndex === 3){
-            carouselRef?.current?.goToSlide(2)
-        };
-    },[imageIndex])
+
+    useEffect(() => {//replace images.length with product.images
+
+        if (imageIndex > count) {
+            setCount(imageIndex);
+            carouselDirection = 'forward';
+        }
+        if (imageIndex <= count) {
+            setCount(imageIndex);
+            carouselDirection = 'backwards';
+        }
+        switch (carouselDirection) {
+            case 'forward':
+                if (imageIndex >= 3 && imageIndex < images.length - 2) carouselRef.current?.goToSlide(count);
+                break;
+            case 'backwards':
+                if (imageIndex > 1) carouselRef.current?.goToSlide(imageIndex - 2);
+                break;
+        }
+        console.log(carouselDirection);
+    }, [imageIndex]);
+
+
+
+    
     return ( 
         <div className={classes['product-details-container']}>
             <div className={classes.details} >
@@ -85,20 +96,27 @@ const ProductDetails = () => {
                     {product?.description && product.description}
                 </Text>
 
-                <Carousel responsive={responsive} containerClass={classes.thumbnails} ref={carouselRef}>
-                    {images.map((image, i)=>{
-                            return <Image objectFit='cover' className={`${imageIndex===i && classes.selected}`} 
-                                src={image}
-                                onClick={() => { setImageIndex(i); } } />
-                        })}
+                <Carousel responsive={responsive}
+                    containerClass={classes.thumbnails}
+                    ref={carouselRef}>
+                    {images.map((image, i) => {
+                        return <Image key={i} objectFit='cover' className={`${imageIndex === i && classes.selected}`}
+                            src={image}
+                            onClick={() => { setImageIndex(i); }} />;
+                    })}
                 </Carousel>
 
                 <Button ml={1}>Schedule service</Button>
             </div>
             <div tabIndex={1}>
-                <MainImage selectedItem={imageIndex} onChange={(index:number) => setImageIndex(index)}
-                          showThumbs={false} showStatus={false} width={'550px'} dynamicHeight={true}
-                          renderArrowPrev={arrowPrev} renderArrowNext={arrowNext}>
+                <MainImage selectedItem={imageIndex}
+                    onChange={(index: number) => setImageIndex(index)}
+                    showThumbs={false}
+                    showStatus={false}
+                    width={'550px'}
+                    dynamicHeight={true}
+                    renderArrowPrev={arrowPrev}
+                    renderArrowNext={arrowNext}>
                     {images?.map((image, i) => {
                         return (
                             <img className={classes['product-image']}
