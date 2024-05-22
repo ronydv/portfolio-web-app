@@ -81,12 +81,14 @@
 }
 /* row of thumbnails for the product details */
 .thumbnails{
+    min-width: 640px;
     margin-top: 15px;
     margin-bottom: 10px;
     border-radius: 10px;
 }
 .thumbnails img{
     border-radius: 10px;
+    object-fit: scale-down;
     margin: 10px;
     width: 130px;
     height: 110px;
