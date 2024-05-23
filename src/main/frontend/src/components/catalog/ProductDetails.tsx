@@ -90,7 +90,7 @@ const ProductDetails = () => {
 
                 {product?.images !== undefined && isDesktop &&
                     <Carousel responsive={thumbnails}
-                        containerClass={`${classes.thumbnails}${product.images.length < (thumbnails.desktop.items+1)
+                        containerClass={`${classes.thumbnails} ${product.images.length < (thumbnails.desktop.items+1)
                                         && classes.width}`}
                         ref={carouselRef}>
                         {product.images.map((image, i) => {
