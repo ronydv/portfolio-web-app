@@ -1,15 +1,16 @@
 import { useParams } from "react-router-dom";
 import { useSingleFetch } from "../../hooks/useSingleFetch";
 import classes from './catalog.module.css';
-import { Heading, useColorModeValue, Text, Image, Box, Badge, Tag, Button, Divider, CardProps } from "@chakra-ui/react";
-import React, { useEffect, useRef, useState } from "react";
+import { Heading, useColorModeValue, Text, Box, Badge, Button, Divider } from "@chakra-ui/react";
+import { useEffect, useRef, useState, useContext } from "react";
 import { MdKeyboardDoubleArrowLeft as LeftArrow,MdOutlineKeyboardDoubleArrowRight as RightArrow } from "react-icons/md";
 import { Carousel as MainImage } from "react-responsive-carousel";
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import useMatchMedia from "../../hooks/useMatchMedia";
-
+import CartContext from "../../context/CartProvider";
+import { CartItemContext } from "../../context/CartProvider";
 
 const thumbnails = {
     desktop: {
@@ -19,6 +20,7 @@ const thumbnails = {
     },
 };
 const ProductDetails = () => {
+    const cartContext=useContext<CartItemContext | undefined>(CartContext);
     const isDesktop = useMatchMedia();
     const { id } = useParams<string>();
     const { data: product } = useSingleFetch<Product>(`/api/v1/product-management/products/${id}`);
@@ -65,7 +67,6 @@ const ProductDetails = () => {
                     break;
             }
         }
-        console.log(carouselDirection);
     }, [imageIndex]);
 
     return (
@@ -100,7 +101,7 @@ const ProductDetails = () => {
                         })}
                     </Carousel>}
 
-                <Button ml={1}>Schedule service</Button>
+                <Button ml={1} mt={4}>Schedule service</Button>
             </div>
             <div>
                 {product?.images !== undefined &&
@@ -108,7 +109,7 @@ const ProductDetails = () => {
                         onChange={(index: number) => setImageIndex(index)}
                         showThumbs={false}
                         showStatus={false}
-                        width={`${isDesktop && '550px'}`}
+                        width={`${isDesktop ? '550px':''}`}
                         dynamicHeight={true}
                         renderArrowPrev={arrowPrev}
                         renderArrowNext={arrowNext}>

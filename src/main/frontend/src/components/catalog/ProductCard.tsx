@@ -1,18 +1,31 @@
 import { Card, Stack, CardBody, Heading, Image, Text, CardFooter, Button, Tag, Badge, ButtonGroup, ColorMode, Box } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import useMatchMedia from "../../hooks/useMatchMedia";
+import { useContext, useEffect } from "react";
+import CartContext, { CartItemContext } from "../../context/CartProvider";
 
 type ProductCardProps={
     product: Product;
     colorMode: ColorMode;
 }
+
 const DesktopVersionCard = ({ product,colorMode }: ProductCardProps) => {
+    const cartContext=useContext<CartItemContext | undefined>(CartContext);
+    let item:number=cartContext?.item!;
+    
     const description =(): string | undefined =>{
         if(product){
             return product.description && 
                    product.description.length >= 87 ? product.description.slice(0, 87)+'...': product.description;
         }
     }
+
+    const addCartItem=()=>{
+        item++;
+        cartContext?.setItem(item);
+    }
+    useEffect(()=>localStorage.setItem('cart-item',JSON.stringify(cartContext?.item)),[item]);
+
     return (
         <Card direction={{ base: 'column', sm: 'row' }} p={3} /* maxWidth={'70vw'} */
             overflow='hidden'
@@ -48,7 +61,7 @@ const DesktopVersionCard = ({ product,colorMode }: ProductCardProps) => {
                             View Details
                         </Button>
                     </Link>
-                    <Button >
+                    <Button onClick={addCartItem}>
                         Schedule service
                     </Button>
                 </CardFooter>
@@ -57,12 +70,22 @@ const DesktopVersionCard = ({ product,colorMode }: ProductCardProps) => {
     );
 };
 const MobileVersionCard = ({ product,colorMode }: ProductCardProps) => {
+    const cartContext=useContext<CartItemContext | undefined>(CartContext);
+    let item:number=cartContext?.item!;
+
     const description =(): string | undefined =>{
         if(product){
             return product.description && 
                    product.description.length >= 87 ? product.description.slice(0, 87)+'...': product.description;
         }
     }
+
+    const addCartItem=()=>{
+        item++;
+        cartContext?.setItem(item);
+    }
+    useEffect(()=>localStorage.setItem('cart-item',JSON.stringify(cartContext?.item)),[item]);
+
     return (
         <Card maxW='sm' variant={colorMode === 'light' ? 'elevated' : 'elevatedDark'}>
             <CardBody pb={2}>
@@ -97,7 +120,7 @@ const MobileVersionCard = ({ product,colorMode }: ProductCardProps) => {
                             View Details
                         </Button>
                     </Link>
-                    <Button >
+                    <Button onClick={addCartItem}>
                         Schedule service
                     </Button>
                 </ButtonGroup>

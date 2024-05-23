@@ -4,6 +4,7 @@ import App from './App';
 import { ChakraBaseProvider } from '@chakra-ui/react';
 import { indexTheme } from './themes/global-theme';
 import { AuthProvider } from './context/AuthProvider';
+import { CartProvider } from './context/CartProvider';
 
 
 
@@ -15,7 +16,9 @@ root.render(
 	<React.StrictMode>
 		<ChakraBaseProvider theme={indexTheme}>
 			<AuthProvider>
-				<App />
+				<CartProvider>
+					<App />
+				</CartProvider>
 			</AuthProvider>
 		</ChakraBaseProvider>
 	</React.StrictMode>

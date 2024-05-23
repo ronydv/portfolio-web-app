@@ -8,6 +8,6 @@ type UserContext = {//typechecking to set props value in AuthContext.Provider
 };
 
 //-----props ///////////////////
-type AuthContextProps = {//props to set in AuthProvider.tsx
+type ContextProps = {//props to set in AuthProvider.tsx, CartProvider.tsx
     children: React.ReactNode;
 };

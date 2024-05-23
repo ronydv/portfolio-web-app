@@ -8,7 +8,7 @@ and used in PersistAuth.tsx
 */
 const AuthContext = createContext<UserContext| undefined>(undefined);
 
-export const AuthProvider = ({ children }: AuthContextProps) => {
+export const AuthProvider = ({ children }: ContextProps) => {
     const [auth, setAuth] = useState<LoginResponse>({});
     const [persist, setPersist] = useState(JSON.parse(localStorage.getItem("persist")!) || false);
     return (

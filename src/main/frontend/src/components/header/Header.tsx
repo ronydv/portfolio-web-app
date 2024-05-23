@@ -6,9 +6,12 @@ import { Link, useNavigate } from "react-router-dom";
 import useMatchMedia from "../../hooks/useMatchMedia";
 import useLogout from "../../hooks/useLogout";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import { useContext } from "react";
+import CartContext, { CartItemContext } from "../../context/CartProvider";
 
 const Header = () => {
     const {auth:{user}} : UserContext = useAuthContext();
+    const cartContext=useContext<CartItemContext | undefined>(CartContext);
     const navigate = useNavigate();
     const logout = useLogout();
     const { colorMode, toggleColorMode } = useColorMode()
@@ -73,6 +76,7 @@ const Header = () => {
                     fontSize='20px' onClick={toggleColorMode}
                     color={linksBtn}
                     icon={colorMode === 'light' ? <Moon /> : <Sun />} />
+                items to cart:{cartContext?.item}
             </div>
         </div>
     );
