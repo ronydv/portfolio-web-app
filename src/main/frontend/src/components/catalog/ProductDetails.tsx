@@ -8,9 +8,10 @@ import { Carousel as MainImage } from "react-responsive-carousel";
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import useMatchMedia from "../../hooks/useMatchMedia";
 
 
-const responsive = {
+const thumbnails = {
     desktop: {
         breakpoint: { max: 3000, min: 1024 },
         items: 4,
@@ -18,6 +19,7 @@ const responsive = {
     },
 };
 const ProductDetails = () => {
+    const isDesktop = useMatchMedia();
     const { id } = useParams<string>();
     const { data: product } = useSingleFetch<Product>(`/api/v1/product-management/products/${id}`);
     const darkMode = useColorModeValue('gray.600', 'gray.400');
@@ -43,7 +45,7 @@ const ProductDetails = () => {
         );
     };
 
-    useEffect(() => {//replace images.length with product.images
+    useEffect(() => {
         if (product?.images) {
             if (imageIndex > count) {
                 setCount(imageIndex);
@@ -55,7 +57,7 @@ const ProductDetails = () => {
             }
             switch (carouselDirection) {
                 case 'forward':
-                    if (imageIndex >= (responsive.desktop.items - 1) && imageIndex < product.images.length - 2)
+                    if (imageIndex >= (thumbnails.desktop.items - 1) && imageIndex < product.images.length - 2)
                          carouselRef.current?.goToSlide(count);
                     break;
                 case 'backwards':
@@ -67,8 +69,8 @@ const ProductDetails = () => {
     }, [imageIndex]);
 
     return (
-        <div className={classes['product-details-container']}>
-            <div className={classes.details} >
+        <div className={`${classes['product-details-container']} ${!isDesktop && classes.mobile}`}>
+            <div className={`${classes.details} ${isDesktop && classes.desktop}`} >
                 <Heading fontSize={'25px'} mb={3} color={darkMode}>{product?.name}</Heading>
                 <Divider />
                 <Box mb={2} mt={1}>
@@ -86,9 +88,10 @@ const ProductDetails = () => {
                     {product?.description && product.description}
                 </Text>
 
-                {product?.images !== undefined &&
-                    <Carousel responsive={responsive}
-                        containerClass={classes.thumbnails}
+                {product?.images !== undefined && isDesktop &&
+                    <Carousel responsive={thumbnails}
+                        containerClass={`${classes.thumbnails}${product.images.length < (thumbnails.desktop.items+1)
+                                        && classes.width}`}
                         ref={carouselRef}>
                         {product.images.map((image, i) => {
                             return <img key={i} className={`${imageIndex === i && classes.selected}`}
@@ -105,7 +108,7 @@ const ProductDetails = () => {
                         onChange={(index: number) => setImageIndex(index)}
                         showThumbs={false}
                         showStatus={false}
-                        width={'550px'}
+                        width={`${isDesktop && '550px'}`}
                         dynamicHeight={true}
                         renderArrowPrev={arrowPrev}
                         renderArrowNext={arrowNext}>

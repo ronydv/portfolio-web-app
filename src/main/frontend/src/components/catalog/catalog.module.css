@@ -75,16 +75,23 @@
     margin-top: 20px;
     padding: 10px;
 }
+.product-details-container.mobile{
+    flex-direction: column; 
+}
 .details{
     padding: 20px 30px 20px 20px;
+}
+.details.desktop{/* disable with conditional inside product-details-container for responsive rendering in non-desktop clients */
     max-width: 45vw;
 }
 /* row of thumbnails for the product details */
 .thumbnails{
-    min-width: 640px;
     margin-top: 15px;
     margin-bottom: 10px;
     border-radius: 10px;
+}
+.thumbnails.width{/* if product images are less than 5, set a width to avoid weird renderings of thumbnails*/
+    min-width: 640px;
 }
 .thumbnails img{
     border-radius: 10px;
