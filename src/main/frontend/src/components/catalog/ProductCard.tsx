@@ -1,4 +1,4 @@
-import { Card, Stack, CardBody, Heading, Image, Text, CardFooter, Button, Tag, Badge, ButtonGroup, ColorMode, Box } from "@chakra-ui/react";
+import { Card, Stack, CardBody, Heading, Image, Text, CardFooter, Button, Tag, Badge, ButtonGroup, ColorMode, Box, useToast, Spacer } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import useMatchMedia from "../../hooks/useMatchMedia";
 import { useContext, useEffect } from "react";
@@ -9,23 +9,30 @@ type ProductCardProps={
     colorMode: ColorMode;
 }
 
+const description =(product:Product): string | undefined =>{//shows just a certain amount of words in the card view
+    if(product){
+        return product.description && 
+               product.description.length >= 87 ? product.description.slice(0, 87)+'...': product.description;
+    }
+}
+const addCartItems=(items:Product[], product:Product,cartContext: CartItemContext | undefined)=>{
+    cartContext?.setItem([...items,product]);
+}
+
 const DesktopVersionCard = ({ product,colorMode }: ProductCardProps) => {
     const cartContext=useContext<CartItemContext | undefined>(CartContext);
-    let item:number=cartContext?.item!;
-    
-    const description =(): string | undefined =>{
-        if(product){
-            return product.description && 
-                   product.description.length >= 87 ? product.description.slice(0, 87)+'...': product.description;
-        }
-    }
+    let items:Product[]=cartContext?.item!;
+    const notification = useToast();
 
-    const addCartItem=()=>{
-        item++;
-        cartContext?.setItem(item);
+    const showToast=()=>{
+        notification({
+            title: 'Product added.',
+            description: "Click in the above icon from the right for confirmation.",
+            status: 'info',
+            duration: 4000,
+            isClosable: true,
+        });
     }
-    useEffect(()=>localStorage.setItem('cart-item',JSON.stringify(cartContext?.item)),[item]);
-
     return (
         <Card direction={{ base: 'column', sm: 'row' }} p={3} /* maxWidth={'70vw'} */
             overflow='hidden'
@@ -40,7 +47,7 @@ const DesktopVersionCard = ({ product,colorMode }: ProductCardProps) => {
                     <Heading size='md'>{product.name}</Heading>
 
                     <Text py='2'>
-                        {description()}
+                        {description(product)}
                     </Text>
 
                     <Badge variant='solid' colorScheme='red'>{product.productType}</Badge>
@@ -61,7 +68,10 @@ const DesktopVersionCard = ({ product,colorMode }: ProductCardProps) => {
                             View Details
                         </Button>
                     </Link>
-                    <Button onClick={addCartItem}>
+                    <Button onClick={()=>{
+                                addCartItems(items,product,cartContext);
+                                showToast();
+                        }}>
                         Schedule service
                     </Button>
                 </CardFooter>
@@ -71,21 +81,18 @@ const DesktopVersionCard = ({ product,colorMode }: ProductCardProps) => {
 };
 const MobileVersionCard = ({ product,colorMode }: ProductCardProps) => {
     const cartContext=useContext<CartItemContext | undefined>(CartContext);
-    let item:number=cartContext?.item!;
+    let items:Product[]=cartContext?.item!;
+    const notification = useToast();
 
-    const description =(): string | undefined =>{
-        if(product){
-            return product.description && 
-                   product.description.length >= 87 ? product.description.slice(0, 87)+'...': product.description;
-        }
+    const showToast=()=>{
+        notification({
+            title: 'Product added.',
+            description: "Click in the above icon from the right for confirmation.",
+            status: 'info',
+            duration: 4000,
+            isClosable: true,
+        });
     }
-
-    const addCartItem=()=>{
-        item++;
-        cartContext?.setItem(item);
-    }
-    useEffect(()=>localStorage.setItem('cart-item',JSON.stringify(cartContext?.item)),[item]);
-
     return (
         <Card maxW='sm' variant={colorMode === 'light' ? 'elevated' : 'elevatedDark'}>
             <CardBody pb={2}>
@@ -97,7 +104,7 @@ const MobileVersionCard = ({ product,colorMode }: ProductCardProps) => {
                 <Stack mt='6' spacing='2'>
                     <Heading size='md'>{product.name}</Heading>
                     <Text>
-                        {description()}
+                        {description(product)}
                     </Text>
                     <Box>
                         <Badge variant='solid' colorScheme='red'>{product.productType}</Badge>
@@ -114,16 +121,18 @@ const MobileVersionCard = ({ product,colorMode }: ProductCardProps) => {
                 </Stack>
             </CardBody>
             <CardFooter pt={1}>
-                <ButtonGroup spacing='2'>
-                    <Link to={`/product-details/${product?.id}`}>
-                        <Button variant='solid' colorScheme='orange' mr={4}>
-                            View Details
-                        </Button>
-                    </Link>
-                    <Button onClick={addCartItem}>
-                        Schedule service
+                <Link to={`/product-details/${product?.id}`}>
+                    <Button variant='solid' colorScheme='orange'>
+                        View Details
                     </Button>
-                </ButtonGroup>
+                </Link>
+                <Spacer />
+                <Button onClick={() => {
+                    addCartItems(items, product, cartContext);
+                    showToast();
+                }}>
+                    Schedule service
+                </Button>
             </CardFooter>
         </Card>
     );

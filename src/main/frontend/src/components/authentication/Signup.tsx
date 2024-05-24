@@ -2,6 +2,7 @@ import { Button, FormControl, FormErrorMessage, FormHelperText, FormLabel, Input
 import classes from './authentication.module.css';
 import { FormEvent, useEffect, useRef, useState } from "react";
 import axios from "axios";
+//TODO: add toast if sign up is successful 
 const Signup = () => {
     const EMAIL_REGEX: RegExp=/^[^@]+@[^@]+$/;
     const [user, setUser] = useState<User>({email:'',password:''});//data for test purposes
