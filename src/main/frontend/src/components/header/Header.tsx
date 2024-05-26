@@ -17,6 +17,20 @@ const Header = () => {
     const linksBtn = useColorModeValue('gray.600','gray.400');
     const isDesktop=useMatchMedia();
 
+    const handleNavigation = () => {//todo: after being sure of this function, add the same to the navbar for the mobile version
+        const tab = 2;//works
+        const categories: string[] = ['Cat d'];//fix
+        const types: string[] = [];
+        const searchParams = new URLSearchParams();
+        searchParams.set('tab', tab.toString());
+        searchParams.set('categories', JSON.stringify(categories));
+        searchParams.set('types', JSON.stringify(types));
+        navigate({
+            pathname: '/catalog',
+            search: searchParams.toString(),
+        });
+    };
+
     const closeSession = async () => {
         await logout();
         navigate('/');
@@ -28,12 +42,12 @@ const Header = () => {
             <div className={classes.container} >
             
                 <Heading as='h1' size='lg' whiteSpace={"nowrap"} 
-                         fontSize={{ base: "25px", lg: "25px" }} /* {{ base: "30px", lg: "30px" }} */
+                         fontSize={{ base: "25px", lg: "25px" }}
                          lineHeight={{base:'1.2',lg: "1.2"}}>
                     <Text as='span'
-                          bgGradient='linear(to-t, #e53e3e, #941414)' /*'linear(to-t, var(--chakra-colors-teal-600),var(--chakra-colors-teal-800))' */
+                          bgGradient='linear(to-t, #e53e3e, #941414)'
                           bgClip='text' fontFamily={'abnes'}>IndusTEch</Text>
-                    {/* <span className={classes.span}>tech</span> */}
+                    
                 </Heading>
             </div>
 
@@ -43,9 +57,9 @@ const Header = () => {
                 <Link to={'/'}>
                     <Button marginRight={2} variant='link' color={linksBtn}>Home</Button>
                 </Link>
-                <Link to={'/catalog'}>
-                    <Button marginRight={2} variant='link' color={linksBtn}>Catalog</Button>
-                </Link>
+                <a>{/* wrapper tag to avoid misalignment inside the div */}
+                    <Button onClick={handleNavigation} marginRight={2} variant='link' color={linksBtn}>Catalog</Button>
+                </a>
                 <Link to={'/'}>
                     <Button marginRight={2} variant='link' color={linksBtn}>Contact</Button>
                 </Link>

@@ -1,8 +1,9 @@
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useSingleFetch } from "../../hooks/useSingleFetch";
 import classes from './catalog.module.css';
 import { Heading, useColorModeValue, Text, Box, Badge, Button, Divider } from "@chakra-ui/react";
 import { useEffect, useRef, useState, useContext } from "react";
+import { FaArrowLeft as LeftIcon } from "react-icons/fa6";
 import { MdKeyboardDoubleArrowLeft as LeftArrow,MdOutlineKeyboardDoubleArrowRight as RightArrow } from "react-icons/md";
 import { Carousel as MainImage } from "react-responsive-carousel";
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
@@ -29,7 +30,19 @@ const ProductDetails = () => {
     const [imageIndex, setImageIndex] = useState<number>(0);
     const [count, setCount] = useState(0);
     let carouselDirection = '';
-
+    
+    const navigate = useNavigate();
+    const location = useLocation();
+    const handleGoBack=()=>{
+        const searchParams = new URLSearchParams(location.search);
+        searchParams.get('tab');
+        searchParams.get('categories');
+        searchParams.get('types');
+        navigate({
+            pathname: '/catalog',
+            search: searchParams.toString(),
+        });
+    }
     const arrowPrev = (clickHandler: () => void, hasPrev: boolean) => {
         return (
             <div className={`${classes['carousel-arrow']} ${classes.left} ${!hasPrev && classes.hidden}`}
@@ -73,6 +86,7 @@ const ProductDetails = () => {
         <div className={`${classes['product-details-container']} ${!isDesktop && classes.mobile}`}>
             <div className={`${classes.details} ${isDesktop && classes.desktop}`} >
                 <Heading fontSize={'25px'} mb={3} color={darkMode}>{product?.name}</Heading>
+                <Button leftIcon={<LeftIcon/>} onClick={handleGoBack} colorScheme="blue" mb={2}>Go Back</Button>
                 <Divider />
                 <Box mb={2} mt={1}>
                     <Badge variant='solid' fontSize='15px' colorScheme='red'>{product?.productType}</Badge>

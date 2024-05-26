@@ -1,5 +1,5 @@
 import { Card, Stack, CardBody, Heading, Image, Text, CardFooter, Button, Tag, Badge, ButtonGroup, ColorMode, Box, useToast, Spacer } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, NavigateFunction, useNavigate } from "react-router-dom";
 import useMatchMedia from "../../hooks/useMatchMedia";
 import { useContext, useEffect } from "react";
 import CartContext, { CartItemContext } from "../../context/CartProvider";
@@ -7,6 +7,9 @@ import CartContext, { CartItemContext } from "../../context/CartProvider";
 type ProductCardProps={
     product: Product;
     colorMode: ColorMode;
+    tabIndex: number;
+    categories: string[];
+    types:string[]
 }
 
 const description =(product:Product): string | undefined =>{//shows just a certain amount of words in the card view
@@ -18,8 +21,22 @@ const description =(product:Product): string | undefined =>{//shows just a certa
 const addCartItems=(items:Product[], product:Product,cartContext: CartItemContext | undefined)=>{
     cartContext?.setItem([...items,product]);
 }
-
-const DesktopVersionCard = ({ product,colorMode }: ProductCardProps) => {
+const handleNavigation = (id:number, navigate: NavigateFunction,
+                          tabIndex:number, categories:string[], types:string[]) => {//todo: after being sure of this function, add the same to the navbar for the mobile version
+    const searchParams = new URLSearchParams();
+    const tab = tabIndex;
+    const categoriesParam: string[] = categories
+    const typesParam: string[] = types;
+    searchParams.set('tab', tab.toString());
+    searchParams.set('categories', JSON.stringify(categoriesParam));
+    searchParams.set('types', JSON.stringify(typesParam));
+    navigate({
+        pathname: `/product-details/${id}`,
+        search: searchParams.toString(),
+    });
+};
+const DesktopVersionCard = ({ product, colorMode, tabIndex, categories, types }: ProductCardProps) => {
+    const navigate = useNavigate();
     const cartContext=useContext<CartItemContext | undefined>(CartContext);
     let items:Product[]=cartContext?.item!;
     const notification = useToast();
@@ -63,11 +80,12 @@ const DesktopVersionCard = ({ product,colorMode }: ProductCardProps) => {
                 </CardBody>
 
                 <CardFooter pt={1}>
-                    <Link to={`/product-details/${product?.id}`}>
-                        <Button variant='solid' colorScheme='orange' mr={4}>
+                    {/* <Link to={{pathname:`/product-details/${product?.id}`,search:`?tab=${tabIndex}`}}> */}
+                        <Button onClick={()=>handleNavigation(product?.id!,navigate,tabIndex,categories, types)}
+                                variant='solid' colorScheme='orange' mr={4}>
                             View Details
                         </Button>
-                    </Link>
+                   {/*  </Link> */}
                     <Button onClick={()=>{
                                 addCartItems(items,product,cartContext);
                                 showToast();
@@ -79,7 +97,7 @@ const DesktopVersionCard = ({ product,colorMode }: ProductCardProps) => {
         </Card>
     );
 };
-const MobileVersionCard = ({ product,colorMode }: ProductCardProps) => {
+const MobileVersionCard = ({ product, colorMode, tabIndex, categories, types }: ProductCardProps) => {
     const cartContext=useContext<CartItemContext | undefined>(CartContext);
     let items:Product[]=cartContext?.item!;
     const notification = useToast();
@@ -121,7 +139,7 @@ const MobileVersionCard = ({ product,colorMode }: ProductCardProps) => {
                 </Stack>
             </CardBody>
             <CardFooter pt={1}>
-                <Link to={`/product-details/${product?.id}`}>
+                <Link to={{pathname:`/product-details/${product?.id}`,search:`?tab=${tabIndex}`}}>
                     <Button variant='solid' colorScheme='orange'>
                         View Details
                     </Button>
@@ -137,12 +155,21 @@ const MobileVersionCard = ({ product,colorMode }: ProductCardProps) => {
         </Card>
     );
 };
-const ProductCard = ({ product,colorMode }: ProductCardProps) => {
+const ProductCard = ({ product,colorMode, tabIndex, categories,types }: ProductCardProps) => {
     const isDesktop = useMatchMedia();
     return (
         <>
-            {isDesktop ? <DesktopVersionCard product={product} colorMode={colorMode} />
-                       : <MobileVersionCard product={product} colorMode={colorMode}/>}
+            {isDesktop ? <DesktopVersionCard product={product} 
+                                             colorMode={colorMode} 
+                                             tabIndex={tabIndex}
+                                             categories={categories}
+                                             types={types} />
+
+                       : <MobileVersionCard product={product}
+                                            colorMode={colorMode}
+                                            tabIndex={tabIndex}
+                                            categories={categories}
+                                            types={types}/>}
         </>
     );
 };

@@ -22,13 +22,15 @@ type ProductsGridProps={
     tabIndex: number;
     setTabIndex: React.Dispatch<React.SetStateAction<number>>;
     sectors: Sector[];
+    currentPage: number;
+    setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
 }
 const ProductsGrid = ({browse, setSector, selectedCategories, selectedTypes,setSelectedCategories, 
-                       setSelectedTypes, tabIndex, setTabIndex, sectors}:ProductsGridProps) => {
+                       setSelectedTypes, tabIndex, setTabIndex, sectors, currentPage, setCurrentPage}:ProductsGridProps) => {
     
     const isDesktop = useMatchMedia();
     const { colorMode } = useColorMode();
-    const [currentPage, setCurrentPage] = useState(1);//only for the pagination gui, not used in the page url
+    //only for the pagination gui, not used in the page url
     const handlePageChange = (page: number) => setCurrentPage(page);
     const pageSize = 4;
     const [url, setUrl]=useState("");
@@ -69,11 +71,11 @@ const ProductsGrid = ({browse, setSector, selectedCategories, selectedTypes,setS
         });
     },[sectors, browse, currentPage, tabIndex, selectedCategories, selectedTypes, url]);
     
-    useEffect(() => {//reset the value of the current page and values of the filters whenever the tab is changed
+/*     useEffect(() => {//reset the value of the current page and values of the filters whenever the tab is changed
         setCurrentPage(1);
         setSelectedCategories([]);//when this is empty, it uncheck the checkboxes from CatalogFilter.tsx
         setSelectedTypes([]);
-    }, [tabIndex]);
+    }, [tabIndex]); */
 
     useEffect(() => {//reset the value of the current page and switch tab whenever the browser value is changed
         setCurrentPage(1);
@@ -81,7 +83,7 @@ const ProductsGrid = ({browse, setSector, selectedCategories, selectedTypes,setS
         else setTabIndex(0);
     }, [browse]);
 
-    useEffect(()=>setCurrentPage(1),[selectedCategories, selectedTypes]);//reset page whenever the filter is used
+    useEffect(()=>setCurrentPage(1),[selectedCategories, selectedTypes]);//set page to 1 whenever the filter is used
     return ( 
         <div className={`${classes['product-list-container']} 
                          ${colorMode === 'light' ? classes['pagination-light'] : classes['pagination-dark']}`}>
@@ -103,7 +105,11 @@ const ProductsGrid = ({browse, setSector, selectedCategories, selectedTypes,setS
                     />
                     {products?.products.map((product, i)=>(
                         <div key={i} className={classes['card-container']}>
-                            <ProductCard product={product} colorMode={colorMode}/>
+                            <ProductCard product={product} 
+                                         colorMode={colorMode}
+                                         tabIndex={tabIndex}
+                                         categories={selectedCategories}
+                                         types={selectedTypes}/>
                         </div>
                     ))}
                 </TabPanels>

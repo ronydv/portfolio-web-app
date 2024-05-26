@@ -5,10 +5,11 @@ import { GiHamburgerMenu as Burger } from "react-icons/gi";
 import { FaCartShopping as Cart} from "react-icons/fa6";
 import CatalogFilter from './CatalogFilter';
 import ProductsGrid from './ProductsGrid';
-import { useContext, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { useFetch } from '../../hooks/useFetch';
 import useMatchMedia from '../../hooks/useMatchMedia';
 import CartContext, { CartItemContext } from '../../context/CartProvider';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 
 const Catalog = () => {
@@ -17,12 +18,42 @@ const Catalog = () => {
     const cartContext=useContext<CartItemContext | undefined>(CartContext);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { data: sectors } = useFetch<Sector>("/api/v1/product-management/sector");
+    const [sector, setSector] = useState<string>("");
     const [tabIndex, setTabIndex] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
     const [browse, setBrowse] = useState('');
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
     const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
     const inputRef = useRef<HTMLInputElement>(null);
-    const [sector, setSector] = useState<string>("");
+
+    const navigate = useNavigate();
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+
+    const tabQuery:number = parseInt(queryParams.get('tab')!)||0;
+    const categoriesQuery:string = queryParams.get('categories')!;
+    const categories = categoriesQuery ? JSON.parse(categoriesQuery) : [];
+    const typesQuery:string = queryParams.get('types')!;
+    const types:string[]=typesQuery ? JSON.parse(typesQuery) : [];
+    const pageQuery:number = parseInt(queryParams.get('page')!)||1;
+    const [previousTab, setPreviousTab]=useState(tabIndex);
+    useEffect(()=>{//load elements with query values in the first mount
+        setSelectedCategories(categories);
+        setSelectedTypes(types);
+        setTabIndex(tabQuery);
+        setPreviousTab(tabQuery);
+    },[]);
+
+    useEffect(()=>{//update values when the next tab is selected
+        if(previousTab !== tabIndex){
+            setCurrentPage(1)
+            setSelectedCategories([]);
+            setSelectedTypes([]);
+            setTabIndex(tabIndex);
+            setPreviousTab(tabIndex);//store the previous index state, this is updated when the next tab is selected
+            navigate(location.pathname, { replace: true });
+        }
+    },[tabIndex])
 
     const handleSearch = () => {
         const inputValue = inputRef.current!.value;
@@ -98,7 +129,9 @@ const Catalog = () => {
                         setSelectedTypes={setSelectedTypes}
                         tabIndex={tabIndex}
                         setTabIndex={setTabIndex}
-                        sectors={sectors} />
+                        sectors={sectors}
+                        currentPage={currentPage}
+                        setCurrentPage={setCurrentPage} />
                 </section>
             </div>
         </div>
