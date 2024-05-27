@@ -87,7 +87,10 @@ const ProductDetails = () => {
         <div className={`${classes['product-details-container']} ${!isDesktop && classes.mobile}`}>
             <div className={`${classes.details} ${isDesktop && classes.desktop}`} >
                 <Heading fontSize={'25px'} mb={3} color={darkMode}>{product?.name}</Heading>
-                <Button leftIcon={<LeftIcon/>} onClick={handleGoBack} colorScheme="blue" mb={2}>Go Back</Button>
+                <Button leftIcon={<LeftIcon/>} variant={'outline'}
+                        onClick={handleGoBack} colorScheme="blue" mb={2}>
+                    Go Back
+                </Button>
                 <Divider />
                 <Box mb={2} mt={1}>
                     <Badge variant='solid' fontSize='15px' colorScheme='red'>{product?.productType}</Badge>

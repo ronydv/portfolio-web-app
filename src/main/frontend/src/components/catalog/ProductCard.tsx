@@ -100,6 +100,7 @@ const DesktopVersionCard = ({ product, colorMode, tabIndex, categories, types, p
     );
 };
 const MobileVersionCard = ({ product, colorMode, tabIndex, categories, types, page }: ProductCardProps) => {
+    const navigate = useNavigate();
     const cartContext=useContext<CartItemContext | undefined>(CartContext);
     let items:Product[]=cartContext?.item!;
     const notification = useToast();
@@ -123,7 +124,7 @@ const MobileVersionCard = ({ product, colorMode, tabIndex, categories, types, pa
 
                 <Stack mt='6' spacing='2'>
                     <Heading size='md'>{product.name}</Heading>
-                    <Text>
+                    <Text wordBreak={"break-all"}>
                         {description(product)}
                     </Text>
                     <Box>
@@ -141,11 +142,11 @@ const MobileVersionCard = ({ product, colorMode, tabIndex, categories, types, pa
                 </Stack>
             </CardBody>
             <CardFooter pt={1}>
-                <Link to={{pathname:`/product-details/${product?.id}`,search:`?tab=${tabIndex}`}}>
-                    <Button variant='solid' colorScheme='orange'>
-                        View Details
-                    </Button>
-                </Link>
+                {/* <Link to={{pathname:`/product-details/${product?.id}`,search:`?tab=${tabIndex}`}}> */}
+                <Button onClick={()=>handleNavigation(product?.id!,navigate,tabIndex,categories, types, page)}
+                        variant='solid' colorScheme='orange'>
+                    View Details
+                </Button>
                 <Spacer />
                 <Button onClick={() => {
                     addCartItems(items, product, cartContext);
@@ -157,7 +158,7 @@ const MobileVersionCard = ({ product, colorMode, tabIndex, categories, types, pa
         </Card>
     );
 };
-const ProductCard = ({ product,colorMode, tabIndex, categories,types, page }: ProductCardProps) => {
+const ProductCard = ({ product, colorMode, tabIndex, categories,types, page }: ProductCardProps) => {
     const isDesktop = useMatchMedia();
     return (
         <>
