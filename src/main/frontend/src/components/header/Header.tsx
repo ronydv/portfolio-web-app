@@ -19,12 +19,14 @@ const Header = () => {
 
     const handleNavigation = () => {//todo: after being sure of this function, add the same to the navbar for the mobile version
         const tab = 2;//works
-        const categories: string[] = ['Cat d'];//fix
+        const categories: string[] = ['Cat c'];
         const types: string[] = [];
+        const page= 2;
         const searchParams = new URLSearchParams();
         searchParams.set('tab', tab.toString());
         searchParams.set('categories', JSON.stringify(categories));
         searchParams.set('types', JSON.stringify(types));
+        searchParams.set('page', page.toString());
         navigate({
             pathname: '/catalog',
             search: searchParams.toString(),

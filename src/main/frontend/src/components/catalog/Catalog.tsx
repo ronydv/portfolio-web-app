@@ -11,7 +11,7 @@ import useMatchMedia from '../../hooks/useMatchMedia';
 import CartContext, { CartItemContext } from '../../context/CartProvider';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-
+// check explanation below in the page for the useEffect(()=>,[currentPage]), and the useEffect(()=>,[selectedCategories,selecteTypes])
 const Catalog = () => {
     const isDesktop = useMatchMedia();
     const cartColor = useColorModeValue('gray.600','gray.400');
@@ -32,16 +32,21 @@ const Catalog = () => {
 
     const tabQuery:number = parseInt(queryParams.get('tab')!)||0;
     const categoriesQuery:string = queryParams.get('categories')!;
-    const categories = categoriesQuery ? JSON.parse(categoriesQuery) : [];
+    const categories:string[] = categoriesQuery ? JSON.parse(categoriesQuery) : [];
     const typesQuery:string = queryParams.get('types')!;
     const types:string[]=typesQuery ? JSON.parse(typesQuery) : [];
     const pageQuery:number = parseInt(queryParams.get('page')!)||1;
-    const [previousTab, setPreviousTab]=useState(tabIndex);
+
+    const [previousTab, setPreviousTab]=useState(tabIndex);//used to avoid conflicts when fetching values from query params
+    const [previousPage, setPreviousPage]=useState(currentPage);
     useEffect(()=>{//load elements with query values in the first mount
         setSelectedCategories(categories);
         setSelectedTypes(types);
         setTabIndex(tabQuery);
         setPreviousTab(tabQuery);
+        setCurrentPage(pageQuery);
+        setPreviousPage(pageQuery);
+        //console.log("current page: ",pageQuery,"previous page: ",previousPage);
     },[]);
 
     useEffect(()=>{//update values when the next tab is selected
@@ -50,10 +55,18 @@ const Catalog = () => {
             setSelectedCategories([]);
             setSelectedTypes([]);
             setTabIndex(tabIndex);
-            setPreviousTab(tabIndex);//store the previous index state, this is updated when the next tab is selected
+            setPreviousTab(tabIndex);//store the previous tab index , this is updated when the next tab is selected
             navigate(location.pathname, { replace: true });
         }
-    },[tabIndex])
+    },[tabIndex]);
+
+    useEffect(()=>{//used as a flow control for the rendering of the previous state 
+        if(pageQuery===previousPage) setPreviousPage(0);
+    },[currentPage]);
+
+    useEffect(()=>{//switch page to 1 whenever the filter is used
+        if(previousPage !== currentPage)setCurrentPage(1);
+    },[selectedCategories, selectedTypes]);
 
     const handleSearch = () => {
         const inputValue = inputRef.current!.value;
@@ -125,8 +138,6 @@ const Catalog = () => {
                         setSector={setSector}
                         selectedCategories={selectedCategories}
                         selectedTypes={selectedTypes}
-                        setSelectedCategories={setSelectedCategories}
-                        setSelectedTypes={setSelectedTypes}
                         tabIndex={tabIndex}
                         setTabIndex={setTabIndex}
                         sectors={sectors}
@@ -139,3 +150,15 @@ const Catalog = () => {
 };
 
 export default Catalog;
+/*
+This component renders multiple times because of the dependencies that gets value from query parameters.
+In case the client came back from the  ProductDetails to this component, this component will load
+the previous values (state from Catalog before the client has selected a product).
+The previous values are loaded in ProductDetails through query parameters and used in Catalog.tsx.
+A uncontrolled flow of renderings appears because of that and the current page and the tab index are set to 1 after
+all the mounting, therefore the purpose of loading the last state of this components doesn't work, 
+the following variables and functions are used to fix that problem and control the rendering flow
+ -   [previousTab, setPreviousTab] [previousPage, setPreviousPage]
+ -   useEffect(()=>,[currentPage]);
+ -  useEffect(()=>,[selectedCategories,selecteTypes]);
+*/

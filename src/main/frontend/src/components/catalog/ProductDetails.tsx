@@ -38,6 +38,7 @@ const ProductDetails = () => {
         searchParams.get('tab');
         searchParams.get('categories');
         searchParams.get('types');
+        searchParams.get('page');
         navigate({
             pathname: '/catalog',
             search: searchParams.toString(),

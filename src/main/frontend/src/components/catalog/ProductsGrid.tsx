@@ -17,16 +17,14 @@ type ProductsGridProps={
     setSector: React.Dispatch<React.SetStateAction<string>>
     selectedCategories: string[];
     selectedTypes: string[];
-    setSelectedCategories: React.Dispatch<React.SetStateAction<string[]>>;
-    setSelectedTypes: React.Dispatch<React.SetStateAction<string[]>>;
     tabIndex: number;
     setTabIndex: React.Dispatch<React.SetStateAction<number>>;
     sectors: Sector[];
     currentPage: number;
     setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
 }
-const ProductsGrid = ({browse, setSector, selectedCategories, selectedTypes,setSelectedCategories, 
-                       setSelectedTypes, tabIndex, setTabIndex, sectors, currentPage, setCurrentPage}:ProductsGridProps) => {
+const ProductsGrid = ({browse, setSector, selectedCategories, selectedTypes,tabIndex,
+                       setTabIndex, sectors, currentPage, setCurrentPage}:ProductsGridProps) => {
     
     const isDesktop = useMatchMedia();
     const { colorMode } = useColorMode();
@@ -83,7 +81,7 @@ const ProductsGrid = ({browse, setSector, selectedCategories, selectedTypes,setS
         else setTabIndex(0);
     }, [browse]);
 
-    useEffect(()=>setCurrentPage(1),[selectedCategories, selectedTypes]);//set page to 1 whenever the filter is used
+    //useEffect(()=>setCurrentPage(1),[selectedCategories, selectedTypes]);//set page to 1 whenever the filter is used
     return ( 
         <div className={`${classes['product-list-container']} 
                          ${colorMode === 'light' ? classes['pagination-light'] : classes['pagination-dark']}`}>
@@ -109,7 +107,8 @@ const ProductsGrid = ({browse, setSector, selectedCategories, selectedTypes,setS
                                          colorMode={colorMode}
                                          tabIndex={tabIndex}
                                          categories={selectedCategories}
-                                         types={selectedTypes}/>
+                                         types={selectedTypes}
+                                         page={currentPage}/>
                         </div>
                     ))}
                 </TabPanels>
