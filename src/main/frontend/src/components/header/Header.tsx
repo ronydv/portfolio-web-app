@@ -18,7 +18,7 @@ const Header = () => {
     const isDesktop=useMatchMedia();
 
     const handleNavigation = () => {//todo: after being sure of this function, add the same to the navbar for the mobile version
-        const tab = 1;//works
+/*         const tab = 1;//works
         const categories: string[] = [];
         const types: string[] = [];
         const page= 1;
@@ -26,10 +26,10 @@ const Header = () => {
         searchParams.set('tab', tab.toString());
         searchParams.set('categories', JSON.stringify(categories));
         searchParams.set('types', JSON.stringify(types));
-        searchParams.set('page', page.toString());
+        searchParams.set('page', page.toString()); */
         navigate({
             pathname: '/catalog',
-            search: searchParams.toString(),
+            //search: searchParams.toString(),
         });
     };
 

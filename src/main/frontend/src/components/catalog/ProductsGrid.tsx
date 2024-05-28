@@ -108,7 +108,8 @@ const ProductsGrid = ({browse, setSector, selectedCategories, selectedTypes,tabI
                                          tabIndex={tabIndex}
                                          categories={selectedCategories}
                                          types={selectedTypes}
-                                         page={currentPage}/>
+                                         page={currentPage}
+                                         sectorLength={sectors.length}/>
                         </div>
                     ))}
                 </TabPanels>

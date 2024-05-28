@@ -11,6 +11,7 @@ type ProductCardProps={
     categories: string[];
     types:string[];
     page:number;
+    sectorLength:number;
 }
 
 const description =(product:Product): string | undefined =>{//shows just a certain amount of words in the card view
@@ -23,21 +24,19 @@ const addCartItems=(items:Product[], product:Product,cartContext: CartItemContex
     cartContext?.setItem([...items,product]);
 }
 const handleNavigation = (id:number, navigate: NavigateFunction, tabIndex:number,
-                         categories:string[], types:string[], page:number) => {//todo: after being sure of this function, add the same to the navbar for the mobile version
+                         categories:string[], types:string[], page:number, sectorLength:number) => {
     const searchParams = new URLSearchParams();
-    const tab = tabIndex;
-    const categoriesParam: string[] = categories
-    const typesParam: string[] = types;
-    searchParams.set('tab', tab.toString());
-    searchParams.set('categories', JSON.stringify(categoriesParam));
-    searchParams.set('types', JSON.stringify(typesParam));
+    searchParams.set('tab', tabIndex.toString());
+    searchParams.set('categories', JSON.stringify(categories));
+    searchParams.set('types', JSON.stringify(types));
     searchParams.set('page', page.toString());
+    searchParams.set('sectors-length', JSON.stringify(sectorLength));
     navigate({
         pathname: `/product-details/${id}`,
         search: searchParams.toString(),
     });
 };
-const DesktopVersionCard = ({ product, colorMode, tabIndex, categories, types, page }: ProductCardProps) => {
+const DesktopVersionCard = ({ product, colorMode, tabIndex, categories, types, page, sectorLength }: ProductCardProps) => {
     const navigate = useNavigate();
     const cartContext=useContext<CartItemContext | undefined>(CartContext);
     let items:Product[]=cartContext?.item!;
@@ -83,7 +82,7 @@ const DesktopVersionCard = ({ product, colorMode, tabIndex, categories, types, p
 
                 <CardFooter pt={1}>
                     {/* <Link to={{pathname:`/product-details/${product?.id}`,search:`?tab=${tabIndex}`}}> */}
-                        <Button onClick={()=>handleNavigation(product?.id!,navigate,tabIndex,categories, types, page)}
+                        <Button onClick={()=>handleNavigation(product?.id!,navigate,tabIndex,categories, types, page, sectorLength)}
                                 variant='solid' colorScheme='orange' mr={4}>
                             View Details
                         </Button>
@@ -99,7 +98,7 @@ const DesktopVersionCard = ({ product, colorMode, tabIndex, categories, types, p
         </Card>
     );
 };
-const MobileVersionCard = ({ product, colorMode, tabIndex, categories, types, page }: ProductCardProps) => {
+const MobileVersionCard = ({ product, colorMode, tabIndex, categories, types, page, sectorLength }: ProductCardProps) => {
     const navigate = useNavigate();
     const cartContext=useContext<CartItemContext | undefined>(CartContext);
     let items:Product[]=cartContext?.item!;
@@ -143,7 +142,7 @@ const MobileVersionCard = ({ product, colorMode, tabIndex, categories, types, pa
             </CardBody>
             <CardFooter pt={1}>
                 {/* <Link to={{pathname:`/product-details/${product?.id}`,search:`?tab=${tabIndex}`}}> */}
-                <Button onClick={()=>handleNavigation(product?.id!,navigate,tabIndex,categories, types, page)}
+                <Button onClick={()=>handleNavigation(product?.id!,navigate,tabIndex,categories, types, page, sectorLength)}
                         variant='solid' colorScheme='orange'>
                     View Details
                 </Button>
@@ -158,7 +157,7 @@ const MobileVersionCard = ({ product, colorMode, tabIndex, categories, types, pa
         </Card>
     );
 };
-const ProductCard = ({ product, colorMode, tabIndex, categories,types, page }: ProductCardProps) => {
+const ProductCard = ({ product, colorMode, tabIndex, categories,types, page, sectorLength }: ProductCardProps) => {
     const isDesktop = useMatchMedia();
     return (
         <>
@@ -167,14 +166,16 @@ const ProductCard = ({ product, colorMode, tabIndex, categories,types, page }: P
                                              tabIndex={tabIndex}
                                              categories={categories}
                                              types={types}
-                                             page={page} />
+                                             page={page}
+                                             sectorLength={sectorLength} />
 
                        : <MobileVersionCard product={product}
                                             colorMode={colorMode}
                                             tabIndex={tabIndex}
                                             categories={categories}
                                             types={types}
-                                            page={page}/>}
+                                            page={page}
+                                            sectorLength={sectorLength}/>}
         </>
     );
 };
