@@ -17,22 +17,6 @@ const Header = () => {
     const linksBtn = useColorModeValue('gray.600','gray.400');
     const isDesktop=useMatchMedia();
 
-    const handleNavigation = () => {//todo: after being sure of this function, add the same to the navbar for the mobile version
-/*         const tab = 1;//works
-        const categories: string[] = [];
-        const types: string[] = [];
-        const page= 1;
-        const searchParams = new URLSearchParams();
-        searchParams.set('tab', tab.toString());
-        searchParams.set('categories', JSON.stringify(categories));
-        searchParams.set('types', JSON.stringify(types));
-        searchParams.set('page', page.toString()); */
-        navigate({
-            pathname: '/catalog',
-            //search: searchParams.toString(),
-        });
-    };
-
     const closeSession = async () => {
         await logout();
         navigate('/');
@@ -59,9 +43,9 @@ const Header = () => {
                 <Link to={'/'}>
                     <Button marginRight={2} variant='link' color={linksBtn}>Home</Button>
                 </Link>
-                <a>{/* wrapper tag to avoid misalignment inside the div */}
-                    <Button onClick={handleNavigation} marginRight={2} variant='link' color={linksBtn}>Catalog</Button>
-                </a>
+                <Link to={'/catalog'}>
+                    <Button marginRight={2} variant='link' color={linksBtn}>Catalog</Button>
+                </Link>
                 <Link to={'/'}>
                     <Button marginRight={2} variant='link' color={linksBtn}>Contact</Button>
                 </Link>
