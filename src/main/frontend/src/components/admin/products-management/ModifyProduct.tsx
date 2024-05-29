@@ -1,4 +1,4 @@
-import { Breadcrumb, BreadcrumbItem, Button, Text, Flex, FormControl, FormLabel, Heading, Input, NumberInput, NumberInputField, Spacer, Textarea, useColorMode, Divider } from "@chakra-ui/react";
+import { Breadcrumb, BreadcrumbItem, Button, Flex, FormLabel, Heading, Input, Spacer, Textarea, useColorMode, Divider } from "@chakra-ui/react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { FaArrowLeft as LeftIcon } from "react-icons/fa6";
 import { MdOutlineChevronRight as ChevronRightIcon } from "react-icons/md";
@@ -15,8 +15,6 @@ const ModifyProduct = () => {
     const { colorMode } = useColorMode();
     const { id } = useParams<string>();
     const navigate = useNavigate();
-    const location = useLocation();
-    const queryAction:string|null = new URLSearchParams(location.search).get('action');
     const { data } = useSingleFetch<Product>(`/api/v1/product-management/products/${id}`);
     const [product, setProduct]= useState<Product>({});
     const [error, setError]=useState<string>("");
@@ -26,31 +24,21 @@ const ModifyProduct = () => {
         event.preventDefault();
         try {
             setIsLoading(true);
-            if (queryAction === 'update') {
-                const response = await axiosPrivate.put<Product>("/api/v1/product-management/products",
-                    product, {
-                    headers: {
-                        "Accept": "application/json",
-                        "Content-Type": "application/json",
-                    },
-                });
-                console.log("new product: ", response.data);
-                setTypesUrl("");
-            } else {
-                const response = await axiosPrivate.delete<Product>(`/api/v1/product-management/products/${id}`, {
-                    headers: {
-                        "Accept": "application/json",
-                        "Content-Type": "application/json",
-                    },
-                });
-                console.log(response.data);
-            }
+            const response = await axiosPrivate.put<Product>("/api/v1/product-management/products",
+                product, {
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                },
+            });
+            console.log("new product: ", response.data);
+            setTypesUrl("");
             setIsLoading(false);
         } catch (err) {
             setIsLoading(false);
-            if (axios.isAxiosError(err)){
+            if (axios.isAxiosError(err)) {
                 setError(err.response?.data.message);
-                if(err.response?.data?.detail) setError(err.response?.data?.detail);
+                if (err.response?.data?.detail) setError(err.response?.data?.detail);
             }
         }
     }
@@ -58,23 +46,22 @@ const ModifyProduct = () => {
     
     return ( 
         <div>
-            {/* modify product with id {id} and action {queryAction} */}
             <div >
                 <form onSubmit={handleSubmit}>
                     <section className={`${classes.title} ${colorMode === 'light' ? classes.light : classes.dark}`}>
                         <Flex direction={'column'}>
                             <Heading as='h2' size='md' marginRight={10}>
-                                {queryAction==='update'?<p >Modify Product</p>:<p >Delete Product</p>}
+                                Modify Product
                             </Heading>
                             <Breadcrumb spacing='8px' separator={<ChevronRightIcon color='gray.500' />}>
                                 <BreadcrumbItem>
                                     <p>Products</p>
                                 </BreadcrumbItem>
                                 <BreadcrumbItem>
-                                    <p>Table</p>
+                                <p>Table</p>
                                 </BreadcrumbItem>
                                 <BreadcrumbItem isCurrentPage>
-                                    {queryAction==='update'?<p >Edit Product</p>:<p >Delete Product</p>}
+                                <p>Update</p>
                                 </BreadcrumbItem>
                             </Breadcrumb>
                         </Flex>
@@ -87,8 +74,8 @@ const ModifyProduct = () => {
                         <Button type="submit" variant={'solid'}
                             isLoading={isLoading}
                             loadingText='Submitting'
-                            colorScheme={queryAction ==='delete'?'purple':'blue'}>
-                            {queryAction ==='delete'? 'Delete' : 'Save Changes'}
+                            colorScheme={'blue'}>
+                            Save Changes
                         </Button>
                     </section>
 

@@ -1,6 +1,6 @@
-import { TableContainer, Table, Image, TableCaption, Thead, Tr, Th, Tbody, Td, Tag, Flex, Tab, TabList, TabPanels, Tabs, useColorMode, Icon } from "@chakra-ui/react";
+import { TableContainer, Table, Image, TableCaption, Thead, Tr, Th, Tbody, Td, Tag, Flex, Tab, TabList, TabPanels, Tabs, useColorMode, Icon, Popover, Box, Button, ButtonGroup, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverFooter, PopoverHeader, PopoverTrigger, Portal, useDisclosure, Spinner } from "@chakra-ui/react";
 import useMatchMedia from "../../../hooks/useMatchMedia";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ResponsivePagination from 'react-responsive-pagination';
 import { RiDeleteBinFill as DeleteIcon } from "react-icons/ri";
 import { FaRegEdit as EditIcon} from "react-icons/fa";
@@ -14,6 +14,11 @@ import { SiAltiumdesigner as Designs } from "react-icons/si";
 import { FaGears as Machinery } from "react-icons/fa6";
 import { LiaMicrochipSolid as Automations } from "react-icons/lia";
 import { IconType } from "react-icons";
+import axios from "axios";
+import { error } from "console";
+import { url } from "inspector";
+import types from "react-multi-carousel";
+import useInterceptor from "../../../hooks/useInterceptor";
 
 const icons: IconType[]= [Designs, Machinery, Automations];
 type TypeColor={
@@ -25,6 +30,10 @@ type ProductsTableProps = {
     setActiveButton?: React.Dispatch<React.SetStateAction<string>>
 }
 const ProductsTable = ({ browse, setActiveButton }: ProductsTableProps) => {
+    const { isOpen,onOpen,onClose } = useDisclosure();//to close the popover
+    const axiosPrivate = useInterceptor();
+    const [isLoading, setIsLoading]=useState(false);
+    const [errorDelete, setErrorDelete]=useState<string>("");
     const isDesktop = useMatchMedia();
     const { colorMode } = useColorMode();
     const {data:sectors}=useFetch<Sector>("/api/v1/product-management/sector");
@@ -38,6 +47,28 @@ const ProductsTable = ({ browse, setActiveButton }: ProductsTableProps) => {
     const createColor=useColorGenerator();
     const [typeColors,setTypeColors]=useState<TypeColor[]>([{}])
     const handlePageChange = (page: number) => setCurrentPage(page);
+
+    const deleteProduct = async (id: number, onClose: () => void) => {
+        try {
+            setIsLoading(true);
+            const response = await axiosPrivate.delete<Product>(`/api/v1/product-management/products/${id}`, {
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                },
+            });
+            console.log(response.data);
+            setIsLoading(false);
+        } catch (err) {
+            setIsLoading(false);
+            if (axios.isAxiosError(err)) {
+                setErrorDelete(err.response?.data.message);
+                if (err.response?.data?.detail) setErrorDelete(err.response?.data?.detail);
+            }
+        }
+        onClose();
+        setUrl("");//urlState is set again in the useEffect that uses the url as dependency to update table values
+    }
 
     useEffect(() => {/* update the url state to fetch data with a updated url */
         if (browse === "") {
@@ -86,6 +117,7 @@ const ProductsTable = ({ browse, setActiveButton }: ProductsTableProps) => {
             }
         }
     }
+
     return (
         <div className={`${classes['table-container']}
                          ${colorMode === 'light' ? classes['pagination-light'] : classes['pagination-dark']}`}>
@@ -131,21 +163,40 @@ const ProductsTable = ({ browse, setActiveButton }: ProductsTableProps) => {
                                         {isDesktop && <Td>{product.sector}</Td>}
                                         <Td pr={isDesktop ? '' : '4px'}>
                                             <Flex columnGap={4}>
-                                                <Link to={{pathname:`modify-product/${product.id}`,search:'?action=update'}}>
+                                                <Link to={{ pathname: `modify-product/${product.id}`, search: '?action=update' }}>
                                                     <EditIcon color="#59a0d4" className={classes['action-icon']}
-                                                            onClick={() => {
-                                                                //switch the conditional in MainDashboard.tsx to render the <Outlet/> inside <div className={classes.outlet}>
-                                                                setActiveButton && setActiveButton("Modify Product")
-                                                            }} />
+                                                        onClick={() => {
+                                                            //switch the conditional in MainDashboard.tsx to render the <Outlet/> inside <div className={classes.outlet}>
+                                                            setActiveButton && setActiveButton("Modify Product");
+                                                        }} />
                                                 </Link>
-
-                                                <Link to={{ pathname: `modify-product/${product.id}`, search:'?action=delete' }}>
-                                                    <DeleteIcon color="red" className={classes['action-icon']}
-                                                            onClick={() => {
-                                                                //switch the conditional in MainDashboard.tsx to render the <Outlet/> inside <div className={classes.outlet}>
-                                                                setActiveButton && setActiveButton("Modify Product");
-                                                            }} />
-                                                </Link>
+                                                <Popover closeOnBlur={true}> 
+                                                    {({onClose }) => (
+                                                        <> 
+                                                        <PopoverTrigger>
+                                                            <div><DeleteIcon color="red" className={classes['action-icon']} /></div>
+                                                        </PopoverTrigger>
+                                                            <Portal>
+                                                                <PopoverContent>
+                                                                    <PopoverArrow />
+                                                                    <PopoverHeader>Product to delete:</PopoverHeader>
+                                                                    <PopoverCloseButton />
+                                                                    <PopoverBody>
+                                                                        <p>{product.name}</p>
+                                                                        {isLoading && <Spinner thickness='4px' speed='0.65s' emptyColor='gray.200'
+                                                                             color='purple.500' size='md' />}
+                                                                    </PopoverBody>
+                                                                    <PopoverFooter>
+                                                                        <Button onClick={() => deleteProduct(product?.id!, onClose)}
+                                                                                variant={'outline'} colorScheme="red" size={'xs'}>
+                                                                            Delete
+                                                                        </Button>
+                                                                    </PopoverFooter>
+                                                                </PopoverContent>
+                                                            </Portal>
+                                                            </>
+                                                    )}
+                                                </Popover>
                                             </Flex>
                                         </Td>
                                     </Tr>
