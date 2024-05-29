@@ -68,12 +68,6 @@ const ProductsGrid = ({browse, setSector, selectedCategories, selectedTypes,tabI
             }
         });
     },[sectors, browse, currentPage, tabIndex, selectedCategories, selectedTypes, url]);
-    
-/*     useEffect(() => {//reset the value of the current page and values of the filters whenever the tab is changed
-        setCurrentPage(1);
-        setSelectedCategories([]);//when this is empty, it uncheck the checkboxes from CatalogFilter.tsx
-        setSelectedTypes([]);
-    }, [tabIndex]); */
 
     useEffect(() => {//reset the value of the current page and switch tab whenever the browser value is changed
         setCurrentPage(1);
@@ -81,7 +75,6 @@ const ProductsGrid = ({browse, setSector, selectedCategories, selectedTypes,tabI
         else setTabIndex(0);
     }, [browse]);
 
-    //useEffect(()=>setCurrentPage(1),[selectedCategories, selectedTypes]);//set page to 1 whenever the filter is used
     return ( 
         <div className={`${classes['product-list-container']} 
                          ${colorMode === 'light' ? classes['pagination-light'] : classes['pagination-dark']}`}>
@@ -109,7 +102,7 @@ const ProductsGrid = ({browse, setSector, selectedCategories, selectedTypes,tabI
                                          categories={selectedCategories}
                                          types={selectedTypes}
                                          page={currentPage}
-                                         sectorLength={sectors.length}/>
+                                         browse={browse}/>
                         </div>
                     ))}
                 </TabPanels>

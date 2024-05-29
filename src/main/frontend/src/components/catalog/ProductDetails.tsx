@@ -33,19 +33,17 @@ const ProductDetails = () => {
     
     const navigate = useNavigate();
     const location = useLocation();
-    const handleGoBack=()=>{
+
+    const handleGoBack = () => {
         const searchParams = new URLSearchParams(location.search);
-        const tab=parseInt(searchParams.get('tab')!);
+        searchParams.get('tab');
         searchParams.get('categories');
         searchParams.get('types');
         searchParams.get('page');
-        const sectorLength=parseInt(searchParams.get('sectors-length')!) || 0;
-        console.log(sectorLength);
-
-        if(tab === sectorLength) navigate({pathname: '/catalog'});
-        else navigate({
-                pathname: '/catalog',
-                search: searchParams.toString(),
+        searchParams.get('browse');
+        navigate({
+            pathname: '/catalog',
+            search: searchParams.toString(),
         });
     }
     const arrowPrev = (clickHandler: () => void, hasPrev: boolean) => {
