@@ -1,6 +1,8 @@
 package com.industech.model.auth;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.industech.model.order.Order;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,6 +10,8 @@ import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import static jakarta.persistence.CascadeType.*;
 
 @Data
 @NoArgsConstructor
@@ -38,14 +42,26 @@ public class User {
                     foreignKey = @ForeignKey(name = "role_id_fk")))
     private Set<Role> roles=new HashSet<>();
 
-    @OneToOne(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.REMOVE)//on delete user, delete token
+    @OneToOne(mappedBy = "user", orphanRemoval = true, cascade = REMOVE)//on delete user, delete token
     private RefreshToken refreshToken;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = {PERSIST,MERGE}, orphanRemoval = true)
+    private Set<Order> orders=new HashSet<>();
 
     public User(String name, String email, String password, Set<Role> roles ){
         this.name=name;
         this.email=email;
         this.password=password;
         this.roles=roles;
+    }
+
+    public void addOrder(Order order){
+        this.orders.add(order);
+        order.setUser(this);
+    }
+    public void removeOrder(Order order){
+        this.orders.remove(order);
+        order.setUser(null);
     }
 
     @Override

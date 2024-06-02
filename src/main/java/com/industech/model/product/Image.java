@@ -10,7 +10,7 @@ import lombok.Setter;
 public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(columnDefinition = "VARCHAR(2048)")
     private String url;

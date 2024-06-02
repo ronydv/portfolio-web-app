@@ -12,12 +12,12 @@ import java.util.Objects;
 public class ProductCategoryId implements Serializable {
 
     @Column(name = "product_id")
-    private Integer productId;//this instance is mapped to @MapsId in ProductCategory entity
+    private Long productId;//this instance is mapped to @MapsId in ProductCategory entity
     @Column(name = "category_id")
     private Integer categoryId;//this instance is mapped to @MapsId in ProductCategory entity
 
     public ProductCategoryId(){}
-    public ProductCategoryId(Integer productId, Integer categoryId) {
+    public ProductCategoryId(Long productId, Integer categoryId) {
         this.productId = productId;
         this.categoryId = categoryId;
     }

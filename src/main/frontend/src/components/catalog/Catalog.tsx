@@ -9,9 +9,9 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { useFetch } from '../../hooks/useFetch';
 import useMatchMedia from '../../hooks/useMatchMedia';
 import CartContext, { CartItemContext } from '../../context/CartProvider';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-// check explanation below in the page for the useEffect(()=>,[currentPage]), and the useEffect(()=>,[selectedCategories,selecteTypes])
+// check explanation below in very bottm of this file
 const Catalog = () => {
     const isDesktop = useMatchMedia();
     const cartColor = useColorModeValue('gray.600','gray.400');
@@ -130,9 +130,11 @@ const Catalog = () => {
                     </InputGroup>
                     <Spacer />
                     <div className={classes['cart-container']}>
-                        <Button variant={'outline'} fontSize={'26px'} color={cartColor}>
-                            <Cart />
-                        </Button>
+                        <Link to={'/cart'}>
+                            <Button variant={'outline'} fontSize={'26px'} color={cartColor}>
+                                <Cart />
+                            </Button>
+                        </Link>
                         <Flex className={classes['cart-value']} bgColor={'orange.200'}>
                             <Text as={'span'} fontWeight={'900'} fontSize={'14px'} color={'gray.600'}>{cartContext?.item.length}</Text>
                         </Flex>

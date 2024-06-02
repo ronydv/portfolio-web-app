@@ -1,6 +1,12 @@
 package com.industech;
 
+import com.industech.model.auth.User;
+import com.industech.model.order.Order;
+import com.industech.model.product.Product;
+import com.industech.repository.auth.UserRepository;
+import com.industech.repository.order.OrderRepository;
 import com.industech.repository.product.*;
+import com.industech.service.order.OrderService;
 import com.industech.service.product.CategoryService;
 import com.industech.service.product.ProductService;
 import com.industech.service.product.TypeService;
@@ -23,22 +29,25 @@ public class Main {
 	}
 
 	@Bean
-	CommandLineRunner commandLineRunner(ProductService productService,
-										CategoryService categoryService,
-										CategoryRepository categoryRepo,
-										SectorRepository sectorRepository,
-										CustomRepository customRepository,
-										TypeRepository typeRepository,
-										TypeService typeService,
-										ProductRepository productRepo) {
+	CommandLineRunner commandLineRunner(UserRepository userRepository,
+										ProductService productService,
+										ProductRepository productRepository,
+										OrderRepository orderRepository,
+										OrderService orderService) {
 		return args -> {
-/*			List<String> categories = new ArrayList<>();
-			categories.add("Cat-b");
-			List<String> types = new ArrayList<>();
-			types.add("Type 4");
-
-			System.out.println(productService.getProductsByCategoriesAndTypes(1,22,"automations",
-					categories,types));*/
+/*			User user = userRepository.findById(2L).orElseThrow();
+			Product product1=productRepository.findById(151L).orElseThrow();
+			Product product2=productRepository.findById(155L).orElseThrow();
+			Product product3=productRepository.findById(156L).orElseThrow();
+			List<Product>products=new ArrayList<>(List.of(product1,product2,product3));*/
+/*			for( Product product:products){
+				Order order= Order.add(user,product);
+				orderRepository.save(order);
+			}*/
+			//System.out.println(orderRepository.findAll());
+/*			Long userId=2L;
+			List<Long>productIds=List.of(151L,155L,156L);
+			System.out.println(orderService.saveOrder(userId,productIds));*/
 		};
 	}
 }

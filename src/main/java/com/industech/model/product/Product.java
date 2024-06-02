@@ -1,5 +1,6 @@
 package com.industech.model.product;
 
+import com.industech.model.order.Order;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,7 +15,7 @@ import static jakarta.persistence.CascadeType.*;
 public class Product {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     private String name;
 
@@ -42,6 +43,9 @@ public class Product {
             inverseJoinColumns = @JoinColumn(name="type_id", referencedColumnName = "id",
                     foreignKey = @ForeignKey(name = "type_id_fk")))
     private Set<Type> types=new HashSet<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = {PERSIST,MERGE}, orphanRemoval = true)
+    private Set<Order> orders=new HashSet<>();
 
     //////constructor setters, getters and other methods
     public Product(){}
@@ -73,6 +77,15 @@ public class Product {
     public void removeImage(Image image){
         this.images.remove(image);
         image.setProduct(null);
+    }
+
+    public void addOrder(Order order){
+        this.orders.add(order);
+        order.setProduct(this);
+    }
+    public void removeOrder(Order order){
+        this.orders.remove(order);
+        order.setProduct(null);
     }
 
     public String toString(){

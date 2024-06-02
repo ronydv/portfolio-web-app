@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product,Integer> {
+public interface ProductRepository extends JpaRepository<Product,Long> {
 
     //load product and its related records when fetch=LAZY is used in the associated entities
     // JOIN FETCH p.images may load duplicates entries, use Set<> to avoid duplicates
@@ -21,7 +21,14 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
             SELECT p FROM Product p LEFT JOIN FETCH p.productCategories
                                     LEFT JOIN FETCH p.images WHERE p.id = :id
             """)
-    Optional<Product> findById(@Param("id") Integer id);
+    Optional<Product> findById(@Param("id") Long id);
+
+/*    @Query(value= """
+            SELECT p FROM Product p LEFT JOIN FETCH p.productCategories
+                                    LEFT JOIN FETCH p.images
+                                    LEFT JOIN FETCH p.orders WHERE p.id = :id
+            """)
+    Optional<Product> findByIdWithOrders(@Param("id") Long id);*/
 
     @Query(value = """
             SELECT * FROM product WHERE name ~ (:regex)

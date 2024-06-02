@@ -17,7 +17,7 @@ this DTO is created specifically to avoid this exception:
 
 @Setter @Getter
 public class ProductDetails {
-    private Integer id;
+    private Long id;
     private String name;
     private String description;
     private List<CategoryDetails> categories = new ArrayList<>();

@@ -3,7 +3,6 @@ import './App.css';
 import Layout from './Layout';
 import Home from './components/home/Home';
 import Catalog from './components/catalog/Catalog';
-import Services from './components/catalog/Catalog';
 import Login from './components/authentication/Login';
 import Signup from './components/authentication/Signup';
 
@@ -16,6 +15,7 @@ import ProductsDashboard from './components/admin/products-management/ProductsDa
 import MainDashboard from './components/admin/MainDashboard';
 import ModifyProduct from './components/admin/products-management/ModifyProduct';
 import ProductDetails from './components/catalog/ProductDetails';
+import Cart from './components/cart/Cart';
 
 
   
@@ -36,6 +36,9 @@ function App() {
 					<Route element={<Restricted to={[Role.ADMIN]} />}>
 						{/* dashboard here /> */}
 					</Route>
+					<Route element={<Restricted to={[Role.USER]} />}>
+						{/* cart here /> */}
+					</Route>
 					<Route path='/dashboard' element={<MainDashboard/>} >
 						<Route path='products-dashboard'element={<ProductsDashboard/>}/>
 						<Route path='add-product'element={<AddProduct/>}/>
@@ -43,6 +46,7 @@ function App() {
 					</Route>
 					<Route path='/catalog' element={<Catalog />} />
 					<Route path='/product-details/:id' element={<ProductDetails/>} />
+					<Route path='/cart' element={<Cart/>} />
 				</Route>
 			</Route>
 		)//TODO: create protected routes

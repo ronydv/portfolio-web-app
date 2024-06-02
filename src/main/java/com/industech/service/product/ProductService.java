@@ -113,7 +113,7 @@ public class ProductService {
         return new PaginatedProducts(products, (int) productsBySector.total());
     }
 
-    public ProductDetails getProductById(Integer id) {
+    public ProductDetails getProductById(Long id) {
         return productRepository.findById(id)
                 .map(found -> {
                     ProductDetails product = new ProductDetails(found);
@@ -246,7 +246,7 @@ public class ProductService {
         }
     }
 
-    public String deleteProduct(Integer id){
+    public String deleteProduct(Long id){
         return productRepository.findById(id)
                 .map(product -> {
                     if(!product.getProductCategories().isEmpty()) {
