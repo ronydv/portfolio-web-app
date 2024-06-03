@@ -1,6 +1,7 @@
-import { Button, Heading, Spacer, useColorMode, Text, IconButton, useColorModeValue, MenuButton, Menu, MenuItem, MenuList } from "@chakra-ui/react";
+import { Button, Heading, Spacer, useColorMode, Text, IconButton, useColorModeValue, MenuButton, Menu, MenuItem, MenuList, Flex } from "@chakra-ui/react";
 import { FaMoon as Moon} from "react-icons/fa6";
 import { MdSunny as Sun} from "react-icons/md";
+import { FaCartShopping as Cart} from "react-icons/fa6";
 import classes from './header.module.css';
 import { Link, useNavigate } from "react-router-dom";
 import useMatchMedia from "../../hooks/useMatchMedia";
@@ -11,10 +12,11 @@ import CartContext, { CartItemContext } from "../../context/CartProvider";
 
 const Header = () => {
     const {auth:{user}} : UserContext = useAuthContext();
+    const cartContext=useContext<CartItemContext | undefined>(CartContext);
     const navigate = useNavigate();
     const logout = useLogout();
     const { colorMode, toggleColorMode } = useColorMode()
-    const linksBtn = useColorModeValue('gray.600','gray.400');
+    const grayColor = useColorModeValue('gray.600','gray.400');
     const isDesktop=useMatchMedia();
 
     const closeSession = async () => {
@@ -41,16 +43,16 @@ const Header = () => {
 
             {isDesktop && <div className={classes.container}>
                 <Link to={'/'}>
-                    <Button marginRight={2} variant='link' color={linksBtn}>Home</Button>
+                    <Button marginRight={2} variant='link' color={grayColor}>Home</Button>
                 </Link>
                 <Link to={'/catalog'}>
-                    <Button marginRight={2} variant='link' color={linksBtn}>Catalog</Button>
+                    <Button marginRight={2} variant='link' color={grayColor}>Catalog</Button>
                 </Link>
                 <Link to={'/'}>
-                    <Button marginRight={2} variant='link' color={linksBtn}>Contact</Button>
+                    <Button marginRight={2} variant='link' color={grayColor}>Contact</Button>
                 </Link>
                 <Link to={'/'}>
-                    <Button marginRight={2} variant='link' color={linksBtn}>About</Button>
+                    <Button marginRight={2} variant='link' color={grayColor}>About</Button>
                 </Link>
             </div>}
 
@@ -66,14 +68,23 @@ const Header = () => {
                 {user?.isEnabled ?
                         <Button onClick={closeSession}>Logout</Button>
                         :
-                        <Link to='/login'><Button variant='outline' colorScheme="red"/*"teal"*/> Log in</Button></Link>
+                        <Link to='/login'><Button variant='outline' colorScheme="red"> Log in</Button></Link>
                 }
 
                 <Link to='/signup'><Button> Sign up</Button></Link>
-
+                {isDesktop && <div className={classes['cart-container']}>
+                    <Link to={'/cart'}>
+                        <Button variant={'outline'} fontSize={'26px'} color={grayColor}>
+                            <Cart />
+                        </Button>
+                    </Link>
+                    <Flex className={classes['cart-value']} bgColor={'orange.200'}>
+                        <Text as={'span'} fontWeight={'900'} fontSize={'14px'} color={'gray.600'}>{cartContext?.item.length}</Text>
+                    </Flex>
+                </div>}
                 <IconButton isRound={true} variant='ghost' aria-label='Dark Mode'
                     fontSize='20px' onClick={toggleColorMode}
-                    color={linksBtn}
+                    color={grayColor}
                     icon={colorMode === 'light' ? <Moon /> : <Sun />} />
             </div>
         </div>

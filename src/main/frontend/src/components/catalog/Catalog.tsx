@@ -1,21 +1,18 @@
-import { Button, Checkbox, Flex, Text, Input, InputGroup, InputRightElement, Stack, useColorModeValue, Divider, IconButton, useDisclosure, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Spacer } from '@chakra-ui/react';
+import { Flex, Input, InputGroup, InputRightElement, IconButton, useDisclosure, Drawer,
+         DrawerBody, DrawerContent, DrawerOverlay, Spacer } from '@chakra-ui/react';
 import classes from './catalog.module.css';
 import { IoIosSearch as SearchIcon } from "react-icons/io";
 import { GiHamburgerMenu as Burger } from "react-icons/gi";
-import { FaCartShopping as Cart} from "react-icons/fa6";
 import CatalogFilter from './CatalogFilter';
 import ProductsGrid from './ProductsGrid';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useFetch } from '../../hooks/useFetch';
 import useMatchMedia from '../../hooks/useMatchMedia';
-import CartContext, { CartItemContext } from '../../context/CartProvider';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 // check explanation below in very bottm of this file
 const Catalog = () => {
     const isDesktop = useMatchMedia();
-    const cartColor = useColorModeValue('gray.600','gray.400');
-    const cartContext=useContext<CartItemContext | undefined>(CartContext);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { data: sectors } = useFetch<Sector>("/api/v1/product-management/sector");
     const [sector, setSector] = useState<string>("");
@@ -129,16 +126,6 @@ const Catalog = () => {
                         </InputRightElement>
                     </InputGroup>
                     <Spacer />
-                    <div className={classes['cart-container']}>
-                        <Link to={'/cart'}>
-                            <Button variant={'outline'} fontSize={'26px'} color={cartColor}>
-                                <Cart />
-                            </Button>
-                        </Link>
-                        <Flex className={classes['cart-value']} bgColor={'orange.200'}>
-                            <Text as={'span'} fontWeight={'900'} fontSize={'14px'} color={'gray.600'}>{cartContext?.item.length}</Text>
-                        </Flex>
-                    </div>
                 </Flex>
                 <section>
                     <ProductsGrid browse={browse}

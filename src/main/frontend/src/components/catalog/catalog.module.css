@@ -25,20 +25,6 @@
 .search-icon:active{
     color:var(--chakra-colors-gray-500);
 }
-.cart-container{
-    position: relative;
-}
-.cart-value{
-    display: flex;
-    justify-content: center;
-    align-items: center; 
-    height: 20px;
-    width: 21px;
-    border-radius: 50%;
-    position: absolute;
-    bottom: 18px;
-    left: 28px;
-}
 
 
 /* styling for the left panel that contains the filter component  */
