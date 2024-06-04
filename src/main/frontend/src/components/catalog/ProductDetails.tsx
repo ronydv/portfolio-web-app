@@ -1,7 +1,7 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useSingleFetch } from "../../hooks/useSingleFetch";
 import classes from './catalog.module.css';
-import { Heading, useColorModeValue, Text, Box, Badge, Button, Divider } from "@chakra-ui/react";
+import { Heading, useColorModeValue, Text, Box, Badge, Button, Divider, useToast } from "@chakra-ui/react";
 import { useEffect, useRef, useState, useContext } from "react";
 import { FaArrowLeft as LeftIcon } from "react-icons/fa6";
 import { MdKeyboardDoubleArrowLeft as LeftArrow,MdOutlineKeyboardDoubleArrowRight as RightArrow } from "react-icons/md";
@@ -22,7 +22,9 @@ const thumbnails = {
 };
 const ProductDetails = () => {
     const cartContext=useContext<CartItemContext | undefined>(CartContext);
+    let items:Product[]=cartContext?.items!;
     const isDesktop = useMatchMedia();
+    const notification = useToast();
     const { id } = useParams<string>();
     const { data: product } = useSingleFetch<Product>(`/api/v1/product-management/products/${id}`);
     const darkMode = useColorModeValue('gray.600', 'gray.400');
@@ -62,6 +64,20 @@ const ProductDetails = () => {
             </div>
         );
     };
+
+    const addCartItems=(items:Product[], product:Product,cartContext: CartItemContext | undefined)=>{
+        cartContext?.setItems([...items,product]);
+    }
+
+    const showToast=()=>{
+        notification({
+            title: 'Product added.',
+            description: "Click in the above icon from the right for confirmation.",
+            status: 'info',
+            duration: 4000,
+            isClosable: true,
+        });
+    }
 
     useEffect(() => {
         if (product?.images) {
@@ -121,7 +137,11 @@ const ProductDetails = () => {
                         })}
                     </Carousel>}
 
-                <Button ml={1} mt={4}>Schedule service</Button>
+                <Button ml={1} mt={4}
+                    onClick={() => {
+                        addCartItems(items, product!, cartContext);
+                        showToast();
+                    }}>Schedule service</Button>
             </div>
             <div>
                 {product?.images !== undefined &&

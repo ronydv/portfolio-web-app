@@ -1,7 +1,8 @@
-import { Card, Stack, CardBody, Heading, Image, Text, CardFooter, Button, Tag, Badge, ButtonGroup, ColorMode, Box, useToast, Spacer } from "@chakra-ui/react";
-import { Link, NavigateFunction, useNavigate } from "react-router-dom";
+import { Card, Stack, CardBody, Heading, Image, Text, CardFooter, Button, Tag, Badge,
+         ColorMode, Box, useToast, Spacer } from "@chakra-ui/react";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 import useMatchMedia from "../../hooks/useMatchMedia";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import CartContext, { CartItemContext } from "../../context/CartProvider";
 
 type ProductCardProps={
