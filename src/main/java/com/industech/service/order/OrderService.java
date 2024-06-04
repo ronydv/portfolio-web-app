@@ -29,7 +29,7 @@ public class OrderService {
         for(Long productId:productIds){
             Product product= productRepository.findById(productId)
                     .orElseThrow(()-> new ProductException("product not found",HttpStatus.NOT_FOUND));
-            orders.add(Order.add(user,product));
+            orders.add(new Order(user,product));
         }
         return new OrderDetails(orderRepository.saveAll(orders));
     }

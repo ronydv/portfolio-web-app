@@ -14,14 +14,14 @@ import java.time.format.DateTimeFormatter;
 @Entity
 public class Order {
 
-    @EmbeddedId
-    private OrderId id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @ManyToOne @MapsId("userId")//this comes from OrderId instance field
+    @ManyToOne
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name="user_id_fk"))
     private User user;
 
-    @ManyToOne @MapsId("productId")
+    @ManyToOne
     @JoinColumn(name = "product_id", foreignKey = @ForeignKey(name="product_id_fk"))
     private Product product;
 
@@ -30,15 +30,9 @@ public class Order {
     private LocalDateTime orderedAt=LocalDateTime.now();
 
     public Order(){}
-    public Order(OrderId id, User user, Product product){
-        this.id=id;
+    public Order(User user, Product product){
         this.user=user;
         this.product=product;
-    }
-
-    public static Order add(User user, Product product){
-        OrderId embeddedId= new OrderId(user.getId(),product.getId());
-        return new Order(embeddedId,user,product);
     }
 
     @Override
