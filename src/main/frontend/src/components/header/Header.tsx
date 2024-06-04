@@ -79,7 +79,7 @@ const Header = () => {
                         </Button>
                     </Link>
                     <Flex className={classes['cart-value']} bgColor={'orange.200'}>
-                        <Text as={'span'} fontWeight={'900'} fontSize={'14px'} color={'gray.600'}>{cartContext?.item.length}</Text>
+                        <Text as={'span'} fontWeight={'900'} fontSize={'14px'} color={'gray.600'}>{cartContext?.items.length}</Text>
                     </Flex>
                 </div>}
                 <IconButton isRound={true} variant='ghost' aria-label='Dark Mode'

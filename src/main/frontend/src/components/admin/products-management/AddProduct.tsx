@@ -44,7 +44,7 @@ const AddProduct = () => {
             });
             setIsLoading(false);
             setFormData(new FormData());//reset formData after submitting
-            setTypesUrl("");//every times this is set to "" a useEffect runs for re-rendering the types in SelectType.tsx
+            setTypesUrl("");//every time this is set to "" a useEffect runs for re-rendering the types in SelectType.tsx
             console.log(response.data);
         } catch (err) {
             setIsLoading(false);

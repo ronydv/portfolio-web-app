@@ -45,7 +45,7 @@ const Navbar = () => {
                         icon={<Cart/>} /> 
                     </Link>
                     <Flex className={classes['cart-value']} bgColor={'orange.200'}>
-                        <Text as={'span'} fontWeight={'900'} fontSize={'12px'} color={'gray.600'}>{cartContext?.item.length}</Text>
+                        <Text as={'span'} fontWeight={'900'} fontSize={'12px'} color={'gray.600'}>{cartContext?.items.length}</Text>
                     </Flex>
                 </div>
         </div>

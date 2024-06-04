@@ -4,18 +4,18 @@ The wrapping is done in index.tsx
 This provider is filled in ProductCard.tsx, and used in Catalog.tsx to save items in the cart
 */
 export type CartItemContext ={
-    item:Product[];
-    setItem: React.Dispatch<React.SetStateAction<Product[]>>;
+    items:Product[];
+    setItems: React.Dispatch<React.SetStateAction<Product[]>>;
 }
 const CartContext = createContext<CartItemContext | undefined>(undefined);
 
 export const CartProvider = ({children}:ContextProps) => {
-    const [item, setItem]=useState<Product[]>(JSON.parse(localStorage.getItem("cart-item")!) || []);
+    const [items, setItems]=useState<Product[]>(JSON.parse(localStorage.getItem("cart-item")!) || []);
 
     //store the item whenever the item is modified in any component that utilizes CartContext
-    useEffect(()=>localStorage.setItem('cart-item',JSON.stringify(item)),[item]);
+    useEffect(()=>localStorage.setItem('cart-item',JSON.stringify(items)),[items]);
     return ( 
-        <CartContext.Provider value={{item,setItem}}>
+        <CartContext.Provider value={{items,setItems}}>
             {children}
         </CartContext.Provider>
      );

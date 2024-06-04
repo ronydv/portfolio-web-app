@@ -21,7 +21,7 @@ const description =(product:Product): string | undefined =>{//shows just a certa
     }
 }
 const addCartItems=(items:Product[], product:Product,cartContext: CartItemContext | undefined)=>{
-    cartContext?.setItem([...items,product]);
+    cartContext?.setItems([...items,product]);
 }
 const handleNavigation = (id:number, navigate: NavigateFunction, tabIndex:number,
                          categories:string[], types:string[], page:number,browse:string) => {
@@ -39,7 +39,7 @@ const handleNavigation = (id:number, navigate: NavigateFunction, tabIndex:number
 const DesktopVersionCard = ({ product, colorMode, tabIndex, categories, types, page, browse }: ProductCardProps) => {
     const navigate = useNavigate();
     const cartContext=useContext<CartItemContext | undefined>(CartContext);
-    let items:Product[]=cartContext?.item!;
+    let items:Product[]=cartContext?.items!;
     const notification = useToast();
 
     const showToast=()=>{
@@ -101,7 +101,7 @@ const DesktopVersionCard = ({ product, colorMode, tabIndex, categories, types, p
 const MobileVersionCard = ({ product, colorMode, tabIndex, categories, types, page, browse }: ProductCardProps) => {
     const navigate = useNavigate();
     const cartContext=useContext<CartItemContext | undefined>(CartContext);
-    let items:Product[]=cartContext?.item!;
+    let items:Product[]=cartContext?.items!;
     const notification = useToast();
 
     const showToast=()=>{
