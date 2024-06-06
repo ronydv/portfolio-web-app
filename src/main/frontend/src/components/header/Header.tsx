@@ -1,4 +1,4 @@
-import { Button, Heading, Spacer, useColorMode, Text, IconButton, useColorModeValue, MenuButton, Menu, MenuItem, MenuList, Flex } from "@chakra-ui/react";
+import { Button, Heading, Spacer, useColorMode, Text, IconButton, useColorModeValue, MenuButton, Menu, MenuItem, MenuList, Flex, Select } from "@chakra-ui/react";
 import { FaMoon as Moon} from "react-icons/fa6";
 import { MdSunny as Sun} from "react-icons/md";
 import { FaCartShopping as Cart} from "react-icons/fa6";
@@ -9,20 +9,17 @@ import useLogout from "../../hooks/useLogout";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useContext } from "react";
 import CartContext, { CartItemContext } from "../../context/CartProvider";
+import AccountMenu from "./AccountMenu";
 
 const Header = () => {
     const {auth:{user}} : UserContext = useAuthContext();
     const cartContext=useContext<CartItemContext | undefined>(CartContext);
     const navigate = useNavigate();
-    const logout = useLogout();
     const { colorMode, toggleColorMode } = useColorMode()
     const grayColor = useColorModeValue('gray.600','gray.400');
     const isDesktop=useMatchMedia();
 
-    const closeSession = async () => {
-        await logout();
-        navigate('/');
-    }
+
 
     return (
         <div className={classes.header}>
@@ -64,14 +61,15 @@ const Header = () => {
                     Dashboard
                 </Button>
                 
-                
+                {/* generate a dropdown for an account option */}
                 {user?.isEnabled ?
-                        <Button onClick={closeSession}>Logout</Button>
-                        :
+                    <><AccountMenu/></>
+                    :
+                    <>
                         <Link to='/login'><Button variant='outline' colorScheme="red"> Log in</Button></Link>
+                        <Link to='/signup'><Button> Sign up</Button></Link>
+                    </>
                 }
-
-                <Link to='/signup'><Button> Sign up</Button></Link>
                 {isDesktop && <div className={classes['cart-container']}>
                     <Link to={'/cart'}>
                         <Button variant={'outline'} fontSize={'26px'} color={grayColor}>
