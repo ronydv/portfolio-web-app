@@ -40,7 +40,7 @@ public class OrderDetails {
 
         @Override
         public String toString() {
-            return "Product{" +
+            return "\n\tProduct{" +
                     "product name='" + productName + '\'' +
                     ", is pending=" + isPending +
                     ", ordered at='" + orderedAt + '\'' +

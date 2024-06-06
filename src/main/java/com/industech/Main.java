@@ -14,7 +14,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -48,6 +50,13 @@ public class Main {
 /*			Long userId=2L;
 			List<Long>productIds=List.of(151L,155L,156L);
 			System.out.println(orderService.saveOrder(userId,productIds));*/
+
+//TODO: ADD CONTROLLER FOR THIS SERVICE AND TEST IN THE FRONTEND WITH PAGINATION
+			System.out.println(orderService.getOrdersByUser(1,15,true,2L));
 		};
 	}
 }
+/*
+	Sort sortByFirstName = Sort.by(Sort.Direction.ASC, "firstName");
+	PageRequest pages=PageRequest.of(0,10,sortByFirstName);
+	Page<Student> students =studentRepository.findAll(pages);*/

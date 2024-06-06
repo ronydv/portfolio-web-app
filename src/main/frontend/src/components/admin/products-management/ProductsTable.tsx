@@ -1,6 +1,6 @@
 import { TableContainer, Table, Image, TableCaption, Thead, Tr, Th, Tbody, Td, Tag, Flex, Tab, TabList, TabPanels, Tabs, useColorMode, Icon, Popover, Box, Button, ButtonGroup, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverFooter, PopoverHeader, PopoverTrigger, Portal, useDisclosure, Spinner } from "@chakra-ui/react";
 import useMatchMedia from "../../../hooks/useMatchMedia";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import ResponsivePagination from 'react-responsive-pagination';
 import { RiDeleteBinFill as DeleteIcon } from "react-icons/ri";
 import { FaRegEdit as EditIcon} from "react-icons/fa";
@@ -15,9 +15,6 @@ import { FaGears as Machinery } from "react-icons/fa6";
 import { LiaMicrochipSolid as Automations } from "react-icons/lia";
 import { IconType } from "react-icons";
 import axios from "axios";
-import { error } from "console";
-import { url } from "inspector";
-import types from "react-multi-carousel";
 import useInterceptor from "../../../hooks/useInterceptor";
 
 const icons: IconType[]= [Designs, Machinery, Automations];

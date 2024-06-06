@@ -23,12 +23,6 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
             """)
     Optional<Product> findById(@Param("id") Long id);
 
-/*    @Query(value= """
-            SELECT p FROM Product p LEFT JOIN FETCH p.productCategories
-                                    LEFT JOIN FETCH p.images
-                                    LEFT JOIN FETCH p.orders WHERE p.id = :id
-            """)
-    Optional<Product> findByIdWithOrders(@Param("id") Long id);*/
 
     @Query(value = """
             SELECT * FROM product WHERE name ~ (:regex)

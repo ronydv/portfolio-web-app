@@ -9,7 +9,7 @@ import useLogout from "../../hooks/useLogout";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useContext } from "react";
 import CartContext, { CartItemContext } from "../../context/CartProvider";
-import AccountMenu from "./AccountMenu";
+import AccountMenu from "../account/AccountMenu";
 
 const Header = () => {
     const {auth:{user}} : UserContext = useAuthContext();
@@ -68,6 +68,7 @@ const Header = () => {
                     <>
                         <Link to='/login'><Button variant='outline' colorScheme="red"> Log in</Button></Link>
                         <Link to='/signup'><Button> Sign up</Button></Link>
+                        <AccountMenu/>{/* delete after testing */}
                     </>
                 }
                 {isDesktop && <div className={classes['cart-container']}>
