@@ -14,5 +14,5 @@ public interface OrderRepository extends JpaRepository<Order, Long> {//replaced 
     @Query(value= """
             SELECT o FROM Order o WHERE o.user.id = :id
             """)
-    Page<Order> findByUserId(@Param("id") Long id, Pageable pages);
+    Page<Order> findOrdersByUserId(@Param("id") Long id, Pageable pages);
 }

@@ -27,7 +27,6 @@ type ProductsTableProps = {
     setActiveButton?: React.Dispatch<React.SetStateAction<string>>
 }
 const ProductsTable = ({ browse, setActiveButton }: ProductsTableProps) => {
-    const { isOpen,onOpen,onClose } = useDisclosure();//to close the popover
     const axiosPrivate = useInterceptor();
     const [isLoading, setIsLoading]=useState(false);
     const [errorDelete, setErrorDelete]=useState<string>("");

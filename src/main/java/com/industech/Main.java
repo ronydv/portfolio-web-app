@@ -1,5 +1,6 @@
 package com.industech;
 
+import com.industech.dto.order.OrderDetails;
 import com.industech.model.auth.User;
 import com.industech.model.order.Order;
 import com.industech.model.product.Product;
@@ -21,6 +22,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import static org.springframework.data.domain.Sort.Direction.ASC;
+import static org.springframework.data.domain.Sort.Direction.DESC;
 
 @Transactional
 @SpringBootApplication
@@ -37,26 +42,18 @@ public class Main {
 										OrderRepository orderRepository,
 										OrderService orderService) {
 		return args -> {
-/*			User user = userRepository.findById(2L).orElseThrow();
-			Product product1=productRepository.findById(151L).orElseThrow();
-			Product product2=productRepository.findById(155L).orElseThrow();
-			Product product3=productRepository.findById(156L).orElseThrow();
-			List<Product>products=new ArrayList<>(List.of(product1,product2,product3));*/
-/*			for( Product product:products){
-				Order order= Order.add(user,product);
-				orderRepository.save(order);
-			}*/
-			//System.out.println(orderRepository.findAll());
-/*			Long userId=2L;
-			List<Long>productIds=List.of(151L,155L,156L);
-			System.out.println(orderService.saveOrder(userId,productIds));*/
-
-//TODO: ADD CONTROLLER FOR THIS SERVICE AND TEST IN THE FRONTEND WITH PAGINATION
-			System.out.println(orderService.getOrdersByUser(1,15,true,2L));
+			List<Order>orders=orderRepository.findAll();
+			List<Order>selectedOrders=new ArrayList<>();
+			List<OrderDetails>userOrders=new ArrayList<>();
+			for (int i = 0; i < orders.size(); i++) {
+				String currentName = orders.get(i).getUser().getName();
+				selectedOrders.add(orders.get(i));
+				if (i == (orders.size() - 1) || !currentName.equals(orders.get(i+1).getUser().getName())) {
+					userOrders.add(new OrderDetails(selectedOrders));
+					selectedOrders=new ArrayList<>();
+				}
+			}
+			userOrders.forEach((System.out::println));
 		};
 	}
 }
-/*
-	Sort sortByFirstName = Sort.by(Sort.Direction.ASC, "firstName");
-	PageRequest pages=PageRequest.of(0,10,sortByFirstName);
-	Page<Student> students =studentRepository.findAll(pages);*/

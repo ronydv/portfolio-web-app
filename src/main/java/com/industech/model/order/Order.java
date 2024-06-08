@@ -27,6 +27,8 @@ public class Order {
 
     private Boolean isPending=true;
 
+    private Boolean isChecked=false;
+
     private LocalDateTime orderedAt=LocalDateTime.now();
 
     public Order(){}
@@ -38,6 +40,9 @@ public class Order {
     @Override
     public String toString() {
         DateTimeFormatter date = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        return "Order by: "+user.getName()+", is pending?: "+isPending+", ordered at: "+orderedAt.format(date)+"\n";
+        return "Order by: "+user.getName()+
+                ", is pending?: "+isPending+
+                ", is checked?: "+isChecked+
+                ", ordered at: "+orderedAt.format(date)+"\n";
     }
 }
