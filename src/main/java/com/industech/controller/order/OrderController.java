@@ -1,7 +1,7 @@
 package com.industech.controller.order;
 
 import com.industech.dto.order.OrderDetails;
-import com.industech.model.order.Order;
+import com.industech.dto.order.OrderList;
 import com.industech.service.order.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,11 +34,11 @@ public class OrderController {
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
     @GetMapping("/order/all")//endpoint for admin
-    public ResponseEntity<List<OrderDetails>> getOrders( @RequestParam("page") Integer page,
-                                                         @RequestParam("page-size") Integer pageSize,
-                                                         @RequestParam("sort-pending") Boolean sortPending,
-                                                         @RequestParam("sort-checked") Boolean sortChecked) {
-        List<OrderDetails> orders= orderService.getOrders(page, pageSize,sortPending, sortChecked );
+    public ResponseEntity<List<OrderList>> getOrders(@RequestParam("page") Integer page,
+                                                     @RequestParam("page-size") Integer pageSize,
+                                                     @RequestParam("sort-pending") Boolean sortPending,
+                                                     @RequestParam("sort-checked") Boolean sortChecked) {
+        List<OrderList> orders= orderService.getPendingOrders(page, pageSize,sortPending, sortChecked );
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 }

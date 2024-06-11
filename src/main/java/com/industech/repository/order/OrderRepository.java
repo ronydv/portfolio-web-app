@@ -15,4 +15,9 @@ public interface OrderRepository extends JpaRepository<Order, Long> {//replaced 
             SELECT o FROM Order o WHERE o.user.id = :id
             """)
     Page<Order> findOrdersByUserId(@Param("id") Long id, Pageable pages);
+
+    @Query(value= """
+            SELECT o FROM Order o WHERE o.isPending=TRUE
+            """)
+    Page<Order> findByPendingOrders(Pageable pages);
 }

@@ -42,18 +42,7 @@ public class Main {
 										OrderRepository orderRepository,
 										OrderService orderService) {
 		return args -> {
-			List<Order>orders=orderRepository.findAll();
-			List<Order>selectedOrders=new ArrayList<>();
-			List<OrderDetails>userOrders=new ArrayList<>();
-			for (int i = 0; i < orders.size(); i++) {
-				String currentName = orders.get(i).getUser().getName();
-				selectedOrders.add(orders.get(i));
-				if (i == (orders.size() - 1) || !currentName.equals(orders.get(i+1).getUser().getName())) {
-					userOrders.add(new OrderDetails(selectedOrders));
-					selectedOrders=new ArrayList<>();
-				}
-			}
-			userOrders.forEach((System.out::println));
+			//
 		};
 	}
 }

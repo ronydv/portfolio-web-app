@@ -1,6 +1,7 @@
 package com.industech.service.order;
 
 import com.industech.dto.order.OrderDetails;
+import com.industech.dto.order.OrderList;
 import com.industech.exception.AuthUserException;
 import com.industech.exception.ProductException;
 import com.industech.model.auth.User;
@@ -50,44 +51,18 @@ public class OrderService {
         else return new OrderDetails(orders.stream().toList(),orders.getTotalElements());
     }
 
-    public List<OrderDetails> getOrders(Integer page, Integer pageSize,
-                                        Boolean sortByPending, Boolean sortByChecked ){
+    public List<OrderList> getPendingOrders(Integer page, Integer pageSize,
+                                            Boolean sortByPending, Boolean sortByChecked ){
         Sort sort = Sort.by(sortByPending ? DESC : ASC,"isPending")
                 .and(Sort.by(sortByChecked ? DESC : ASC,"isChecked"));//isPending field in Order entity
 
         PageRequest pages=PageRequest.of(page - 1, pageSize, sort);
-        Page<Order> paginatedOrders=orderRepository.findAll(pages);
+        Page<Order> paginatedOrders=orderRepository.findByPendingOrders(pages);
         if(paginatedOrders.isEmpty()) throw new ProductException("empty orders!",HttpStatus.NOT_FOUND);
         else {
-            List<Order>orders=paginatedOrders.getContent();
-            List<Order>selectedOrders=new ArrayList<>();
-            List<OrderDetails>userOrders=new ArrayList<>();
-            for (int i = 0; i < orders.size(); i++) {
-                String currentName = orders.get(i).getUser().getName();
-                selectedOrders.add(orders.get(i));
-                if (i == (orders.size() - 1) || !currentName.equals(orders.get(i+1).getUser().getName())) {
-                    userOrders.add(new OrderDetails(selectedOrders, paginatedOrders.getTotalElements()));
-                    selectedOrders=new ArrayList<>();
-                }
-            }
-            return userOrders;
+            return paginatedOrders.getContent().stream()
+                    .map(order -> new OrderList(order,paginatedOrders.getTotalElements())).toList();
         }
     }
 
 }
-
-
-
-
-/*    public List<String> getOrders(Integer page, Integer pageSize,
-                                  Boolean sortByPending, Boolean sortByChecked ){
-        Sort sort = Sort.by(sortByPending ? DESC : ASC,"isPending")
-                .and(Sort.by(sortByChecked ? DESC : ASC,"isChecked"));//isPending field in Order entity
-
-        PageRequest pages=PageRequest.of(page - 1, pageSize, sort);
-        Page<Order> orders=orderRepository.findAll(pages);
-        if(orders.isEmpty()) throw new ProductException("empty orders!",HttpStatus.NOT_FOUND);
-        else {
-            return null;
-        }
-    }*/

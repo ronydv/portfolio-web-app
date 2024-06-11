@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Setter @Getter
-public class OrderDetails {
+public class OrderDetails {//THIS CLASS MAP THE ORDER ENTITY BY USER AND ITS ORDERS
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long userId;//input from the frontend

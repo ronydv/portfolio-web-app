@@ -1,13 +1,21 @@
 type Order = {
-    userId?:number;
+    userId?: number;
+    userName?: string;
+    productIds?: Array<number>;
+    orderedProducts?: Array<OrderedProduct>;
+    total?: number;
+};
+type OrderedProduct = {
+    productName?: string;
+    isPending?: boolean;
+    orderedAt?: string;
+    isChecked?: boolean;
+};
+type OrderList = {
     userName?:string;
-    productIds?:Array<number>;
-    orderedProducts?:Array<OrderedProduct>;
-    total?:number
-}
-type OrderedProduct={
-     productName?:string;
-     isPending?:boolean;
-     orderedAt?:string;
-     isChecked?:boolean;
-}
+    productName?:string;
+    isPending?:boolean;
+    isChecked?:boolean;
+    orderedAt?:string;
+    total?:number;
+};
