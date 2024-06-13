@@ -1,7 +1,7 @@
 package com.industech.service.order;
 
 import com.industech.dto.order.OrderDetails;
-import com.industech.dto.order.OrderList;
+import com.industech.dto.order.OrderView;
 import com.industech.exception.AuthUserException;
 import com.industech.exception.ProductException;
 import com.industech.model.auth.User;
@@ -51,7 +51,7 @@ public class OrderService {
         else return new OrderDetails(orders.stream().toList(),orders.getTotalElements());
     }
 
-    public List<OrderList> getPendingOrders(Integer page, Integer pageSize,
+    public List<OrderView> getPendingOrders(Integer page, Integer pageSize,
                                             Boolean sortByPending, Boolean sortByChecked ){
         Sort sort = Sort.by(sortByPending ? DESC : ASC,"isPending")
                 .and(Sort.by(sortByChecked ? DESC : ASC,"isChecked"));//isPending field in Order entity
@@ -61,8 +61,19 @@ public class OrderService {
         if(paginatedOrders.isEmpty()) throw new ProductException("empty orders!",HttpStatus.NOT_FOUND);
         else {
             return paginatedOrders.getContent().stream()
-                    .map(order -> new OrderList(order,paginatedOrders.getTotalElements())).toList();
+                    .map(order -> new OrderView(order,paginatedOrders.getTotalElements())).toList();
         }
+    }
+
+    public OrderView updateOrder(OrderView order){
+        if(order == null) throw new ProductException("Empty order", HttpStatus.BAD_REQUEST);
+        Order toUpdate=orderRepository.getReferenceById(order.getOrderId());
+        toUpdate.setIsChecked(order.getIsChecked());
+        return new OrderView(orderRepository.save(toUpdate));
+    }
+
+    public Long uncheckedOrders(){
+        return orderRepository.countUncheckedOrders();
     }
 
 }

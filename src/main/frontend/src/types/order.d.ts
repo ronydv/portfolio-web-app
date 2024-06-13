@@ -11,7 +11,7 @@ type OrderedProduct = {
     orderedAt?: string;
     isChecked?: boolean;
 };
-type OrderList = {
+type OrderView = {
     userName?:string;
     productName?:string;
     isPending?:boolean;

@@ -35,7 +35,8 @@ const AccountMenu = () => {
             <ul className={classes.menu}>
                 <li className={classes['menu-items']} onMouseEnter={() => setDropdown(true)} 
                                                       onMouseLeave={() => setDropdown(false)}>
-                    <Button variant='ghost' colorScheme='teal' leftIcon={<Profile/>}>
+                    <Button variant='ghost' colorScheme='teal' leftIcon={<Profile/>}
+                            onClick={()=>setDropdown(!dropdown)}>
                         account
                     </Button>
                     <ul className={`${classes.dropdown} ${dropdown && classes.show} 

@@ -1,7 +1,7 @@
 package com.industech.controller.order;
 
 import com.industech.dto.order.OrderDetails;
-import com.industech.dto.order.OrderList;
+import com.industech.dto.order.OrderView;
 import com.industech.service.order.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,11 +34,20 @@ public class OrderController {
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
     @GetMapping("/order/all")//endpoint for admin
-    public ResponseEntity<List<OrderList>> getOrders(@RequestParam("page") Integer page,
+    public ResponseEntity<List<OrderView>> getOrders(@RequestParam("page") Integer page,
                                                      @RequestParam("page-size") Integer pageSize,
                                                      @RequestParam("sort-pending") Boolean sortPending,
                                                      @RequestParam("sort-checked") Boolean sortChecked) {
-        List<OrderList> orders= orderService.getPendingOrders(page, pageSize,sortPending, sortChecked );
+        List<OrderView> orders= orderService.getPendingOrders(page, pageSize,sortPending, sortChecked );
         return new ResponseEntity<>(orders, HttpStatus.OK);
+    }
+
+    @PutMapping("/order")//endpoint for admin
+    public ResponseEntity<OrderView> updateOrder(@RequestBody OrderView order) {
+        return new ResponseEntity<>(orderService.updateOrder(order), HttpStatus.OK);
+    }
+    @GetMapping("/order/unchecked")//endpoint for admin
+    public ResponseEntity<Long> uncheckedOrders() {
+        return new ResponseEntity<>(orderService.uncheckedOrders(), HttpStatus.OK);
     }
 }

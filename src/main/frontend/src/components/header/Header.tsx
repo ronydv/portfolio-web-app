@@ -63,12 +63,12 @@ const Header = () => {
                 
                 {/* generate a dropdown for an account option */}
                 {user?.isEnabled ?
-                    <><AccountMenu/></>
+                    <AccountMenu/>
                     :
                     <>
                         <Link to='/login'><Button variant='outline' colorScheme="red"> Log in</Button></Link>
                         <Link to='/signup'><Button> Sign up</Button></Link>
-                        <AccountMenu/>{/* delete after testing */}
+                        
                     </>
                 }
                 {isDesktop && <div className={classes['cart-container']}>

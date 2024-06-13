@@ -1,5 +1,5 @@
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
-import './App.css';
+
 import Layout from './Layout';
 import Home from './components/home/Home';
 import Catalog from './components/catalog/Catalog';

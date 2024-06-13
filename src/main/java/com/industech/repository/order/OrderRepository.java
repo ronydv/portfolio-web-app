@@ -20,4 +20,9 @@ public interface OrderRepository extends JpaRepository<Order, Long> {//replaced 
             SELECT o FROM Order o WHERE o.isPending=TRUE
             """)
     Page<Order> findByPendingOrders(Pageable pages);
+
+    @Query(value = """
+            SELECT COUNT(o) FROM Order o WHERE o.isChecked = FALSE
+            """)
+    Long countUncheckedOrders();
 }

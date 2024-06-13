@@ -6,7 +6,8 @@ import lombok.Setter;
 import java.time.format.DateTimeFormatter;
 
 @Setter @Getter
-public class OrderList {//THIS CLASS MAP THE ORDER ENTITY REGARDLESS OF THE USER
+public class OrderView {//THIS CLASS MAP THE ORDER ENTITY REGARDLESS OF THE USER
+    private Long orderId;
     private String userName;
     private String productName;
     private Boolean isPending;
@@ -14,8 +15,16 @@ public class OrderList {//THIS CLASS MAP THE ORDER ENTITY REGARDLESS OF THE USER
     private String orderedAt;
     private Long total;
 
-    public OrderList(){}
-    public OrderList(Order order, Long total){
+    public OrderView(){}
+    public OrderView(Order order){
+        this.orderId=order.getId();
+        this.userName=order.getUser().getName();
+        this.productName=order.getProduct().getName();
+        this.isPending=order.getIsPending();
+        this.isChecked=order.getIsChecked();
+    }
+    public OrderView(Order order, Long total){
+        this.orderId=order.getId();
         this.userName=order.getUser().getName();
         this.productName=order.getProduct().getName();
         this.isPending=order.getIsPending();
