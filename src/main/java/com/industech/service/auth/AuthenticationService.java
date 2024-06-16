@@ -43,10 +43,10 @@ public class AuthenticationService {
     private TokenService tokenService;
 
 
-    private Set<Role> roles(String roleName){
-        Set<Privilege>privileges=new HashSet<>(privilegeRepository.getUserPermissions());
+    private Set<Role> roles(){
+        Set<Privilege>privileges=new HashSet<>(privilegeRepository.findAll());
         Set<Role> roles=new HashSet<>();
-        Optional<Role> role= roleRepository.findByRoleName(roleName);
+        Optional<Role> role= roleRepository.findByRoleName("user");
         if(role.isPresent()){
             role.get().setPrivileges(privileges);
             roles.add(role.get());
@@ -54,13 +54,13 @@ public class AuthenticationService {
         return roles;
     }
 
-    public User registerUser(String name, String email, String password) {
+    public User registerUser(String name, String email, String phone, String password) {
         Optional<User> existingUser = userRepository.findByEmail(email);
         if (existingUser.isPresent()) {
             log.error("\u001B[31memail is already in use.\u001B[0m");
             throw new AuthUserException("This email is already in use.", HttpStatus.CONFLICT);
         } else {
-            User recordUser = new User(name, email, passwordEncoder.encode(password), roles("user"));
+            User recordUser = new User(name, email, phone, passwordEncoder.encode(password), roles());
             return userRepository.save(recordUser);
         }
     }

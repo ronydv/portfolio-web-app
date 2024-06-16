@@ -1,11 +1,4 @@
---Query used to transform the very first user created by the app to an admin.
---Creating the admin from the beginning directly in postgreSQL before any user
---crated by the app gives conflict in the sequence generator, because
---any manually generated user with id=1 in postgreSQL outside JPA
---will conflict with the sequence of the JPA Entity since JPA doesn't register the
---first value created manually through SQL code. To avoid this, just simply
---create a standard user through the app, so jpa can register the first value for
---the sequence generator, and then transform it to an admin:
+--these are the values for the privilege and role tables
 INSERT INTO privilege (id, name)
 VALUES (1, 'create'),
 	(2, 'read'),
@@ -16,15 +9,19 @@ INSERT INTO role (id, name)
 VALUES (1, 'admin'),
 	(2, 'user');
 
+--joining values from the role and privilege tables to create an admin role
 INSERT INTO role_privileges (role_id, privilege_id)
 VALUES (1, 1),
 	(1, 2),
 	(1, 3),
 	(1, 4);
 
+--joining values from the user and role tables to create an admin user
 INSERT INTO user_roles (user_id, role_id)
 VALUES (1, 1);
 
+
+--create a standard user through the app and then transform it to an admin
 UPDATE users SET
 	name='admin',
 	email='admin@mail.com',

@@ -79,6 +79,14 @@ const Signup = () => {
                     </div>
 
                     <div>
+                        <FormLabel>Phone number</FormLabel>
+                        <Input type='text' placeholder="Enter your phone" isInvalid={false}
+                            onChange={(event) => {
+                                setUser({ ...user, phone: event.target.value });
+                            }} />
+                    </div>
+
+                    <div>
                         <FormLabel>Password</FormLabel>
                         <Input type='text' placeholder="Enter your password" isInvalid={!isPasswordValid}
                             ref={password} onChange={(event) => {//change input type to password later on develpment

@@ -24,7 +24,7 @@ public class AuthenticationController {
     public ResponseEntity<User> signUp(@RequestBody User user) {
         return new ResponseEntity<>(
                 authenticationService.registerUser(
-                        user.getName(), user.getEmail(), user.getPassword()),
+                        user.getName(), user.getEmail(), user.getPhone() ,user.getPassword()),
                 HttpStatus.CREATED);
     }
 

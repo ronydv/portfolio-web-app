@@ -18,6 +18,7 @@ import ProductDetails from './components/catalog/ProductDetails';
 import Cart from './components/cart/Cart';
 import Orders from './components/account/Orders';
 import Profile from './components/account/Profile';
+import CustomersDashboard from './components/admin/customers/CustomersDashboard';
 
 
   
@@ -49,6 +50,7 @@ function App() {
 						<Route path='products-dashboard'element={<ProductsDashboard/>}/>
 						<Route path='add-product'element={<AddProduct/>}/>
 						<Route path='modify-product/:id'element={<ModifyProduct/>}/>
+						<Route path='customers-dashboard'element={<CustomersDashboard/>}/>
 					</Route>
 
 					<Route path='/catalog' element={<Catalog />} />

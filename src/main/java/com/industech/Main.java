@@ -7,6 +7,7 @@ import com.industech.model.product.Product;
 import com.industech.repository.auth.UserRepository;
 import com.industech.repository.order.OrderRepository;
 import com.industech.repository.product.*;
+import com.industech.service.auth.UserService;
 import com.industech.service.order.OrderService;
 import com.industech.service.product.CategoryService;
 import com.industech.service.product.ProductService;
@@ -37,12 +38,13 @@ public class Main {
 
 	@Bean
 	CommandLineRunner commandLineRunner(UserRepository userRepository,
+										UserService userService,
 										ProductService productService,
 										ProductRepository productRepository,
 										OrderRepository orderRepository,
 										OrderService orderService) {
 		return args -> {
-			//
+			//userService.deleteUser(3L);
 		};
 	}
 }

@@ -21,15 +21,16 @@ import static jakarta.persistence.CascadeType.*;
 })
 @Entity(name = "User")
 public class User {
-    @Id
-    @SequenceGenerator(name= "user_sequence", sequenceName= "user_id_sequence", allocationSize=1 )//auto-increment by 1
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
 
     @Column(nullable = false)
     private String email;
+
+    private String phone;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
@@ -48,9 +49,10 @@ public class User {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = {PERSIST,MERGE}, orphanRemoval = true)
     private Set<Order> orders=new HashSet<>();
 
-    public User(String name, String email, String password, Set<Role> roles ){
+    public User(String name, String email, String phone, String password, Set<Role> roles ){
         this.name=name;
         this.email=email;
+        this.phone=phone;
         this.password=password;
         this.roles=roles;
     }

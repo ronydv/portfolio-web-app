@@ -8,6 +8,7 @@ type User ={/* also used in useFetch<User> in home component */
     id?:number;
     name?:string;
     email?:string;
+    phone?:string;
     password?:string;
     authorities?:Array<Role>;
     isEnabled?:boolean

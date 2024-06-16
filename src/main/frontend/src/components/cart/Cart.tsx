@@ -4,8 +4,10 @@ import classes from './cart.module.css';
 import CartContext, { CartItemContext } from "../../context/CartProvider";
 import useInterceptor from "../../hooks/useInterceptor";
 import axios from "axios";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 const Cart = () => {
+    const {auth:{user}} : UserContext = useAuthContext();
     const axiosPrivate = useInterceptor();
     const [orderResponse, setOrderResponse]= useState("");
     const [error, setError]=useState("");
@@ -13,7 +15,6 @@ const Cart = () => {
     const { colorMode } = useColorMode();
     const cartContext=useContext<CartItemContext | undefined>(CartContext);
     const { items, setItems } = cartContext || {};
-    const auth: { userId: number; userName: string }={userId:2,userName:"user"};//replace value with the user from AuthContext;
 
     const clearCart=()=>{
         setItems && setItems([]);
@@ -26,7 +27,7 @@ const Cart = () => {
     const sendServiceRequest= async ()=>{
         const productIds: number[] = [];
         items?.forEach((product) => productIds.push(product?.id!));
-        const order: Order = { userId: auth.userId, productIds: productIds };
+        const order: Order = { userId: user?.id, productIds: productIds };
         try {
             const response = await axiosPrivate.post<Order>("/api/v1/orders/order",
                 order, {
