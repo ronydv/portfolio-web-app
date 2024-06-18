@@ -68,6 +68,7 @@ public class OrderService {
     public OrderView updateOrder(OrderView order){
         if(order == null) throw new ProductException("Empty order", HttpStatus.BAD_REQUEST);
         Order toUpdate=orderRepository.getReferenceById(order.getOrderId());
+        toUpdate.setIsPending(order.getIsPending());
         toUpdate.setIsChecked(order.getIsChecked());
         return new OrderView(orderRepository.save(toUpdate));
     }

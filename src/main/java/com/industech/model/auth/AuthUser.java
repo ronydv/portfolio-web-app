@@ -41,6 +41,7 @@ public class AuthUser implements UserDetails {
     public String getName(){return user.getName();}
     @Override @JsonProperty(value = "email")//email is the variable name for the response
     public String getUsername() {return user.getEmail();}
+    public String getPhone() {return user.getPhone();}
     @Override @JsonIgnore
     public String getPassword() {return user.getPassword();}
     @JsonIgnore

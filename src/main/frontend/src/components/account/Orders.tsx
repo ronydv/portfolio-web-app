@@ -58,7 +58,9 @@ const Orders = () => {//todo: get the user from authContext
 
     const checkOrder = (index: number) => {
         const check = async (index: number) => {
+            console.log(orders[index]);
             orders[index].isChecked = true;
+            
             const response = await axiosPrivate.put<OrderView>("/api/v1/orders/order",//add try catch if needed
                 orders[index], {
                 headers: {
@@ -67,7 +69,7 @@ const Orders = () => {//todo: get the user from authContext
                 },
             });
             setResponse(response.data);
-            setFetchUnchecked("");
+            setFetchUnchecked("");//update the url so the useEffect from above will be called and therefore updated data will be received 
         };
         return <Button variant={'ghost'} colorScheme="green" leftIcon={<Check />} size={'sm'}
             onClick={() => check(index)}>check</Button>;
@@ -86,21 +88,21 @@ const Orders = () => {//todo: get the user from authContext
                     onPageChange={page => handlePageChange(page)}
                 />
             </div>
-            <TableContainer>
+            <TableContainer width={!isDesktop ? '60vw': ''}>
                     <Table variant='simple' size={isDesktop ? 'md': 'sm'}>
-                        {isDesktop &&<TableCaption>*Product checked means the administrator has reviewed the order</TableCaption>}
+                        <TableCaption>*Product checked means the administrator has reviewed the order</TableCaption>
                         <Thead>
                             <Tr>
                                 <Restricted to={[Role.ADMIN]}>
                                     <Th>Client</Th>
                                 </Restricted>
                                 <Th>Product</Th>
-                                {isDesktop && <Th>
+                                <Th>
                                     <Button variant={'ghost'} rightIcon={<Sort />} color={grayColor}
                                         onClick={() => setToggleIsPending(!toggleIsPending)}>
                                         Status
                                     </Button>
-                                </Th>}
+                                </Th>
                                 <Th>
                                     <Button variant={'ghost'} rightIcon={<Sort />} color={grayColor}
                                         onClick={() => setToggleIsChecked(!toggleIsChecked)}>
@@ -118,7 +120,7 @@ const Orders = () => {//todo: get the user from authContext
                                     <Tr key={i}>
                                         <Td>{order.userName}</Td>
                                         <Td>{order.productName}</Td>
-                                        {isDesktop && <Td>{isPendingTag(order.isPending!)}</Td>}
+                                        <Td>{isPendingTag(order.isPending!)}</Td>
                                         <Td>{isCheckedTag(order.isChecked!)}</Td>
                                         <Td>{checkOrder(i)}</Td>
                                     </Tr>
@@ -127,7 +129,7 @@ const Orders = () => {//todo: get the user from authContext
                                 ordersByuser?.orderedProducts?.map((order, i) => (
                                     <Tr key={i}>
                                         <Td>{order.productName}</Td>
-                                        {isDesktop && <Td>{isPendingTag(order.isPending!)}</Td>}
+                                        <Td>{isPendingTag(order.isPending!)}</Td>
                                         <Td>{isCheckedTag(order.isChecked!)}</Td>
                                     </Tr>
                                 ))}
@@ -138,7 +140,7 @@ const Orders = () => {//todo: get the user from authContext
                                     <Th>Client</Th>
                                 </Restricted>
                                 <Th>Product</Th>
-                                {isDesktop && <Th>Status</Th>}
+                                <Th>Status</Th>
                                 <Th>Checked</Th>
                                 <Restricted to={[Role.ADMIN]}>
                                     <Th>Action</Th>
