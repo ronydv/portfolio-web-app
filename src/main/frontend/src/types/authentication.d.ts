@@ -21,3 +21,7 @@ type Token ={/* used in useRefreshToken */
     accessToken?:string,
     refreshToken?:string;
 }
+type PaginatedUsers={
+    users:Array<User>;
+    total:number;
+}

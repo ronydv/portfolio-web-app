@@ -13,11 +13,12 @@ import useInterceptor from "../../hooks/useInterceptor";
 import useMatchMedia from "../../hooks/useMatchMedia";
 
 const Orders = () => {//todo: get the user from authContext
+    
     const isDesktop = useMatchMedia();
     const axiosPrivate = useInterceptor();
     const { auth: user } = useAuthContext();
     //replace value with the user from AuthContext and check Cart component as well;
-    const auth: { userId: number; userName: string; } = { userId: 2, userName: "user" };
+    //const auth: { userId: number; userName: string; } = { userId: 2, userName: "user" };
     const grayColor = useColorModeValue('gray.600', 'gray.400');
     const { colorMode } = useColorMode();
     const pageSize = 6;
@@ -33,6 +34,7 @@ const Orders = () => {//todo: get the user from authContext
     const [toggleIsPending, setToggleIsPending] = useState(false);
     const [toggleIsChecked, setToggleIsChecked] = useState(false);
     const [response, setResponse] = useState<OrderView>({});
+
     useEffect(() => {
         if (user.user?.authorities?.find((role: Role) => role.authority === Role.ADMIN)) {
             setFetchAll('/api/v1/orders/order/all' +

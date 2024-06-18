@@ -1,5 +1,6 @@
 package com.industech.controller.auth;
 
+import com.industech.dto.auth.PaginatedUsers;
 import com.industech.model.auth.AuthUser;
 import com.industech.service.auth.UserService;
 import org.springframework.http.HttpStatus;
@@ -22,8 +23,9 @@ public class UserController {
 
     @GetMapping("/user")
     //@PreAuthorize("hasRole('admin:read')")
-    public ResponseEntity<List<AuthUser>> getAllUsers(){
-        return new ResponseEntity<>(userService.getUsers(), OK);
+    public ResponseEntity<PaginatedUsers> getAllUsers(@RequestParam("page") Integer page,
+                                                      @RequestParam("page-size") Integer pageSize){
+        return new ResponseEntity<>(userService.getUsers(page,pageSize), OK);
     }
 
     @DeleteMapping("/user/{id}")

@@ -1,10 +1,15 @@
 package com.industech.service.auth;
 
+import com.industech.dto.auth.PaginatedUsers;
 import com.industech.exception.AuthUserException;
 import com.industech.exception.ProductException;
 import com.industech.model.auth.AuthUser;
+import com.industech.model.auth.User;
+import com.industech.model.order.Order;
 import com.industech.repository.auth.UserRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -21,14 +26,16 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<AuthUser> getUsers(){
-        return Optional.of(userRepository.findAll()
-                        .stream()
-                        .map(AuthUser::new).collect(Collectors.toList())
-                ).orElseThrow(() -> new IllegalStateException("No users found"));
+    public PaginatedUsers getUsers(Integer page, Integer pageSize) {
+        PageRequest pages = PageRequest.of(page - 1, pageSize);
+        Page<User> users = userRepository.findAll(pages);
+        return new PaginatedUsers(users.getContent()
+                    .stream()
+                    .map(AuthUser::new).collect(Collectors.toList()),
+                    users.getTotalElements());
     }
 
-    //TODO add cellphone field to user dto and create admin with its roles again
+
     public String deleteUser(Long id){
         return userRepository.findById(id)
                 .map((user)-> {

@@ -77,4 +77,5 @@ public class OrderService {
         return orderRepository.countUncheckedOrders();
     }
 
+    //TODO: add delete order option
 }

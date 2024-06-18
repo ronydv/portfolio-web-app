@@ -10,3 +10,17 @@
 .users-list button{
     justify-content: flex-start;/* align items within the buttons to the left */
 }
+.paginator-container{
+/*     display: flex;
+    flex-direction: column; */
+    /* margin-top: 20px; */
+    --pagination-color: var(--chakra-colors-red-600);
+    --pagination-hover-color: var(--chakra-colors-red-200);/* #454648; */
+    --pagination-bg: transparent/* change to app theme */
+}
+.pagination-dark{
+    --pagination-active-color:var(--chakra-colors-gray-800);
+}
+.pagination-light{
+    --pagination-active-color:var(--chakra-colors-gray-100);
+}

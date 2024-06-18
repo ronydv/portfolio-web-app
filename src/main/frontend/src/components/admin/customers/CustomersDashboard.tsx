@@ -1,8 +1,8 @@
-import { Button, Input, InputGroup, InputRightElement, Table, Text, TableContainer, Tag, Tbody, Td, Th, Thead, Tr, useColorModeValue, Divider, TableCaption } from "@chakra-ui/react";
+import { Button, Input, InputGroup, InputRightElement, Table, Text, TableContainer, Tag, Tbody, Td, Th, Thead, Tr, useColorModeValue, Divider, TableCaption, useColorMode } from "@chakra-ui/react";
 import { IoIosSearch as SearchIcon } from "react-icons/io";
 import { FaUser as UserIcon} from "react-icons/fa";
 import { FaSort as Sort } from "react-icons/fa6";
-import { CiCircleCheck as Check } from "react-icons/ci";
+import ResponsivePagination from 'react-responsive-pagination';
 import { useFetch } from "../../../hooks/useFetch";
 import classes from './customers-panel.module.css';
 import { useEffect, useState } from "react";
@@ -13,26 +13,41 @@ const CustomersDashboard = () => {
     //TODO: ADD PAGINATION
     const axiosPrivate = useInterceptor();
     const grayColor = useColorModeValue('gray.600', 'gray.400');
+    const { colorMode } = useColorMode();
     const isDesktop = useMatchMedia();
-    const { data:users } = useFetch<User>("/api/v1/users/user");
+
+    //users section
+    const [usersUrl, setUsersUrl] = useState("");
+    const { data:users } = useSingleFetch<PaginatedUsers>(usersUrl);
     const [selectedUser, setSelectedUser]=useState(0);
     const [userId, setUserId]=useState(0);
-    const [url, setUrl] = useState("");
-    const [totalOrders, setTotalOrders] = useState(0);
-    const pageSize = 6;
-    const [currentPage, setCurrentPage] = useState(1);
+    const usersPageSize = 6;
+    const [currentUsersPage, setCurrentUsersPage] = useState(1);
+    const [totalUsers, setTotalUsers] = useState(0);//set value to 0
+    const handleUsersPageChange = (page: number) => setCurrentUsersPage(page);
+
+    //orders section
+    const [ordersUrl, setOrdersUrl] = useState("");
+    const { data: orders, error } = useSingleFetch<Order>(ordersUrl);
+    const ordersPageSize = 6;
+    const [currentOrdersPage, setCurrentOrdersPage] = useState(1);
     const [toggleIsPending, setToggleIsPending] = useState(false);
     const [toggleIsChecked, setToggleIsChecked] = useState(false);
-    const { data: orders, error } = useSingleFetch<Order>(url);
-    const [response, setResponse] = useState<OrderView>({});
+    const [totalOrders, setTotalOrders] = useState(0);
+    const handleOrdersPageChange = (page: number) => setCurrentOrdersPage(page);
 
-    useEffect(() => {
-        setUrl('/api/v1/orders/order' +
-            `?page=${currentPage}&page-size=${pageSize}&user-id=${userId}` +
+    useEffect(()=>{//load users
+        setUsersUrl(`/api/v1/users/user?page=${currentUsersPage}&page-size=${usersPageSize}`);
+        setTotalUsers(users?.total!);
+        console.log(totalUsers)
+    },[usersUrl, users, currentUsersPage]);
+
+    useEffect(() => {//load orders
+        setOrdersUrl('/api/v1/orders/order' +
+            `?page=${currentOrdersPage}&page-size=${ordersPageSize}&user-id=${userId}` +
             `&sort-pending=${toggleIsPending}&sort-checked=${toggleIsChecked}`);
-
         setTotalOrders(orders?.total!);
-    }, [userId, url, orders, toggleIsPending, toggleIsChecked, response]);
+    }, [userId, orders, toggleIsPending, toggleIsChecked, currentOrdersPage]);
 
     const isPendingTag = (isPending: boolean) => {
         if (isPending) return <Tag colorScheme={'red'}>{'Pending'}</Tag>;
@@ -51,8 +66,7 @@ const CustomersDashboard = () => {
                 "Content-Type": "application/json",
             },
         });
-        setResponse(response.data);
-        setUrl("");
+        setOrdersUrl("");
     }
 
     const finalizeOrder = (order: OrderedProduct) => {
@@ -92,11 +106,19 @@ const CustomersDashboard = () => {
             <div className={classes['users-orders-panel']}>
                 <div>
                     <div className={classes['users-list']}>
+                        <Text placeContent={'center'} fontSize={'large'} fontWeight={'bold'} color={grayColor}>
+                            Customers List
+                        </Text>
+                        <div className={`${classes['paginator-container']}
+                                    ${colorMode === 'light' ? classes['pagination-light'] : classes['pagination-dark']}`}>
+                            <ResponsivePagination
+                                total={Math.ceil(totalUsers / usersPageSize)}
+                                current={currentUsersPage}
+                                onPageChange={page => handleUsersPageChange(page)}
+                            />
+                        </div>
                         <TableContainer width={isDesktop ? '40vw' : '70vw'}>
                             <Table variant='simple' size={isDesktop ? 'md' : 'sm'}>
-                            <TableCaption placement="top" fontSize={'large'} fontWeight={'bold'} color={grayColor}>
-                                    Customer list, click in the user to check its orders
-                            </TableCaption>
                                 <Thead>
                                     <Tr>
                                         <Th>Client</Th>
@@ -105,7 +127,7 @@ const CustomersDashboard = () => {
                                     </Tr>
                                 </Thead>
                                 <Tbody>
-                                    {users.map( (user,i) => (
+                                    {users?.users.map( (user,i) => (
                                         <Tr key={user.id}>
                                             <Td paddingLeft={1}>
                                                 <Button key={user.id} leftIcon={<UserIcon />} 
@@ -115,6 +137,7 @@ const CustomersDashboard = () => {
                                                         onClick={() => {
                                                             setUserId(user.id!);
                                                             setSelectedUser(i);
+                                                            setCurrentOrdersPage(1);
                                                         }}>{user.name}
                                                 </Button>
                                             </Td>
@@ -131,13 +154,20 @@ const CustomersDashboard = () => {
                 </div>
 
                 <div>
-                <Text as={'h2'} color={grayColor} fontWeight={'bold'}></Text>
-                <Divider/>
+                    <Divider />
+                    <Text placeContent={'center'} fontSize={'large'} fontWeight={'bold'} color={grayColor}>
+                        Orders details from customer "{orders?.userName}"
+                    </Text>
+                    <div className={`${classes['paginator-container']}
+                                    ${colorMode === 'light' ? classes['pagination-light'] : classes['pagination-dark']}`}>
+                        <ResponsivePagination
+                            total={Math.ceil(totalOrders / ordersPageSize)}
+                            current={currentOrdersPage}
+                            onPageChange={page => handleOrdersPageChange(page)}
+                        />
+                    </div>
                     <TableContainer width={isDesktop ? '40vw' : '70vw'}>
                         <Table variant='simple' size={isDesktop ? 'md' : 'sm'}>
-                        <TableCaption placement="top" fontSize={'large'} fontWeight={'bold'} color={grayColor}>
-                                Requests from client: "{orders?.userName}"
-                        </TableCaption>
                             <Thead>
                                 <Tr>
                                     <Th>Product</Th>
@@ -153,11 +183,11 @@ const CustomersDashboard = () => {
                                             Checked
                                         </Button>
                                     </Th>
-                                    
+
                                 </Tr>
                             </Thead>
                             <Tbody>
-                                {orders?.orderedProducts?.map((order,i) => (
+                                {orders?.orderedProducts?.map((order, i) => (
                                     <Tr key={i}>
                                         <Td>{order.productName}</Td>
                                         <Td>
