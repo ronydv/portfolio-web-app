@@ -50,4 +50,9 @@ public class OrderController {
     public ResponseEntity<Long> uncheckedOrders() {
         return new ResponseEntity<>(orderService.uncheckedOrders(), HttpStatus.OK);
     }
+
+    @DeleteMapping("/order/{id}")//endpoint for admin
+    public ResponseEntity<String> deleteOrder(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(orderService.deleteOrder(id), HttpStatus.OK);
+    }
 }

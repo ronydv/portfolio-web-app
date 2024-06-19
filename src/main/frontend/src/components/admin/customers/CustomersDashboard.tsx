@@ -1,9 +1,9 @@
-import { Button, Input, InputGroup, InputRightElement, Table, Text, TableContainer, Tag, Tbody, Td, Th, Thead, Tr, useColorModeValue, Divider, TableCaption, useColorMode } from "@chakra-ui/react";
+import { Button, Input, InputGroup, InputRightElement, Table, Text, TableContainer, Tag, Tbody, Td, Th, Thead, Tr, useColorModeValue, Divider, TableCaption, useColorMode, IconButton, Spinner } from "@chakra-ui/react";
 import { IoIosSearch as SearchIcon } from "react-icons/io";
 import { FaUser as UserIcon} from "react-icons/fa";
 import { FaSort as Sort } from "react-icons/fa6";
 import ResponsivePagination from 'react-responsive-pagination';
-import { useFetch } from "../../../hooks/useFetch";
+import { RiDeleteBinFill as DeleteIcon } from "react-icons/ri";
 import classes from './customers-panel.module.css';
 import { useEffect, useState } from "react";
 import { useSingleFetch } from "../../../hooks/useSingleFetch";
@@ -19,7 +19,7 @@ const CustomersDashboard = () => {
     //users section
     const [usersUrl, setUsersUrl] = useState("");
     const { data:users } = useSingleFetch<PaginatedUsers>(usersUrl);
-    const [selectedUser, setSelectedUser]=useState(0);
+    const [selectedButton, setSelectedButton]=useState(0);
     const [userId, setUserId]=useState(0);
     const usersPageSize = 6;
     const [currentUsersPage, setCurrentUsersPage] = useState(1);
@@ -35,6 +35,7 @@ const CustomersDashboard = () => {
     const [toggleIsChecked, setToggleIsChecked] = useState(false);
     const [totalOrders, setTotalOrders] = useState(0);
     const handleOrdersPageChange = (page: number) => setCurrentOrdersPage(page);
+    const [isLoading, setIsLoading]=useState(false);//variable used upon deleting order
 
     useEffect(()=>{//load users
         setUsersUrl(`/api/v1/users/user?page=${currentUsersPage}&page-size=${usersPageSize}`);
@@ -47,7 +48,7 @@ const CustomersDashboard = () => {
             `?page=${currentOrdersPage}&page-size=${ordersPageSize}&user-id=${userId}` +
             `&sort-pending=${toggleIsPending}&sort-checked=${toggleIsChecked}`);
         setTotalOrders(orders?.total!);
-    }, [userId, orders, toggleIsPending, toggleIsChecked, currentOrdersPage]);
+    }, [userId, ordersUrl, orders, toggleIsPending, toggleIsChecked, currentOrdersPage]);
 
     const isPendingTag = (isPending: boolean) => {
         if (isPending) return <Tag colorScheme={'red'}>{'Pending'}</Tag>;
@@ -94,7 +95,20 @@ const CustomersDashboard = () => {
                        onClick={() => check(order)}>✓check
               </Button>);
     };
-    
+
+    const deleteOrder = async(order: OrderedProduct) => {
+        setIsLoading(true);
+        const response = await axiosPrivate.delete<string>(`/api/v1/orders/order/${order.orderId}`, {
+            headers: {
+                "Accept": "text/plain",//Expect plain text response from the backend
+            },
+            responseType: 'text'//the string response from the backend
+        });
+        console.log(response.data);
+        setIsLoading(false);
+        setOrdersUrl("");//reset the orders table upon the selected order is deleted
+    };
+
     return (
         <div>
             <InputGroup width={isDesktop ? '20vw' : '70vw'}>
@@ -104,6 +118,7 @@ const CustomersDashboard = () => {
                 </InputRightElement>
             </InputGroup>
             <div className={classes['users-orders-panel']}>
+                {/* users table */}
                 <div>
                     <div className={classes['users-list']}>
                         <Text placeContent={'center'} fontSize={'large'} fontWeight={'bold'} color={grayColor}>
@@ -131,20 +146,20 @@ const CustomersDashboard = () => {
                                         <Tr key={user.id}>
                                             <Td paddingLeft={1}>
                                                 <Button key={user.id} leftIcon={<UserIcon />} 
-                                                        isActive={i === selectedUser}
-                                                        variant={i === selectedUser ? 'solid': 'ghost'} 
-                                                        colorScheme={i === selectedUser ? 'red':''} 
+                                                        isActive={i === selectedButton}
+                                                        variant={i === selectedButton ? 'solid': 'ghost'} 
+                                                        colorScheme={i === selectedButton ? 'red':''} 
                                                         onClick={() => {
                                                             setUserId(user.id!);
-                                                            setSelectedUser(i);
-                                                            setCurrentOrdersPage(1);
+                                                            setSelectedButton(i);
+                                                            setCurrentOrdersPage(1);//reset orders position when a new user is selected
                                                         }}>{user.name}
                                                 </Button>
                                             </Td>
-                                            <Td color={i === selectedUser ? '#aa2d2f':''} 
-                                                textDecoration={i === selectedUser ? 'underline':''}>{user.email}</Td>
-                                            <Td color={i === selectedUser ? '#aa2d2f':''} 
-                                                textDecoration={i === selectedUser ? 'underline':''}>{user.phone}</Td>
+                                            <Td color={i === selectedButton ? '#aa2d2f':''} 
+                                                textDecoration={i === selectedButton ? 'underline':''}>{user.email}</Td>
+                                            <Td color={i === selectedButton ? '#aa2d2f':''} 
+                                                textDecoration={i === selectedButton ? 'underline':''}>{user.phone}</Td>
                                         </Tr>
                                     ))}
                                 </Tbody>
@@ -152,7 +167,7 @@ const CustomersDashboard = () => {
                         </TableContainer>
                     </div>
                 </div>
-
+                {/* orders table */}
                 <div>
                     <Divider />
                     <Text placeContent={'center'} fontSize={'large'} fontWeight={'bold'} color={grayColor}>
@@ -197,6 +212,22 @@ const CustomersDashboard = () => {
                                         <Td>
                                             {isCheckedTag(order.isChecked!)}
                                             {checkOrder(order)}
+                                        </Td>
+                                        <Td paddingLeft={1}>
+                                            {isLoading}
+                                            <IconButton isRound={true} variant='ghost' aria-label='Dark Mode'
+                                                onClick={() => {
+                                                    deleteOrder(order);
+                                                    setSelectedButton(i);
+                                                }}
+                                                fontSize='20px'
+                                                isDisabled={!order.isPending && order.isChecked}/* <DeleteIcon /> */
+                                                color={'red'}
+                                                icon={isLoading && selectedButton === i ?
+                                                         <Spinner thickness='4px' speed='0.65s' color='red.500' size='xs'/> 
+                                                         : 
+                                                         <DeleteIcon />
+                                            }/>
                                         </Td>
                                     </Tr>
                                 ))}

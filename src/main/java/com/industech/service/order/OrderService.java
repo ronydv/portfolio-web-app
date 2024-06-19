@@ -10,6 +10,7 @@ import com.industech.model.product.Product;
 import com.industech.repository.auth.UserRepository;
 import com.industech.repository.order.OrderRepository;
 import com.industech.repository.product.ProductRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +24,7 @@ import java.util.List;
 import static org.springframework.data.domain.Sort.Direction.ASC;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 
+@Slf4j
 @Service
 public class OrderService {
     @Autowired private UserRepository userRepository;
@@ -77,5 +79,14 @@ public class OrderService {
         return orderRepository.countUncheckedOrders();
     }
 
-    //TODO: add delete order option
+    public String deleteOrder(Long orderId){
+        return orderRepository.findById(orderId)
+                .map(order ->{
+                    orderRepository.delete(order);
+                    return "deleted successfully";
+                }).orElseGet(()->{
+                    log.error("\u001B[35mOrder to delete doesn't exists\u001B[0m");
+                    throw new AuthUserException("Order to delete doesn't exists", HttpStatus.NOT_FOUND);
+                });
+    }
 }

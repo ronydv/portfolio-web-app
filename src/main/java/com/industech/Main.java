@@ -44,7 +44,7 @@ public class Main {
 										OrderRepository orderRepository,
 										OrderService orderService) {
 		return args -> {
-			//userService.deleteUser(3L);
+			//
 		};
 	}
 }
