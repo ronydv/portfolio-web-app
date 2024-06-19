@@ -27,6 +27,12 @@ public class UserController {
                                                       @RequestParam("page-size") Integer pageSize){
         return new ResponseEntity<>(userService.getUsers(page,pageSize), OK);
     }
+    @GetMapping("/search")
+    public ResponseEntity<PaginatedUsers> searchUsers(@RequestParam("page") Integer page,
+                                                      @RequestParam("page-size") Integer pageSize,
+                                                      @RequestParam("browse") String browse){
+        return new ResponseEntity<>(userService.searchUsers(page,pageSize,browse), OK);
+    }
 
     @DeleteMapping("/user/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable("id")Long id){

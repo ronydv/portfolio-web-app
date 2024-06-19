@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -35,7 +37,29 @@ public class UserService {
                     users.getTotalElements());
     }
 
-    //TODO: GET USER BY BROWSE WORD
+    public PaginatedUsers searchUsers(Integer page, Integer pageSize, String wordsToRegex){
+        List<String> words = Stream.of(wordsToRegex.split(" "))
+                .map(String::trim).toList();
+        log.info("\u001B[35mwords from the client mapped to array: " + words + "\u001B[0m");
+
+        String regex = IntStream.range(0, words.size())
+                .filter(i -> i < words.size())
+                .mapToObj(i -> "(?=.*[[:<:]](" + words.get(i) + ")[[:>:]])")
+                .collect(Collectors.joining("|", "(?i)^", ".*"));
+
+        PageRequest pages = PageRequest.of(page - 1, pageSize);
+        if(userRepository.searchByKeywords(regex, pages).isEmpty()){
+            log.error("No users found -> searchUsers");
+            throw new ProductException("No users found", HttpStatus.NOT_FOUND);
+        }else {
+            Page<User> users=userRepository.searchByKeywords(regex, pages);
+            return new PaginatedUsers(users.getContent()
+                    .stream()
+                    .map(AuthUser::new).collect(Collectors.toList()),
+                    users.getTotalElements());
+        }
+    }
+
     public String deleteUser(Long id){
         return userRepository.findById(id)
                 .map((user)-> {

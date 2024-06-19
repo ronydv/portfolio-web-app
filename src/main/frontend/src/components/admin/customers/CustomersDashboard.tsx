@@ -5,12 +5,12 @@ import { FaSort as Sort } from "react-icons/fa6";
 import ResponsivePagination from 'react-responsive-pagination';
 import { RiDeleteBinFill as DeleteIcon } from "react-icons/ri";
 import classes from './customers-panel.module.css';
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSingleFetch } from "../../../hooks/useSingleFetch";
 import useMatchMedia from "../../../hooks/useMatchMedia";
 import useInterceptor from "../../../hooks/useInterceptor";
 const CustomersDashboard = () => {
-    //TODO: ADD PAGINATION
+    
     const axiosPrivate = useInterceptor();
     const grayColor = useColorModeValue('gray.600', 'gray.400');
     const { colorMode } = useColorMode();
@@ -25,6 +25,8 @@ const CustomersDashboard = () => {
     const [currentUsersPage, setCurrentUsersPage] = useState(1);
     const [totalUsers, setTotalUsers] = useState(0);//set value to 0
     const handleUsersPageChange = (page: number) => setCurrentUsersPage(page);
+    const inputRef = useRef<HTMLInputElement>(null);
+    const [browse, setBrowse] = useState('');
 
     //orders section
     const [ordersUrl, setOrdersUrl] = useState("");
@@ -38,10 +40,17 @@ const CustomersDashboard = () => {
     const [isLoading, setIsLoading]=useState(false);//variable used upon deleting order
 
     useEffect(()=>{//load users
-        setUsersUrl(`/api/v1/users/user?page=${currentUsersPage}&page-size=${usersPageSize}`);
-        setTotalUsers(users?.total!);
-        console.log(totalUsers)
-    },[usersUrl, users, currentUsersPage]);
+        if(browse){
+            console.log("search user");//api/v1/users/search?page=1&page-size=2&browse=user
+            setUsersUrl(`/api/v1/users/search?page=${currentUsersPage}&page-size=${usersPageSize}&browse=${browse}`);
+            setTotalUsers(users?.total!);
+        }
+        else {
+            setUsersUrl(`/api/v1/users/user?page=${currentUsersPage}&page-size=${usersPageSize}`);
+            setTotalUsers(users?.total!);
+            console.log("load all users");
+        }
+    },[usersUrl, users, currentUsersPage, browse]);
 
     useEffect(() => {//load orders
         setOrdersUrl('/api/v1/orders/order' +
@@ -104,17 +113,33 @@ const CustomersDashboard = () => {
             },
             responseType: 'text'//the string response from the backend
         });
-        console.log(response.data);
         setIsLoading(false);
         setOrdersUrl("");//reset the orders table upon the selected order is deleted
+    };
+
+    const handleSearch = () => {
+        const inputValue = inputRef.current!.value;
+        if (inputValue !== undefined) {
+            setCurrentUsersPage(1)//reset page position whenever a new value is submitted 
+            setBrowse(inputValue);
+        }
+    };
+    //when the value from the input is cleared, call the useEffect that uses the browse value dependency
+    const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.value === "") {
+            setCurrentUsersPage(1)//reset page position whenever the input is cleared
+            setBrowse(e.target.value);
+        }
     };
 
     return (
         <div>
             <InputGroup width={isDesktop ? '20vw' : '70vw'}>
-                <Input type='text' placeholder='Search Customer' />
+                <Input type='text' placeholder='Search Customer' ref={inputRef}                            
+                            onChange={(e) => handleChangeSearch(e)}
+                            onKeyDown={(e) => e.key === "Enter" && handleSearch()} />
                 <InputRightElement  >
-                    <SearchIcon className={classes['search-icon']} />
+                    <SearchIcon className={classes['search-icon']} onClick={handleSearch} />
                 </InputRightElement>
             </InputGroup>
             <div className={classes['users-orders-panel']}>
@@ -142,7 +167,7 @@ const CustomersDashboard = () => {
                                     </Tr>
                                 </Thead>
                                 <Tbody>
-                                    {users?.users.map( (user,i) => (
+                                    {users?.users!.map( (user,i) => (
                                         <Tr key={user.id}>
                                             <Td paddingLeft={1}>
                                                 <Button key={user.id} leftIcon={<UserIcon />} 
@@ -221,7 +246,7 @@ const CustomersDashboard = () => {
                                                     setSelectedButton(i);
                                                 }}
                                                 fontSize='20px'
-                                                isDisabled={!order.isPending && order.isChecked}/* <DeleteIcon /> */
+                                                isDisabled={!order.isPending && order.isChecked}/* TODO: ADD BROWSE FUNCTION */
                                                 color={'red'}
                                                 icon={isLoading && selectedButton === i ?
                                                          <Spinner thickness='4px' speed='0.65s' color='red.500' size='xs'/> 

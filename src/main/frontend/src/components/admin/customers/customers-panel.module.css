@@ -1,3 +1,14 @@
+/*styling the browse input*/
+.search-icon{
+    color:var(--chakra-colors-gray-400);
+}
+.search-icon:hover{
+    cursor: pointer;
+}
+.search-icon:active{
+    color:var(--chakra-colors-gray-500);
+}
+
 /* panel that contains the list of users and the table with orders */
 .users-orders-panel{
     margin-top: 20px;
@@ -5,11 +16,14 @@
     flex-direction: column;
     row-gap: 40px;
 }
-/* left side of the panel that contains only the list of users */
 
+
+/* left side of the panel that contains only the list of users */
 .users-list button{
     justify-content: flex-start;/* align items within the buttons to the left */
 }
+
+
 .paginator-container{
 /*     display: flex;
     flex-direction: column; */
