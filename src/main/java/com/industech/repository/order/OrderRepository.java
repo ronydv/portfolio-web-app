@@ -1,5 +1,6 @@
 package com.industech.repository.order;
 
+import com.industech.dto.order.OrderStatus;
 import com.industech.model.order.Order;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -7,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {//replaced UserId by Long
@@ -25,4 +28,12 @@ public interface OrderRepository extends JpaRepository<Order, Long> {//replaced 
             SELECT COUNT(o) FROM Order o WHERE o.isChecked = FALSE
             """)
     Long countUncheckedOrders();
+
+    @Query("""
+            SELECT new com.industech.dto.order.OrderStatus( COUNT(o),
+                                                SUM(CASE WHEN o.isPending = TRUE THEN 1 ELSE 0 END),
+                                                SUM(CASE WHEN o.isPending = FALSE THEN 1 ELSE 0 END) )
+                                                FROM Order o
+    """)
+    OrderStatus countTotalAndIsPending();
 }

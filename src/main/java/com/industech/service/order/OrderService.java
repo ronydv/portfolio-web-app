@@ -53,6 +53,10 @@ public class OrderService {
         else return new OrderDetails(orders.stream().toList(),orders.getTotalElements());
     }
 
+    public Long uncheckedOrders(){
+        return orderRepository.countUncheckedOrders();
+    }
+
     public List<OrderView> getPendingOrders(Integer page, Integer pageSize,
                                             Boolean sortByPending, Boolean sortByChecked ){
         Sort sort = Sort.by(sortByPending ? DESC : ASC,"isPending")
@@ -73,10 +77,6 @@ public class OrderService {
         toUpdate.setIsPending(order.getIsPending());
         toUpdate.setIsChecked(order.getIsChecked());
         return new OrderView(orderRepository.save(toUpdate));
-    }
-
-    public Long uncheckedOrders(){
-        return orderRepository.countUncheckedOrders();
     }
 
     public String deleteOrder(Long orderId){

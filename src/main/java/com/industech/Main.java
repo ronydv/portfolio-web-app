@@ -44,7 +44,7 @@ public class Main {
 										OrderRepository orderRepository,
 										OrderService orderService) {
 		return args -> {
-			//
+			System.out.println(orderRepository.countTotalAndIsPending());
 		};
 	}
 }
