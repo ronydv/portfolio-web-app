@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Setter @Getter
-public class OrderDetails {//THIS CLASS MAP THE ORDER ENTITY BY USER AND ITS ORDERS
+public class OrdersByUser {//THIS CLASS MAP THE ORDER ENTITY BY USER AND ITS ORDERS
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long userId;//input from the frontend
@@ -18,15 +18,15 @@ public class OrderDetails {//THIS CLASS MAP THE ORDER ENTITY BY USER AND ITS ORD
     private List<OrderedProduct>orderedProducts;
     private Long total;
 
-    public OrderDetails(){}
-    public OrderDetails(List<Order>orders){
+    public OrdersByUser(){}
+    public OrdersByUser(List<Order>orders){
         if(!orders.isEmpty()){
             this.userId=orders.stream().map(order -> order.getUser().getId()).findFirst().get();
             this.userName=orders.stream().map(order -> order.getUser().getName()).findFirst().get();
             this.orderedProducts=orders.stream().map(OrderedProduct::new).toList();
         }
     }
-    public OrderDetails(List<Order>orders,Long total){
+    public OrdersByUser(List<Order>orders, Long total){
         if(!orders.isEmpty()){
             this.userId=orders.stream().map(order -> order.getUser().getId()).findFirst().get();
             this.userName=orders.stream().map(order -> order.getUser().getName()).findFirst().get();
@@ -64,7 +64,7 @@ public class OrderDetails {//THIS CLASS MAP THE ORDER ENTITY BY USER AND ITS ORD
 
     @Override
     public String toString() {
-        return "OrderDetails{" +
+        return "OrdersByUser{" +
                 "userId=" + userId +
                 ", userName='" + userName + '\'' +
                 ", orderedProducts=" + orderedProducts +

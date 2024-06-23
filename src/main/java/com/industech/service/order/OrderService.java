@@ -1,6 +1,8 @@
 package com.industech.service.order;
 
-import com.industech.dto.order.OrderDetails;
+import com.industech.dto.order.OrderCount;
+import com.industech.dto.order.OrdersByUser;
+import com.industech.dto.order.OrderStatus;
 import com.industech.dto.order.OrderView;
 import com.industech.exception.AuthUserException;
 import com.industech.exception.ProductException;
@@ -31,7 +33,7 @@ public class OrderService {
     @Autowired private ProductRepository productRepository;
     @Autowired private OrderRepository orderRepository;
 
-    public OrderDetails saveOrder(Long userId, List<Long> productIds){
+    public OrdersByUser saveOrder(Long userId, List<Long> productIds){
         User user=userRepository.findById(userId)
                 .orElseThrow(()-> new AuthUserException("user not found", HttpStatus.NOT_FOUND));
         List<Order>orders=new ArrayList<>();
@@ -40,22 +42,19 @@ public class OrderService {
                     .orElseThrow(()-> new ProductException("product not found",HttpStatus.NOT_FOUND));
             orders.add(new Order(user,product));
         }
-        return new OrderDetails(orderRepository.saveAll(orders));
+        return new OrdersByUser(orderRepository.saveAll(orders));
     }
 
-    public OrderDetails getOrdersByUser(Integer page, Integer pageSize,Long userId,
+    public OrdersByUser getOrdersByUser(Integer page, Integer pageSize, Long userId,
                                         Boolean sortByPending, Boolean sortByChecked ){
         Sort sort = Sort.by(sortByPending ? DESC : ASC,"isPending")
                 .and(Sort.by(sortByChecked ? DESC : ASC,"isChecked"));//isPending field in Order entity
         PageRequest pages=PageRequest.of(page - 1, pageSize, sort);
         Page<Order> orders=orderRepository.findOrdersByUserId(userId,pages);
         if(orders.isEmpty()) throw new ProductException("user doesn't contain orders",HttpStatus.NOT_FOUND);
-        else return new OrderDetails(orders.stream().toList(),orders.getTotalElements());
+        else return new OrdersByUser(orders.stream().toList(),orders.getTotalElements());
     }
 
-    public Long uncheckedOrders(){
-        return orderRepository.countUncheckedOrders();
-    }
 
     public List<OrderView> getPendingOrders(Integer page, Integer pageSize,
                                             Boolean sortByPending, Boolean sortByChecked ){
@@ -69,6 +68,25 @@ public class OrderService {
             return paginatedOrders.getContent().stream()
                     .map(order -> new OrderView(order,paginatedOrders.getTotalElements())).toList();
         }
+    }
+    public OrderStatus getOrderStatuses(){
+        return orderRepository.countTotalAndStatuses();
+    }
+
+    public List<OrderCount> getTopOrders(Integer datasetSize, String sector){
+        PageRequest pages=PageRequest.of(0, datasetSize);
+        Page<OrderCount> orders;
+        if (orderRepository.findAll().isEmpty()){
+            log.error("orders not found");
+            throw new ProductException("orders not found",HttpStatus.NOT_FOUND);
+        }
+        if(!sector.equals("All") && orderRepository.getTopOrdersBySector(sector,pages).isEmpty()){
+            log.error("orders not found");
+            throw new ProductException("orders not found",HttpStatus.NOT_FOUND);
+        }
+        if(sector.equals("All")) orders=orderRepository.getTopOrders(pages);
+        else orders=orderRepository.getTopOrdersBySector(sector,pages);
+        return orders.getContent();
     }
 
     public OrderView updateOrder(OrderView order){

@@ -13,11 +13,24 @@ type OrderedProduct = {
     isChecked?: boolean;
 };
 type OrderView = {
-    orderId?:number;
-    userName?:string;
-    productName?:string;
-    isPending?:boolean;
-    isChecked?:boolean;
-    orderedAt?:string;
-    total?:number;
+    orderId?: number;
+    userName?: string;
+    productName?: string;
+    isPending?: boolean;
+    isChecked?: boolean;
+    orderedAt?: string;
+    total?: number;
 };
+type OrderStatus = {/* used in the analytics component pie chart and in account/Orders.tsx */
+    totalOrders?: number;
+    uncheckedOrders?: number;
+    dataForStatistics?: Array<OrderStatusDataName>
+};
+type OrderStatusDataName={
+    dataName:string;
+    value:number;
+}
+type OrderCount={
+    productName?:string;
+    value?:number;
+}

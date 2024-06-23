@@ -19,6 +19,7 @@ import Cart from './components/cart/Cart';
 import Orders from './components/account/Orders';
 import Profile from './components/account/Profile';
 import CustomersDashboard from './components/admin/customers/CustomersDashboard';
+import AnalyticsDashboard from './components/admin/analytics/AnalyticsDashboard';
 
 
   
@@ -50,6 +51,7 @@ function App() {
 						<Route path='products-dashboard'element={<ProductsDashboard/>}/>
 						<Route path='add-product'element={<AddProduct/>}/>
 						<Route path='modify-product/:id'element={<ModifyProduct/>}/>
+						<Route path='analytics-dashboard'element={<AnalyticsDashboard/>}/>
 						<Route path='customers-dashboard'element={<CustomersDashboard/>}/>
 					</Route>
 

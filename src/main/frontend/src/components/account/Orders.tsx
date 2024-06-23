@@ -26,10 +26,10 @@ const Orders = () => {//todo: get the user from authContext
     const [currentPage, setCurrentPage] = useState(1);
     const [fetchByUser, setFetchByUser] = useState("");
     const [fetchAll, setFetchAll] = useState("");
-    const [fetchUnchecked, setFetchUnchecked] = useState("");
+    const [fetchStatuses, setFetchStatuses] = useState("");
     const { data: ordersByuser, error: errorFromOrdersByUser } = useSingleFetch<Order>(fetchByUser);
     const { data: orders, error: errorFromOrders } = useFetch<OrderView>(fetchAll);
-    const { data: countUnchecked, error: errorFromCountUnchecked } = useSingleFetch<number>(fetchUnchecked);
+    const { data: statuses, error: errorFromStatuses } = useSingleFetch<OrderStatus>(fetchStatuses);
     const handlePageChange = (page: number) => setCurrentPage(page);
     const [toggleIsPending, setToggleIsPending] = useState(false);
     const [toggleIsChecked, setToggleIsChecked] = useState(false);
@@ -40,7 +40,7 @@ const Orders = () => {//todo: get the user from authContext
             setFetchAll('/api/v1/orders/order/all' +
                 `?page=${currentPage}&page-size=${pageSize}&sort-pending=${toggleIsPending}&sort-checked=${toggleIsChecked}`);
             orders.length && setTotalElements(orders[0].total!);
-            setFetchUnchecked('/api/v1/orders/order/unchecked');
+            setFetchStatuses('/api/v1/orders/order/status');
         } else {
             setFetchByUser('/api/v1/orders/order' +
                 `?page=${currentPage}&page-size=${pageSize}&user-id=${user.user?.id}` +
@@ -71,7 +71,7 @@ const Orders = () => {//todo: get the user from authContext
                 },
             });
             setResponse(response.data);
-            setFetchUnchecked("");//update the url so the useEffect from above will be called and therefore updated data will be received 
+            setFetchStatuses("");//update the url so the useEffect from above will be called and therefore updated data will be received 
         };
         return <Button variant={'ghost'} colorScheme="green" leftIcon={<Check />} size={'sm'}
             onClick={() => check(index)}>check</Button>;
@@ -80,7 +80,7 @@ const Orders = () => {//todo: get the user from authContext
     return (
         <Box mt={5}>
             <Restricted to={[Role.ADMIN]}>
-                <Tag size={'lg'} colorScheme="orange">Unchecked orders: {countUnchecked} </Tag>
+                <Tag size={'lg'} colorScheme="orange">Unchecked orders: {statuses?.uncheckedOrders} </Tag>
             </Restricted>
             <div className={`${classes['table-container']}
                                     ${colorMode === 'light' ? classes['pagination-light'] : classes['pagination-dark']}`}>

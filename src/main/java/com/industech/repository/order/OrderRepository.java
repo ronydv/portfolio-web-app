@@ -1,5 +1,6 @@
 package com.industech.repository.order;
 
+import com.industech.dto.order.OrderCount;
 import com.industech.dto.order.OrderStatus;
 import com.industech.model.order.Order;
 import org.springframework.data.domain.Page;
@@ -24,16 +25,44 @@ public interface OrderRepository extends JpaRepository<Order, Long> {//replaced 
             """)
     Page<Order> findByPendingOrders(Pageable pages);
 
-    @Query(value = """
-            SELECT COUNT(o) FROM Order o WHERE o.isChecked = FALSE
-            """)
-    Long countUncheckedOrders();
 
     @Query("""
-            SELECT new com.industech.dto.order.OrderStatus( COUNT(o),
-                                                SUM(CASE WHEN o.isPending = TRUE THEN 1 ELSE 0 END),
-                                                SUM(CASE WHEN o.isPending = FALSE THEN 1 ELSE 0 END) )
-                                                FROM Order o
-    """)
-    OrderStatus countTotalAndIsPending();
+            SELECT new com.industech.dto.order.OrderStatus(
+                COUNT(o),
+                SUM(CASE WHEN o.isPending = TRUE THEN 1 ELSE 0 END),
+                SUM(CASE WHEN o.isPending = FALSE THEN 1 ELSE 0 END),
+                SUM(CASE WHEN o.isChecked = TRUE THEN 1 ELSE 0 END),
+                SUM(CASE WHEN o.isChecked = FALSE THEN 1 ELSE 0 END)
+            )
+            FROM Order o
+            """)
+    OrderStatus countTotalAndStatuses();
+
+
+    @Query("""
+            SELECT new com.industech.dto.order.OrderCount(
+                p.name,
+                COUNT(o)
+            )
+            FROM Order o
+            JOIN o.product p
+            JOIN p.sectors s
+            WHERE s.name = :sectorName
+            GROUP BY p.name
+            ORDER BY COUNT(o) DESC
+           """)
+    Page<OrderCount> getTopOrdersBySector(@Param("sectorName") String sectorName, Pageable pages);
+
+    @Query("""
+            SELECT new com.industech.dto.order.OrderCount(
+                p.name,
+                COUNT(o)
+            )
+            FROM Order o
+            JOIN o.product p
+            JOIN p.sectors s
+            GROUP BY p.name
+            ORDER BY COUNT(o) DESC
+           """)
+    Page<OrderCount> getTopOrders(Pageable pages);
 }
