@@ -1,9 +1,6 @@
 package com.industech.controller.order;
 
-import com.industech.dto.order.OrderCount;
-import com.industech.dto.order.OrdersByUser;
-import com.industech.dto.order.OrderStatus;
-import com.industech.dto.order.OrderView;
+import com.industech.dto.order.*;
 import com.industech.service.order.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,6 +54,10 @@ public class OrderController {
     public ResponseEntity<List<OrderCount>> uncheckedOrders(@RequestParam("dataset-size") Integer datasetSize,
                                                             @RequestParam("sector") String sector) {
         return new ResponseEntity<>(orderService.getTopOrders(datasetSize, sector), HttpStatus.OK);
+    }
+    @GetMapping("/order/monthly")//endpoint for admin
+    public ResponseEntity<List<MonthlyOrders>> ordersByMonth() {
+        return new ResponseEntity<>(orderService.getOrdersByMonth(), HttpStatus.OK);
     }
 
     @DeleteMapping("/order/{id}")//endpoint for admin

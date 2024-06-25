@@ -3,6 +3,7 @@ import OrderStatuses from "./OrderStatuses";
 import classes from './analytics-panel.module.css';
 import useMatchMedia from "../../../hooks/useMatchMedia";
 import CommonOrders from "./CommonOrders";
+import OrdersByMonth from "./OrdersByMonth";
 
 export type ChartData={//used in OrderStatuses, CommonOrders
     value: number; 
@@ -26,6 +27,12 @@ const AnalyticsDashboard = () => {
                         Most Requested Products
                     </Text>
                     <CommonOrders />
+                </Box>
+                <Box>
+                    <Text as={'h1'} fontSize={'20px'} mb={2} fontWeight={'bold'} color={darkMode}>
+                        Orders per Month
+                    </Text>
+                    <OrdersByMonth />
                 </Box>
                 
             </Flex>

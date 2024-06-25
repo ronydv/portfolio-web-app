@@ -34,3 +34,6 @@ type OrderCount={
     productName?:string;
     value?:number;
 }
+type MonthlyOrders={
+    amount:number;
+}

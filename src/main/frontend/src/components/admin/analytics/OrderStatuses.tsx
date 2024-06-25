@@ -40,7 +40,7 @@ const OrderStatuses = () => {
 				name: 'Quantity',
 				type: 'pie',
 				radius: ['40%', '70%'],
-				center: ['50%', '62%'],
+				center: ['50%', '60%'],
 				padAngle: 8,
 				avoidLabelOverlap: false,
 				itemStyle: {

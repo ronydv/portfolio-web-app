@@ -1,5 +1,6 @@
 package com.industech.repository.order;
 
+import com.industech.dto.order.MonthlyOrders;
 import com.industech.dto.order.OrderCount;
 import com.industech.dto.order.OrderStatus;
 import com.industech.model.order.Order;
@@ -65,4 +66,13 @@ public interface OrderRepository extends JpaRepository<Order, Long> {//replaced 
             ORDER BY COUNT(o) DESC
            """)
     Page<OrderCount> getTopOrders(Pageable pages);
+
+    @Query("""
+            SELECT new com.industech.dto.order.MonthlyOrders(
+                COUNT(o)
+            )
+            FROM Order o
+            WHERE EXTRACT(MONTH FROM o.orderedAt) = :specifiedMonth
+           """)
+    MonthlyOrders findOrdersByMonth(@Param("specifiedMonth") int specifiedMonth);
 }

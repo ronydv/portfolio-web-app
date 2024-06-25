@@ -1,5 +1,6 @@
 package com.industech;
 
+import com.industech.dto.order.MonthlyOrders;
 import com.industech.repository.auth.UserRepository;
 import com.industech.repository.order.OrderRepository;
 import com.industech.repository.product.*;
@@ -29,7 +30,10 @@ public class Main {
 										OrderRepository orderRepository,
 										OrderService orderService) {
 		return args -> {
-			//System.out.println(orderService.getTopOrders(3,"Automations"));
+
+			for(MonthlyOrders order:orderService.getOrdersByMonth()){
+				System.out.println(order);
+			}
 		};
 	}
 }

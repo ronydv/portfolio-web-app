@@ -23,11 +23,9 @@ const CommonOrders = () => {
 			if (tabIndex === 0) {
 				setSector("All");//state for the queryParams to fetch all orders
 				setUrl(`/api/v1/orders/order/top-products?dataset-size=${datasetSize}&sector=${sector}`);
-				console.log(sector);
 			} else if (tabIndex === i + 1) {
 				setSector(sectors[i]?.name);//state for the queryParams to fetch orders by product's sector
 				setUrl(`/api/v1/orders/order/top-products?dataset-size=${datasetSize}&sector=${sector}`);
-				console.log(sector);
 			}
 		}
 		if (topRequestedOrders.length > 0) {
@@ -59,7 +57,7 @@ const CommonOrders = () => {
 				name: 'Quantity',
 				type: 'pie',
 				radius: ['40%', '70%'],
-				center: ['50%', '62%'],
+				center: ['50%', '60%'],
 				padAngle: 8,
 				avoidLabelOverlap: false,
 				itemStyle: {

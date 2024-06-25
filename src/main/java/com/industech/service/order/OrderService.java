@@ -1,9 +1,6 @@
 package com.industech.service.order;
 
-import com.industech.dto.order.OrderCount;
-import com.industech.dto.order.OrdersByUser;
-import com.industech.dto.order.OrderStatus;
-import com.industech.dto.order.OrderView;
+import com.industech.dto.order.*;
 import com.industech.exception.AuthUserException;
 import com.industech.exception.ProductException;
 import com.industech.model.auth.User;
@@ -87,6 +84,16 @@ public class OrderService {
         if(sector.equals("All")) orders=orderRepository.getTopOrders(pages);
         else orders=orderRepository.getTopOrdersBySector(sector,pages);
         return orders.getContent();
+    }
+    public List<MonthlyOrders> getOrdersByMonth(){
+        int[] months={1,2,3,4,5,6,7,8,9,10,11,12};
+        List<MonthlyOrders>orders=new ArrayList<>();
+        for (int month : months) {
+            if (orderRepository.findOrdersByMonth(month).getAmount() == 0) {
+                orders.add(new MonthlyOrders(0L));
+            }else orders.add(new MonthlyOrders(orderRepository.findOrdersByMonth(month).getAmount()));
+        }
+        return orders;
     }
 
     public OrderView updateOrder(OrderView order){
