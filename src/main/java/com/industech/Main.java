@@ -30,10 +30,7 @@ public class Main {
 										OrderRepository orderRepository,
 										OrderService orderService) {
 		return args -> {
-
-			for(MonthlyOrders order:orderService.getOrdersByMonth()){
-				System.out.println(order);
-			}
+			//
 		};
 	}
 }

@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -58,6 +59,32 @@ public class UserService {
                     .map(AuthUser::new).collect(Collectors.toList()),
                     users.getTotalElements());
         }
+    }
+    public AuthUser updateUser(User user){
+        if(user == null) throw new AuthUserException("Empty body",HttpStatus.BAD_REQUEST);
+        Optional<User> reference=userRepository.findById(user.getId());
+            try{
+                if(reference.isPresent()) {
+                    if (user.getName() != null ){
+                        reference.get().setName(user.getName());
+                    }
+                    if (user.getEmail() != null){
+                        reference.get().setEmail(user.getEmail());
+                    }
+                    if (user.getPhone() != null){
+                        reference.get().setPhone(user.getPhone());
+                    }
+                    if (user.getPassword() != null) {
+                        reference.get().setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+                    }
+                    return new AuthUser(userRepository.save(reference.get()));
+                }
+            }catch (Exception e) {
+                throw e.getLocalizedMessage().contains("ConstraintViolationException") ?
+                        new AuthUserException("This email is already in use",HttpStatus.BAD_REQUEST) :
+                        new AuthUserException(e.getMessage(),HttpStatus.BAD_REQUEST);
+            }
+        return null;
     }
 
     public String deleteUser(Long id){

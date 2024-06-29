@@ -11,7 +11,6 @@ export type ChartData={//used in OrderStatuses, CommonOrders
 }
 
 const AnalyticsDashboard = () => {
-    const isDesktop = useMatchMedia();
     const darkMode = useColorModeValue('gray.600', 'gray.400');
     return ( 
         <div className={classes['analytics-pane']}>

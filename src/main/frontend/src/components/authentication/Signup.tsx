@@ -5,7 +5,7 @@ import axios from "axios";
 //TODO: add toast if sign up is successful 
 const Signup = () => {
     const EMAIL_REGEX: RegExp=/^[^@]+@[^@]+$/;
-    const [user, setUser] = useState<User>({email:'',password:''});//data for test purposes
+    const [user, setUser] = useState<User>({});
 
     const [isEmailValid, setIsEmailValid]=useState(false);
     const [isPasswordValid, setIsPasswordValid]=useState(false);
@@ -29,9 +29,7 @@ const Signup = () => {
     
     const handleSubmit = async (event:FormEvent<HTMLFormElement>) =>{
         event.preventDefault();
-        console.log("saving... ", user);
-
-        try {        //wait until the fetching is complete          
+        try {         
             const response = await axios.post<User>("/api/v1/auth/signup",
                 user, {//object to send to the server
                 headers: {
@@ -39,14 +37,11 @@ const Signup = () => {
                     "Content-Type": "application/json",
                 },
             });
-            console.log("request to the server-> ", user, "\nresponse from the server->", response.data);
         } catch (error: unknown) {//TODO: DELETE ALL CONSOLE OUTPUT THAT CONTAINS USER INFORMATION
             if (axios.isAxiosError(error)) {
                 if (error.response?.status === 409) {
-                    console.log(user, "\n", error.response.data);
                     setError(error.response.data.message);
                 }else if (error.response?.status === 500){
-                    console.log(user, "\n", error.response.status);
                     setError("Error while trying to create user");
                 }
             }
@@ -67,8 +62,8 @@ const Signup = () => {
 
                     <div>
                         <FormLabel>Email address</FormLabel>
-                        <Input type='text' placeholder="Enter your e-mail" isInvalid={!isEmailValid}
-                            onChange={(event) => {//change input type to email later on develpment
+                        <Input type='email' placeholder="Enter your e-mail" isInvalid={!isEmailValid}
+                            onChange={(event) => {
                                 setError('');
                                 setUser({ ...user, email: event.target.value });
                                 setIsEmailValid(EMAIL_REGEX.test(event.target.value));
