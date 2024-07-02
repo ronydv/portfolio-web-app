@@ -23,13 +23,14 @@ public class UserController {
     }
 
     @GetMapping("/user")
-    //@PreAuthorize("hasRole('admin:read')")
+    @PreAuthorize("hasRole('admin:read')")
     public ResponseEntity<PaginatedUsers> getAllUsers(@RequestParam("page") Integer page,
                                                       @RequestParam("page-size") Integer pageSize){
         return new ResponseEntity<>(userService.getUsers(page,pageSize), OK);
     }
 
     @GetMapping("/search")
+    @PreAuthorize("hasRole('admin:read')")
     public ResponseEntity<PaginatedUsers> searchUsers(@RequestParam("page") Integer page,
                                                       @RequestParam("page-size") Integer pageSize,
                                                       @RequestParam("browse") String browse){
@@ -37,11 +38,13 @@ public class UserController {
     }
 
     @PutMapping("/user")
+    @PreAuthorize("hasAnyRole('admin:update','user:update')")
     public ResponseEntity<AuthUser> updateUser(@RequestBody User user){
         return new ResponseEntity<>(userService.updateUser(user),OK);
     }
 
     @DeleteMapping("/user/{id}")
+    @PreAuthorize("hasRole('user:delete')")
     public ResponseEntity<String> deleteUser(@PathVariable("id")Long id){
         return new ResponseEntity<>(userService.deleteUser(id),OK);
     }

@@ -4,6 +4,7 @@ import com.industech.dto.product.CategoryDetails;
 import com.industech.dto.product.TypeDetails;
 import com.industech.service.product.CategoryService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,21 +21,25 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping("/categories")
-    public ResponseEntity<List<CategoryDetails>> getCategories(){
-        return new ResponseEntity<>(categoryService.getCategories(),OK);
-    }
     @GetMapping("/categories/{sector}")
     public ResponseEntity<List<CategoryDetails>> getCategoriesBySector(@PathVariable("sector")String sector){
         return new ResponseEntity<>(categoryService.getCategoriesBySector(sector), OK);
     }
 
+    @GetMapping("/categories")
+    @PreAuthorize("hasRole('admin:read')")
+    public ResponseEntity<List<CategoryDetails>> getCategories(){
+        return new ResponseEntity<>(categoryService.getCategories(),OK);
+    }
+
     @PostMapping("/categories")
+    @PreAuthorize("hasRole('admin:create')")
     public ResponseEntity<CategoryDetails> saveCategory(@RequestBody CategoryDetails categoryName){
         return new ResponseEntity<>(categoryService.saveCategory(categoryName.getName()),CREATED);
     }
 
     @DeleteMapping("/categories/{id}")
+    @PreAuthorize("hasRole('admin:delete')")
     public ResponseEntity<String>  deleteCategory(@PathVariable("id") Integer id){
         return new ResponseEntity<>(categoryService.deleteCategory(id),OK);
     }

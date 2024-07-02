@@ -72,7 +72,7 @@ const ProductDetails = () => {
     const showToast=()=>{
         notification({
             title: 'Product added.',
-            description: "Click in the above icon from the right for confirmation.",
+            description: "Click in the above icon from the right for confirmation.",//tddo: dynamic config
             status: 'info',
             duration: 4000,
             isClosable: true,

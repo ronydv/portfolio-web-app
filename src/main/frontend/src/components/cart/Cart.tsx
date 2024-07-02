@@ -38,7 +38,6 @@ const Cart = () => {
             });
             clearCart();
             setOrderResponse("Order sent successfully");
-            console.log(response.data);
         } catch(error){
             if(axios.isAxiosError(error)) setError(error.response?.data.message);
         }
@@ -65,9 +64,7 @@ const Cart = () => {
                         <Stack mt='6' spacing='3'>
                             <Heading size='md'>{product.name}</Heading>
                             <Text>
-                                This sofa is perfect for modern tropical spaces, baroque inspired
-                                spaces, earthy toned spaces and for people who love a chic design with a
-                                sprinkle of vintage design.{product.description}
+                                {product.description}
                             </Text>
                             <Box>
                                 <Badge variant='solid' colorScheme='red'>{product.productType}</Badge>

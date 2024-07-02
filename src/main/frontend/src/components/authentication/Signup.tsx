@@ -2,11 +2,12 @@ import { Button, FormControl, FormErrorMessage, FormHelperText, FormLabel, Input
 import classes from './authentication.module.css';
 import { FormEvent, useEffect, useRef, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 //TODO: add toast if sign up is successful 
 const Signup = () => {
     const EMAIL_REGEX: RegExp=/^[^@]+@[^@]+$/;
     const [user, setUser] = useState<User>({});
-
+    const navigate = useNavigate();
     const [isEmailValid, setIsEmailValid]=useState(false);
     const [isPasswordValid, setIsPasswordValid]=useState(false);
     const [disable, setDisable]=useState(true);
@@ -37,6 +38,7 @@ const Signup = () => {
                     "Content-Type": "application/json",
                 },
             });
+            navigate("/login");
         } catch (error: unknown) {//TODO: DELETE ALL CONSOLE OUTPUT THAT CONTAINS USER INFORMATION
             if (axios.isAxiosError(error)) {
                 if (error.response?.status === 409) {
@@ -83,7 +85,7 @@ const Signup = () => {
 
                     <div>
                         <FormLabel>Password</FormLabel>
-                        <Input type='text' placeholder="Enter your password" isInvalid={!isPasswordValid}
+                        <Input type='password' placeholder="Enter your password" isInvalid={!isPasswordValid}
                             ref={password} onChange={(event) => {//change input type to password later on develpment
                                 setError('');
                                 setUser({ ...user, password: event.target.value });
@@ -94,7 +96,7 @@ const Signup = () => {
 
                     <div>
                         <FormLabel>Confirm Password</FormLabel>
-                        <Input type='text' placeholder="Repeat password" isInvalid={!isPasswordValid}
+                        <Input type='password' placeholder="Repeat password" isInvalid={!isPasswordValid}
                             ref={matchPassword} onChange={(event) => {
                                 setError('');
                                 checkMatch(password.current?.value!, event.target.value);

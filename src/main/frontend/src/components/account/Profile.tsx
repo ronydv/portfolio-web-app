@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, FormEvent } from "react";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import classes from './account-menu.module.css';
-import { Button, Divider, Flex, FormControl, FormErrorMessage, FormHelperText, FormLabel, Input, Spacer } from "@chakra-ui/react";
+import { Button, FormControl, FormErrorMessage, FormHelperText, FormLabel, Input } from "@chakra-ui/react";
 import useInterceptor from "../../hooks/useInterceptor";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -31,10 +31,9 @@ const Profile = () => {
         else setDisable(true);
     }, [isEmailValid]);
 
-    //TODO, make submit function and then the backend service
+    
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        console.log("before sending to the backend",userState);
         try {         
             const response = await axiosPrivate.put<User>("/api/v1/users/user",
                 userState, {//object to send to the server
@@ -48,7 +47,6 @@ const Profile = () => {
         } catch (error: unknown) {
             if (axios.isAxiosError(error)) {
                 if(error.response?.data.message.includes('duplicate key')){
-                    console.log(error.response?.data.message);
                     setError('Email already exists');
                 }
                 if (error.response?.status === 500) {
@@ -64,7 +62,7 @@ const Profile = () => {
                 headers: {
                     "Accept": "text/plain",//Expect plain text response from the backend
                 },
-                responseType: 'text'//the string response from the backend
+                responseType: 'text'
             });
             setAuth({});
             navigate("/")

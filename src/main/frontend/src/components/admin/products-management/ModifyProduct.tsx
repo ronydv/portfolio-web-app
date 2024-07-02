@@ -31,7 +31,6 @@ const ModifyProduct = () => {
                     "Content-Type": "application/json",
                 },
             });
-            console.log("new product: ", response.data);
             setTypesUrl("");
             setIsLoading(false);
         } catch (err) {

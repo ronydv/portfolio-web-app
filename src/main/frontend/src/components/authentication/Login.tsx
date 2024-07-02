@@ -3,17 +3,18 @@ import classes from './authentication.module.css';
 import { FormEvent, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import AuthContext from "../../context/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
     const authContext  = useContext<UserContext | undefined>(AuthContext);//fill the data and manage it in AuthProvider.tsx
-    const [user, setUser] = useState<User>({email:'admin@mail.com',password:'password'});//data for test purposes
+    const navigate = useNavigate();
+    const [user, setUser] = useState<User>({});
     const [isError, setIsError]= useState<boolean>(false)
     const [error, setError]=useState<string | undefined>(undefined);
     const disable: boolean= user.email=== '' || user.password === '';
 
     const handleSubmit = async (event:FormEvent<HTMLFormElement>) =>{
         event.preventDefault();
-        console.log(user);
         try{
             const response = await axios.post<LoginResponse>("/api/v1/auth/login",
                 user, {//object to send to the server
@@ -23,6 +24,7 @@ const Login = () => {
                 },
             });
             authContext?.setAuth(response.data);
+            navigate("/");
         }catch(error:unknown){
             if(axios.isAxiosError(error)){
                 if (error.response?.status === 401) {
@@ -35,6 +37,7 @@ const Login = () => {
             }
         }
     };
+
     const togglePersist = () => authContext?.setPersist(prev => !prev);
     
     useEffect(() => {
@@ -60,7 +63,7 @@ const Login = () => {
 
                     <div>
                         <FormLabel>Password</FormLabel>
-                        <Input type='text' value={user.password} placeholder="Enter your password"
+                        <Input type='password' value={user.password} placeholder="Enter your password"
                             onChange={(event) => {
                                 setUser({...user,password: event.target.value});
                                 setIsError(false);

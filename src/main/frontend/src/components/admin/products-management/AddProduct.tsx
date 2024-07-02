@@ -34,7 +34,6 @@ const AddProduct = () => {
             setIsLoading(true);
             formData.append("product", JSON.stringify(product));//add product (key-value)
             files.forEach((file) => formData.append("images", file));// Append images to FormData
-            console.log(formData);
             const response = await axiosPrivate.post<Product>("/api/v1/product-management/products",
                 formData, {
                 headers: {
@@ -45,7 +44,6 @@ const AddProduct = () => {
             setIsLoading(false);
             setFormData(new FormData());//reset formData after submitting
             setTypesUrl("");//every time this is set to "" a useEffect runs for re-rendering the types in SelectType.tsx
-            console.log(response.data);
         } catch (err) {
             setIsLoading(false);
             setFormData(new FormData());

@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -60,32 +61,42 @@ public class UserService {
                     users.getTotalElements());
         }
     }
-    public AuthUser updateUser(User user){
-        if(user == null) throw new AuthUserException("Empty body",HttpStatus.BAD_REQUEST);
-        Optional<User> reference=userRepository.findById(user.getId());
-            try{
-                if(reference.isPresent()) {
-                    if (user.getName() != null ){
-                        reference.get().setName(user.getName());
+    public AuthUser updateUser(User user) {
+        if (user == null) throw new AuthUserException("Empty body", HttpStatus.BAD_REQUEST);
+        Optional<User> reference = userRepository.findById(user.getId());
+        if (reference.isEmpty()) return null;
+
+        User existingUser = reference.get();
+        try {
+            Field[] fields = User.class.getDeclaredFields();
+            for (Field field : fields) {
+                field.setAccessible(true);
+                Object value = field.get(user);
+                if (value != null) {
+                    switch (field.getName()) {
+                        case "name": existingUser.setName((String) value);
+                            break;
+                        case "email": existingUser.setEmail((String) value);
+                            break;
+                        case "phone": existingUser.setPhone((String) value);
+                            break;
+                        case "password": existingUser.setPassword(new BCryptPasswordEncoder().encode((String) value));
+                            break;
+                        default:
+                            break;
                     }
-                    if (user.getEmail() != null){
-                        reference.get().setEmail(user.getEmail());
-                    }
-                    if (user.getPhone() != null){
-                        reference.get().setPhone(user.getPhone());
-                    }
-                    if (user.getPassword() != null) {
-                        reference.get().setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-                    }
-                    return new AuthUser(userRepository.save(reference.get()));
                 }
-            }catch (Exception e) {
-                throw e.getLocalizedMessage().contains("ConstraintViolationException") ?
-                        new AuthUserException("This email is already in use",HttpStatus.BAD_REQUEST) :
-                        new AuthUserException(e.getMessage(),HttpStatus.BAD_REQUEST);
             }
-        return null;
+            return new AuthUser(userRepository.save(existingUser));
+        } catch (IllegalAccessException e) {
+            throw new AuthUserException("Error accessing user fields", HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            throw e.getLocalizedMessage().contains("ConstraintViolationException") ?
+                    new AuthUserException("This email is already in use", HttpStatus.BAD_REQUEST) :
+                    new AuthUserException(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
+
 
     public String deleteUser(Long id){
         return userRepository.findById(id)

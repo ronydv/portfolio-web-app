@@ -6,6 +6,7 @@ import com.industech.dto.product.PaginatedProducts;
 import com.industech.dto.product.ProductDetails;
 import com.industech.service.product.ProductService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,28 +27,24 @@ public class ProductController {
 
 
 
-
-    @GetMapping("/products")
-    public ResponseEntity<List<ProductDetails>> getAllProducts(){
-        return new ResponseEntity<>(productService.getAllProducts(), OK);
-    }
-
-    @GetMapping("/products/{page}/{pageSize}/sector/{sector}")
-    public ResponseEntity<PaginatedProducts> getAllProductsBySector(@PathVariable("page") Integer page,
-                                                                  @PathVariable("pageSize") Integer pageSize,
-                                                                  @PathVariable("sector") String sector){
-        return new ResponseEntity<>(productService.getProductsBySector(page,pageSize,sector), OK);
-    }
+    //get methods for the Catalog component in the frontend
     @GetMapping("/products/{page}/{pageSize}/sector/{sector}/filter/{categories}/{types}")
     public ResponseEntity<PaginatedProducts> getProductsByCategoriesAndTypes(@PathVariable("page") Integer page,
-                                                                    @PathVariable("pageSize") Integer pageSize,
-                                                                    @PathVariable("sector") String sector,
-                                                                    @PathVariable("categories")List<String>categories,
-                                                                    @PathVariable("types") List<String>types){
+                                                                             @PathVariable("pageSize") Integer pageSize,
+                                                                             @PathVariable("sector") String sector,
+                                                                             @PathVariable("categories")List<String>categories,
+                                                                             @PathVariable("types") List<String>types){
         if (categories.get(0).contains("null")) categories = Collections.emptyList();
         if (types.get(0).contains("null")) types = Collections.emptyList();
         return new ResponseEntity<>(productService.
                 getProductsByCategoriesAndTypes(page,pageSize,sector,categories,types), OK);
+    }
+
+    @GetMapping("/products/{page}/{pageSize}/sector/{sector}")
+    public ResponseEntity<PaginatedProducts> getAllProductsBySector(@PathVariable("page") Integer page,
+                                                                    @PathVariable("pageSize") Integer pageSize,
+                                                                    @PathVariable("sector") String sector){
+        return new ResponseEntity<>(productService.getProductsBySector(page,pageSize,sector), OK);
     }
 
     @GetMapping("/products/{words}/{page}/{pageSize}")
@@ -62,7 +59,15 @@ public class ProductController {
         return new ResponseEntity<>(productService.getProductById(id), OK);
     }
 
+    //methods for the ProductsDashboard component in the frontend
+    @GetMapping("/products")
+    @PreAuthorize("hasRole('admin:read')")
+    public ResponseEntity<List<ProductDetails>> getAllProducts(){
+        return new ResponseEntity<>(productService.getAllProducts(), OK);
+    }
+
     @PostMapping("/products")
+    @PreAuthorize("hasRole('admin:create')")
     public ResponseEntity<ProductDetails> saveProduct(@RequestParam("product") String productJson,
                                                       @RequestParam("images") List<MultipartFile> files) {
         try{
@@ -74,16 +79,19 @@ public class ProductController {
     }
 
     @PutMapping("/products")
+    @PreAuthorize("hasRole('admin:update')")
     public ResponseEntity<ProductDetails> updateProduct(@RequestBody ProductDetails product){
         return new ResponseEntity<>(productService.updateProduct(product), OK);
     }
 
     @DeleteMapping("/products/{id}")
+    @PreAuthorize("hasRole('admin:delete')")
     public ResponseEntity<String> deleteProduct(@PathVariable("id") Long id){
         return new ResponseEntity<>(productService.deleteProduct(id),OK);
     }
 
     @GetMapping("/products/sector/{sector}")
+    @PreAuthorize("hasRole('admin:read')")
     public ResponseEntity<Long> getTotalProductsBySector(@PathVariable("sector")String sector){
         return new ResponseEntity<>(productService.getTotalProductsBySector(sector),OK);
     }
