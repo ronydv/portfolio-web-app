@@ -39,6 +39,7 @@ const handleNavigation = (id:number, navigate: NavigateFunction, tabIndex:number
 };
 const DesktopVersionCard = ({ product, colorMode, tabIndex, categories, types, page, browse }: ProductCardProps) => {
     const navigate = useNavigate();
+    const isDesktop = useMatchMedia();
     const cartContext=useContext<CartItemContext | undefined>(CartContext);
     let items:Product[]=cartContext?.items!;
     const notification = useToast();
@@ -46,7 +47,9 @@ const DesktopVersionCard = ({ product, colorMode, tabIndex, categories, types, p
     const showToast=()=>{
         notification({
             title: 'Product added.',
-            description: "Click in the above icon from the right for confirmation.",
+            description: isDesktop ? 
+            "Click in the above icon from the right for confirmation." :
+            "Click in the bottom-left icon from left bar for confirmation ",
             status: 'info',
             duration: 4000,
             isClosable: true,
@@ -101,6 +104,7 @@ const DesktopVersionCard = ({ product, colorMode, tabIndex, categories, types, p
 };
 const MobileVersionCard = ({ product, colorMode, tabIndex, categories, types, page, browse }: ProductCardProps) => {
     const navigate = useNavigate();
+    const isDesktop = useMatchMedia();
     const cartContext=useContext<CartItemContext | undefined>(CartContext);
     let items:Product[]=cartContext?.items!;
     const notification = useToast();
@@ -108,7 +112,9 @@ const MobileVersionCard = ({ product, colorMode, tabIndex, categories, types, pa
     const showToast=()=>{
         notification({
             title: 'Product added.',
-            description: "Click in the above icon from the right for confirmation.",
+            description: isDesktop ? 
+            "Click in the above icon from the right for confirmation." :
+            "Click in the bottom-left icon from left bar for confirmation ",
             status: 'info',
             duration: 4000,
             isClosable: true,
