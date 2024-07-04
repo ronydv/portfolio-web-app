@@ -40,17 +40,4 @@ public class AuthenticationController {
         return new ResponseEntity<>( authenticationService.refreshToken(refreshToken),HttpStatus.OK );
     }
 
-    //change hasAuthority to hasRole if the role contains ROLE_ prefix
-    @PreAuthorize("hasAuthority('admin')")
-    @GetMapping("/testadmin")
-    public String testAdmin(){
-        return "login endpoint for role admin tested successfully";
-    }
-
-    @PreAuthorize("hasRole('user')")
-    @GetMapping("/testuser")
-    public String testUser(){
-        return "login endpoint for role user tested successfully";
-    }
-
 }

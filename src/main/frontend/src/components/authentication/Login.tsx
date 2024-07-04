@@ -51,7 +51,7 @@ const Login = () => {
                 <FormControl as='fieldset' className={classes.form} isInvalid={isError}>
                     <div>
                         <FormLabel>Email address</FormLabel>
-                        <Input type='email' value={user.email} placeholder="Enter your email"
+                        <Input type='email' defaultValue={user.email} placeholder="Enter your email"
                             onChange={(event) => {
                                 setUser({ ...user, email: event.target.value });
                                 setIsError(false);
@@ -63,7 +63,7 @@ const Login = () => {
 
                     <div>
                         <FormLabel>Password</FormLabel>
-                        <Input type='password' value={user.password} placeholder="Enter your password"
+                        <Input type='password' defaultValue={user.password} placeholder="Enter your password"
                             onChange={(event) => {
                                 setUser({...user,password: event.target.value});
                                 setIsError(false);

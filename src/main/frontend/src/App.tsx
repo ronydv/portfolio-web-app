@@ -29,32 +29,35 @@ function App() {
 			<Route element={<PersistLogin />}>
 				<Route path="/" element={<Layout />}>
 
-					{/* public */}
+					{/* public routes */}
 					{/* <Route index element={<Index />}></Route> */}
 					<Route path='/' element={<Home />} />
 					<Route path='/login' element={<Login />} />
 					<Route path='/signup' element={<Signup />} />
 					<Route path="/unauthorized" element={<Unauthorized />} />
 					<Route path='/catalog' element={<Catalog />} />
-					<Route path='/product-details/:id' element={<ProductDetails/>} />
+					<Route path='/product-details/:id' element={<ProductDetails />} />
 
-					{/* protected */}
-					<Route element={<Restricted to={[Role.ADMIN]} />}>{/* dashboard here /> */}
-						<Route path='/dashboard' element={<MainDashboard/>} >
-						<Route path='products-dashboard'element={<ProductsDashboard/>}/>
-						<Route path='add-product'element={<AddProduct/>}/>
-						<Route path='modify-product/:id'element={<ModifyProduct/>}/>
-						<Route path='analytics-dashboard'element={<AnalyticsDashboard/>}/>
-						<Route path='customers-dashboard'element={<CustomersDashboard/>}/>
+					{/* protected routes*/}
+					<Route element={<Restricted to={[Role.ADMIN]} />}>
+						<Route path='/dashboard' element={<MainDashboard />} >
+							<Route path='products-dashboard' element={<ProductsDashboard />} />
+							<Route path='add-product' element={<AddProduct />} />
+							<Route path='modify-product/:id' element={<ModifyProduct />} />
+							<Route path='analytics-dashboard' element={<AnalyticsDashboard />} />
+							<Route path='customers-dashboard' element={<CustomersDashboard />} />
+						</Route>
 					</Route>
+
+					<Route element={<Restricted to={[Role.ADMIN, Role.USER]} />}>{/* cart here /> */}
+						<Route path='/cart' element={<Cart />} />
 					</Route>
-					<Route element={<Restricted to={[Role.ADMIN,Role.USER]} />}>{/* cart here /> */}
-						<Route path='/cart' element={<Cart/>} />
-					</Route>
+
 					<Route element={<Restricted to={[Role.ADMIN, Role.USER]} />}>{/* account settings here /> */}
-						<Route path='/profile' element={<Profile/>}/>
-						<Route path='/orders' element={<Orders/>}/>
+						<Route path='/profile' element={<Profile />} />
+						<Route path='/orders' element={<Orders />} />
 					</Route>
+
 				</Route>
 			</Route>
 		)

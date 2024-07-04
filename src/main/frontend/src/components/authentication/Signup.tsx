@@ -1,4 +1,4 @@
-import { Button, FormControl, FormErrorMessage, FormHelperText, FormLabel, Input } from "@chakra-ui/react";
+import { Button, FormControl, FormErrorMessage, FormHelperText, FormLabel, Input, useToast } from "@chakra-ui/react";
 import classes from './authentication.module.css';
 import { FormEvent, useEffect, useRef, useState } from "react";
 import axios from "axios";
@@ -16,6 +16,17 @@ const Signup = () => {
     const password=useRef<HTMLInputElement>(null);
     const matchPassword=useRef<HTMLInputElement>(null);
     
+    const notification = useToast();
+
+    const showToast=()=>{
+        notification({
+            title: 'Registro',
+            description:'Registrado exitosamente!',
+            status: 'info',
+            duration: 4000,
+            isClosable: true,
+        });
+    }
     const checkMatch=(password:string, match:string) =>{
         if(password !== '' && match !== ''){
             setIsPasswordValid(password === match);
@@ -38,6 +49,7 @@ const Signup = () => {
                     "Content-Type": "application/json",
                 },
             });
+            showToast();
             navigate("/login");
         } catch (error: unknown) {//TODO: DELETE ALL CONSOLE OUTPUT THAT CONTAINS USER INFORMATION
             if (axios.isAxiosError(error)) {

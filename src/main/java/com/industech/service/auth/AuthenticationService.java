@@ -83,7 +83,7 @@ public class AuthenticationService {
                         .sameSite("None")
                         .secure(true)
                         .path("/")
-                        .maxAge(3*60)  // Set the desired expiration time in seconds
+                        .maxAge(24* 60 * 60)  // Set the expiration same as the refresh token
                         .build();
                 response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
             }

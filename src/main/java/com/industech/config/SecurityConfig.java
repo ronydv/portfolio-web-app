@@ -62,7 +62,6 @@ public class SecurityConfig {
                     auth.requestMatchers("/api/v1/product-management/categories/{sector}").permitAll();
                     auth.requestMatchers("/api/v1/product-management/types/{sector}").permitAll();
                     auth.requestMatchers(GET,"/api/v1/product-management/products/**").permitAll();
-
                     auth.anyRequest().authenticated();
                 })
                 .oauth2ResourceServer(oAuth2 -> {

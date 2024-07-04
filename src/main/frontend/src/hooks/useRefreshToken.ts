@@ -4,7 +4,7 @@ import { useAuthContext } from "./useAuthContext";
 const useRefreshToken = () => {
     let { setAuth }: UserContext = useAuthContext();
 
-    //this will return a user and a token, when use this method, make sure whether you need the token or user with token
+    //this will return a user and a token
     const refresh = async (): Promise<LoginResponse> => {
         const response = await axios.post<LoginResponse>('/api/v1/auth/refresh-token',{
             headers: {// sends the authenticated user's refresh token with a cookie to be verified in the server

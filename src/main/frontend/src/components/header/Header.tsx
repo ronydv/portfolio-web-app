@@ -40,16 +40,10 @@ const Header = () => {
 
             {isDesktop && <div className={classes.container}>
                 <Link to={'/'}>
-                    <Button marginRight={2} variant='link' color={grayColor}>Home</Button>
+                    <Button marginRight={2} variant='link' color={grayColor}>Inicio</Button>
                 </Link>
                 <Link to={'/catalog'}>
-                    <Button marginRight={2} variant='link' color={grayColor}>Catalog</Button>
-                </Link>
-                <Link to={'/'}>
-                    <Button marginRight={2} variant='link' color={grayColor}>Contact</Button>
-                </Link>
-                <Link to={'/'}>
-                    <Button marginRight={2} variant='link' color={grayColor}>About</Button>
+                    <Button marginRight={2} variant='link' color={grayColor}>Catálogo</Button>
                 </Link>
             </div>}
 
@@ -61,13 +55,12 @@ const Header = () => {
                     Dashboard
                 </Button>
                 
-                {/* generate a dropdown for an account option */}
                 {user?.isEnabled ?
                     <AccountMenu/>
                     :
                     <>
-                        <Link to='/login'><Button variant='outline' colorScheme="red"> Log in</Button></Link>
-                        <Link to='/signup'><Button> Sign up</Button></Link>
+                        <Link to='/login'><Button variant='outline' colorScheme="red">Iniciar sesión</Button></Link>
+                        <Link to='/signup'><Button>Registro</Button></Link>
                         
                     </>
                 }

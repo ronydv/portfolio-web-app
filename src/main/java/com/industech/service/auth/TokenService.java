@@ -31,8 +31,7 @@ public class TokenService {
 
     public String createJwtAccessToken(AuthUser user){
         Instant now = Instant.now();
-        //Instant thirtyMinutes= ZonedDateTime.now().plusMinutes(30).toInstant();
-        Instant thirtyMinutes=ZonedDateTime.now().plusSeconds(15).toInstant();
+        Instant thirtyMinutes= ZonedDateTime.now().plusMinutes(30).toInstant();
         String role = user.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(" "));
@@ -46,19 +45,24 @@ public class TokenService {
         return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 
+    public RefreshToken generateRefreshTokenForUser(User user){
+        RefreshToken refreshToken = new RefreshToken(
+                UUID.randomUUID().toString(),
+                ZonedDateTime.now().plusMinutes(1440).toInstant(),//24hs
+                user);
+        return tokenRepository.save(refreshToken);
+    }
 
     public RefreshToken createUUIDRefreshToken(User user) {
         Optional<RefreshToken> token= Optional.ofNullable(user.getRefreshToken());
         if(token.isPresent()){
-            //return existing token if the user already has one, use update methods forward in development
+            if (token.get().getExpiryDate().compareTo(Instant.now()) < 0) {
+                tokenRepository.delete(token.get());
+                return generateRefreshTokenForUser(user);
+            }
             return user.getRefreshToken();
         }else{
-            RefreshToken refreshToken = new RefreshToken(
-                    UUID.randomUUID().toString(),
-                    //ZonedDateTime.now().plusMinutes(1440).toInstant(),//24hs
-                    ZonedDateTime.now().plusMinutes(2).toInstant(),
-                    user);
-            return tokenRepository.save(refreshToken);
+            return generateRefreshTokenForUser(user);
         }
     }
 
@@ -79,8 +83,3 @@ public class TokenService {
         }
     }
 }
-/*
-            RefreshToken tokenToUpdate=tokenRepository.getReferenceById(token.get().getId());
-            tokenToUpdate.setToken(refreshToken.getToken());
-            tokenToUpdate.setExpiryDate(refreshToken.getExpiryDate());
-*/
