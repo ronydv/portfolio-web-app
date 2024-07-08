@@ -71,10 +71,10 @@ const ProductDetails = () => {
 
     const showToast=()=>{
         notification({
-            title: 'Product added.',
+            title: 'Producto agregado al carrito.',
             description: isDesktop ? 
-                        "Click in the above icon from the right for confirmation." :
-                        "Click in the bottom-left icon from left bar for confirmation ",
+                        "Click en el icono de arriba a la derecha para confirmar." :
+                        "Click en el panel abajo a la izquierda para confirmar ",
             status: 'info',
             duration: 4000,
             isClosable: true,
@@ -109,7 +109,7 @@ const ProductDetails = () => {
                 <Heading fontSize={'25px'} mb={3} color={darkMode}>{product?.name}</Heading>
                 <Button leftIcon={<LeftIcon/>} variant={'outline'}
                         onClick={handleGoBack} colorScheme="blue" mb={2}>
-                    Go Back
+                    Volver
                 </Button>
                 <Divider />
                 <Box mb={2} mt={1}>
@@ -143,7 +143,7 @@ const ProductDetails = () => {
                     onClick={() => {
                         addCartItems(items, product!, cartContext);
                         showToast();
-                    }}>Schedule service</Button>
+                    }}>Agendar servicio</Button>
             </div>
             <div>
                 {product?.images !== undefined &&

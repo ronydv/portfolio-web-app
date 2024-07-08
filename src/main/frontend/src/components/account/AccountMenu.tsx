@@ -8,12 +8,12 @@ import useLogout from "../../hooks/useLogout";
 import { Link, useNavigate } from "react-router-dom";
 const menu=[
     {
-        menuItem:'Profile',
+        menuItem:'Perfil',
         url:'/profile',
         icon: <Profile/>
     },
     {
-        menuItem:'Orders',
+        menuItem:'Pedidos',
         url:'/orders',
         icon:<Orders/>
     },
@@ -37,7 +37,7 @@ const AccountMenu = () => {
                                                       onMouseLeave={() => setDropdown(false)}>
                     <Button variant='ghost' colorScheme='teal' leftIcon={<Profile/>}
                             onClick={()=>setDropdown(!dropdown)}>
-                        account
+                        Cuenta
                     </Button>
                     <ul className={`${classes.dropdown} ${dropdown && classes.show} 
                                     ${colorMode === 'light' ? classes.light : classes.dark}`}>
@@ -53,7 +53,7 @@ const AccountMenu = () => {
                         <li className={classes['menu-items']}>
                             <Button variant={'link'} leftIcon={<Logout />} color={grayColor}
                                 onClick={closeSession}>
-                                Logout
+                                Cerrar sesión
                             </Button>
                         </li>
                     </ul>

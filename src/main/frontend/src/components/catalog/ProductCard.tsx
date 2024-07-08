@@ -46,10 +46,10 @@ const DesktopVersionCard = ({ product, colorMode, tabIndex, categories, types, p
 
     const showToast=()=>{
         notification({
-            title: 'Product added.',
+            title: 'Producto agregado al carrito.',
             description: isDesktop ? 
-            "Click in the above icon from the right for confirmation." :
-            "Click in the bottom-left icon from left bar for confirmation ",
+                        "Click en el icono de arriba a la derecha para confirmar." :
+                        "Click en el panel abajo a la izquierda para confirmar ",
             status: 'info',
             duration: 4000,
             isClosable: true,
@@ -81,7 +81,7 @@ const DesktopVersionCard = ({ product, colorMode, tabIndex, categories, types, p
                         </span>
                     ))}
                     <p />
-                    <Tag mt={1} colorScheme="orange"> {product.images?.length} images</Tag>
+                    <Tag mt={1} colorScheme="orange"> {product.images?.length} imágenes</Tag>
                 </CardBody>
 
                 <CardFooter pt={1}>
@@ -95,7 +95,7 @@ const DesktopVersionCard = ({ product, colorMode, tabIndex, categories, types, p
                                 addCartItems(items,product,cartContext);
                                 showToast();
                         }}>
-                        Schedule service
+                        Agendar servicio
                     </Button>
                 </CardFooter>
             </Stack>
@@ -111,10 +111,10 @@ const MobileVersionCard = ({ product, colorMode, tabIndex, categories, types, pa
 
     const showToast=()=>{
         notification({
-            title: 'Product added.',
+            title: 'Producto agregado al carrito.',
             description: isDesktop ? 
-            "Click in the above icon from the right for confirmation." :
-            "Click in the bottom-left icon from left bar for confirmation ",
+                        "Click en el icono de arriba a la derecha para confirmar." :
+                        "Click en el panel abajo a la izquierda para confirmar ",
             status: 'info',
             duration: 4000,
             isClosable: true,
@@ -151,14 +151,14 @@ const MobileVersionCard = ({ product, colorMode, tabIndex, categories, types, pa
                 {/* <Link to={{pathname:`/product-details/${product?.id}`,search:`?tab=${tabIndex}`}}> */}
                 <Button onClick={()=>handleNavigation(product?.id!,navigate,tabIndex,categories, types, page, browse)}
                         variant='solid' colorScheme='orange'>
-                    View Details
+                    Ver Detalles
                 </Button>
                 <Spacer />
                 <Button onClick={() => {
                     addCartItems(items, product, cartContext);
                     showToast();
                 }}>
-                    Schedule service
+                    Agendar servicio
                 </Button>
             </CardFooter>
         </Card>

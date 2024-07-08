@@ -50,12 +50,12 @@ const Orders = () => {//todo: get the user from authContext
     }, [orders, ordersByuser, toggleIsChecked, toggleIsPending, currentPage, response]);
 
     const isPendingTag = (isPending: boolean) => {
-        if (isPending) return <Tag colorScheme={'red'}>{'Pending'}</Tag>;
-        else return <Tag colorScheme={'green'}>{'Done'}</Tag>;
+        if (isPending) return <Tag colorScheme={'red'}>{'Pendiente'}</Tag>;
+        else return <Tag colorScheme={'green'}>{'Finalizado'}</Tag>;
     };
     const isCheckedTag = (isChecked: boolean) => {
-        if (isChecked) return <Tag colorScheme={'green'}>{'*Checked'}</Tag>;
-        else return <Tag colorScheme={'orange'}>{'Unchecked'}</Tag>;
+        if (isChecked) return <Tag colorScheme={'green'}>{'*Checkeado'}</Tag>;
+        else return <Tag colorScheme={'orange'}>{'No checkeado'}</Tag>;
     };
 
     const checkOrder = (index: number) => {
@@ -74,13 +74,13 @@ const Orders = () => {//todo: get the user from authContext
             setFetchStatuses("");//update the url so the useEffect from above will be called and therefore updated data will be received 
         };
         return <Button variant={'ghost'} colorScheme="green" leftIcon={<Check />} size={'sm'}
-            onClick={() => check(index)}>check</Button>;
+            onClick={() => check(index)}>Checkear</Button>;
     };
 
     return (
         <Box mt={5}>
             <Restricted to={[Role.ADMIN]}>
-                <Tag size={'lg'} colorScheme="orange">Unchecked orders: {statuses?.uncheckedOrders} </Tag>
+                <Tag size={'lg'} colorScheme="orange">Pedidos sin checkear: {statuses?.uncheckedOrders} </Tag>
             </Restricted>
             <div className={`${classes['table-container']}
                                     ${colorMode === 'light' ? classes['pagination-light'] : classes['pagination-dark']}`}>
@@ -92,13 +92,13 @@ const Orders = () => {//todo: get the user from authContext
             </div>
             <TableContainer width={!isDesktop ? '60vw': ''}>
                     <Table variant='simple' size={isDesktop ? 'md': 'sm'}>
-                        <TableCaption>*Product checked means the administrator has reviewed the order</TableCaption>
+                        <TableCaption>*Producto checkeado significa que el administrador ha revisado el pedido</TableCaption>
                         <Thead>
                             <Tr>
                                 <Restricted to={[Role.ADMIN]}>
-                                    <Th>Client</Th>
+                                    <Th>Cliente</Th>
                                 </Restricted>
-                                <Th>Product</Th>
+                                <Th>Producto</Th>
                                 <Th>
                                     <Button variant={'ghost'} rightIcon={<Sort />} color={grayColor}
                                         onClick={() => setToggleIsPending(!toggleIsPending)}>
@@ -108,11 +108,11 @@ const Orders = () => {//todo: get the user from authContext
                                 <Th>
                                     <Button variant={'ghost'} rightIcon={<Sort />} color={grayColor}
                                         onClick={() => setToggleIsChecked(!toggleIsChecked)}>
-                                        Checked
+                                        Checkeado
                                     </Button>
                                 </Th>
                                 <Restricted to={[Role.ADMIN]}>
-                                    <Th>Action</Th>
+                                    <Th>Acción</Th>
                                 </Restricted>
                             </Tr>
                         </Thead>
@@ -139,13 +139,13 @@ const Orders = () => {//todo: get the user from authContext
                         <Tfoot>
                             <Tr>
                                 <Restricted to={[Role.ADMIN]}>
-                                    <Th>Client</Th>
+                                    <Th>Cliente</Th>
                                 </Restricted>
-                                <Th>Product</Th>
+                                <Th>Producto</Th>
                                 <Th>Status</Th>
-                                <Th>Checked</Th>
+                                <Th>Checkeado</Th>
                                 <Restricted to={[Role.ADMIN]}>
-                                    <Th>Action</Th>
+                                    <Th>Acción</Th>
                                 </Restricted>
                             </Tr>
                         </Tfoot>

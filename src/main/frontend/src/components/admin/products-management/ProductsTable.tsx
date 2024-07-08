@@ -129,20 +129,20 @@ const ProductsTable = ({ browse, setActiveButton }: ProductsTableProps) => {
                         if(isDesktop) return <Tab key={i}>{sector.name}</Tab>
                         else return <Tab key={i}><Icon as={icons[i]} pr={1}/>{ tabIndex=== i && sector.name}</Tab>
                     })}
-                    {browse && <Tab>Browse Result:</Tab>}
+                    {browse && <Tab>Resultados de la búsqueda:</Tab>}
                 </TabList>
 
                 <TabPanels >
                     <TableContainer pt={1}>
                         <Table variant='simple' size={isDesktop ? 'md' : 'sm'}>
-                            <TableCaption>Products</TableCaption>
+                            <TableCaption>Productos</TableCaption>
                             <Thead>
                                 <Tr>
-                                    <Th pr={isDesktop ? '' : '4px'}>Product</Th>
-                                    {isDesktop && <Th>Type</Th>}
-                                    {isDesktop && <Th>Category</Th>}
+                                    <Th pr={isDesktop ? '' : '4px'}>Producto</Th>
+                                    {isDesktop && <Th>Tipo</Th>}
+                                    {isDesktop && <Th>Categoría</Th>}
                                     {isDesktop && <Th>Sector</Th>}
-                                    <Th pr={isDesktop ? '' : '4px'} >Action</Th>
+                                    <Th pr={isDesktop ? '' : '4px'} >Acción</Th>
                                 </Tr>
                             </Thead>
                             <Tbody>
@@ -175,7 +175,7 @@ const ProductsTable = ({ browse, setActiveButton }: ProductsTableProps) => {
                                                             <Portal>
                                                                 <PopoverContent>
                                                                     <PopoverArrow />
-                                                                    <PopoverHeader>Product to delete:</PopoverHeader>
+                                                                    <PopoverHeader>Producto a eliminar:</PopoverHeader>
                                                                     <PopoverCloseButton />
                                                                     <PopoverBody>
                                                                         <p>{product.name}</p>
@@ -185,7 +185,7 @@ const ProductsTable = ({ browse, setActiveButton }: ProductsTableProps) => {
                                                                     <PopoverFooter>
                                                                         <Button onClick={() => deleteProduct(product?.id!, onClose)}
                                                                                 variant={'outline'} colorScheme="red" size={'xs'}>
-                                                                            Delete
+                                                                            Eliminar
                                                                         </Button>
                                                                     </PopoverFooter>
                                                                 </PopoverContent>

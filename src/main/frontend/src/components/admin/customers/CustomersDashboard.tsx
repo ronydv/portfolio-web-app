@@ -41,14 +41,12 @@ const CustomersDashboard = () => {
 
     useEffect(()=>{//load users
         if(browse){
-            console.log("search user");//api/v1/users/search?page=1&page-size=2&browse=user
             setUsersUrl(`/api/v1/users/search?page=${currentUsersPage}&page-size=${usersPageSize}&browse=${browse}`);
             setTotalUsers(users?.total!);
         }
         else {
             setUsersUrl(`/api/v1/users/user?page=${currentUsersPage}&page-size=${usersPageSize}`);
             setTotalUsers(users?.total!);
-            console.log("load all users");
         }
     },[usersUrl, users, currentUsersPage, browse]);
 
@@ -60,12 +58,12 @@ const CustomersDashboard = () => {
     }, [userId, ordersUrl, orders, toggleIsPending, toggleIsChecked, currentOrdersPage]);
 
     const isPendingTag = (isPending: boolean) => {
-        if (isPending) return <Tag colorScheme={'red'}>{'Pending'}</Tag>;
-        else return <Tag colorScheme={'green'}>{'Done'}</Tag>;
+        if (isPending) return <Tag colorScheme={'red'}>{'Pendiente'}</Tag>;
+        else return <Tag colorScheme={'green'}>{'Finalizado'}</Tag>;
     };
     const isCheckedTag = (isChecked: boolean) => {
-        if (isChecked) return <Tag colorScheme={'green'}>{'*Checked'}</Tag>;
-        else return <Tag colorScheme={'orange'}>{'Unchecked'}</Tag>;
+        if (isChecked) return <Tag colorScheme={'green'}>{'*Checkeado'}</Tag>;
+        else return <Tag colorScheme={'orange'}>{'No checkeado'}</Tag>;
     };
 
     const sendOrderStatus= async (order:OrderView)=>{
@@ -88,7 +86,7 @@ const CustomersDashboard = () => {
             sendOrderStatus(finalizedOrder);
         };
         return (<Button variant={'ghost'} colorScheme="green" size={'sm'}
-                       onClick={() => finalize(order)}>✓check
+                       onClick={() => finalize(order)}>✓checkear
               </Button>);
     };
 
@@ -101,7 +99,7 @@ const CustomersDashboard = () => {
             sendOrderStatus(checkedOrder);
         };
         return (<Button variant={'ghost'} colorScheme="green" size={'sm'}
-                       onClick={() => check(order)}>✓check
+                       onClick={() => check(order)}>✓checkear
               </Button>);
     };
 
@@ -147,7 +145,7 @@ const CustomersDashboard = () => {
                 <div>
                     <div className={classes['users-list']}>
                         <Text placeContent={'center'} fontSize={'large'} fontWeight={'bold'} color={grayColor}>
-                            Customers List
+                            Lista de clientes
                         </Text>
                         <div className={`${classes['paginator-container']}
                                     ${colorMode === 'light' ? classes['pagination-light'] : classes['pagination-dark']}`}>
@@ -161,9 +159,9 @@ const CustomersDashboard = () => {
                             <Table variant='simple' size={isDesktop ? 'md' : 'sm'}>
                                 <Thead>
                                     <Tr>
-                                        <Th>Client</Th>
+                                        <Th>Cliente</Th>
                                         <Th>Email</Th>
-                                        <Th>Phone</Th>
+                                        <Th>Teléfono</Th>
                                     </Tr>
                                 </Thead>
                                 <Tbody>
@@ -196,7 +194,7 @@ const CustomersDashboard = () => {
                 <div>
                     <Divider />
                     <Text placeContent={'center'} fontSize={'large'} fontWeight={'bold'} color={grayColor}>
-                        Orders details from customer "{orders?.userName}"
+                        Detalle de los pedidos del cliente: "{orders?.userName}"
                     </Text>
                     <div className={`${classes['paginator-container']}
                                     ${colorMode === 'light' ? classes['pagination-light'] : classes['pagination-dark']}`}>
@@ -210,17 +208,17 @@ const CustomersDashboard = () => {
                         <Table variant='simple' size={isDesktop ? 'md' : 'sm'}>
                             <Thead>
                                 <Tr>
-                                    <Th>Product</Th>
+                                    <Th>Producto</Th>
                                     <Th>
                                         <Button variant={'ghost'} rightIcon={<Sort />} color={grayColor}
                                             onClick={() => setToggleIsPending(!toggleIsPending)}>
-                                            Status
+                                            Estatus
                                         </Button>
                                     </Th>
                                     <Th>
                                         <Button variant={'ghost'} rightIcon={<Sort />} color={grayColor}
                                             onClick={() => setToggleIsChecked(!toggleIsChecked)}>
-                                            Checked
+                                            Checkeado
                                         </Button>
                                     </Th>
 

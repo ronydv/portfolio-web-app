@@ -37,10 +37,10 @@ public class OrderStatus {
     }
     public List<OrderStatusDataName>dataForStatistics(){
         return List.of(
-                new OrderStatusDataName("Pending",pendingOrders),
-                new OrderStatusDataName("Non Pending",nonPendingOrders),
-                new OrderStatusDataName("Checked",checkedOrders),
-                new OrderStatusDataName("Unchecked",uncheckedOrders)
+                new OrderStatusDataName("Pendiente",pendingOrders),
+                new OrderStatusDataName("No Pendiente",nonPendingOrders),
+                new OrderStatusDataName("Checkeado",checkedOrders),
+                new OrderStatusDataName("No Checkeado",uncheckedOrders)
         );
     }
 

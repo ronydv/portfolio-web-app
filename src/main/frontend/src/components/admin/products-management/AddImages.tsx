@@ -31,7 +31,7 @@ type AddImagesProps= {
     };
     return (
         <div className={`${classes['product-image']} ${colorMode === 'light' ? classes.light : classes.dark}`}>
-            <Heading as='h2' size='sm' marginRight={10}>Add image</Heading>
+            <Heading as='h2' size='sm' marginRight={10}>Agregar imagen</Heading>
 
             <Flex alignItems={'center'} direction={'column'}>
                 <Flex justifyContent={'center'} mt={2}>
@@ -48,7 +48,7 @@ type AddImagesProps= {
                                                                 setFiles([]);
                                                                 setSelectedImages([]);
                                                             }}>
-                                                    clear
+                                                    limpiar
                                                  </Button>}
                     {selectedImages.map((image, index) => (
                         

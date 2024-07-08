@@ -21,9 +21,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .findByEmail(email)
                 .map( user ->{
                     //get the user from database, set data to User Entity and transform to AuthUser
-                    log.info("\u001B[1;35mUser Entity before being transformed to AuthUser:\n "+user+ "\u001B[0m");
                     return new AuthUser(user);
                 })
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
     }
 }

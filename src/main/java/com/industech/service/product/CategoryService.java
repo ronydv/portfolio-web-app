@@ -36,7 +36,7 @@ public class CategoryService {
         List<Category> categories = categoryRepository.findAll();
         if (categories.isEmpty()) {
             log.error("No categories found -> getCategories()");
-            throw new ProductException("No categories found", HttpStatus.NOT_FOUND);
+            throw new ProductException("No se encontraron categorias", HttpStatus.NOT_FOUND);
         } else {
             return categories.stream()
                     .map(CategoryDetails::new)
@@ -47,7 +47,7 @@ public class CategoryService {
         List<Category> categories = categoryRepository.findCategoriesBySector(sector);
         if(categories.isEmpty()){
             log.error("No categories found in sector: "+sector+" -> getCategoriesBySector()");
-            throw new ProductException("No categories found in sector: "+sector, HttpStatus.NOT_FOUND);
+            throw new ProductException("No se encontraron categorias en el sector: "+sector, HttpStatus.NOT_FOUND);
         } else {
             return categories.stream()
                     .map(CategoryDetails::new)
@@ -63,7 +63,8 @@ public class CategoryService {
                 Category category= categoryRepository.save(new Category(formatName));
                 return new CategoryDetails(category);
             }else{
-                String message= categoryName.isBlank() ? "categoryName is empty":"already exists";
+                String message= categoryName.isBlank() ? "El nombre de la categoría está vacío":
+                                                         "Ya existe categoría";
                 log.error("\u001B[33mCategory: \u001B[35m'"+categoryName+"'\u001B[0m " + message+"\u001B[0m");
                 throw new ProductException(message);//throw exception for  duplicate entries
             }
@@ -84,7 +85,7 @@ public class CategoryService {
                     return "Category deleted successfully";
                 }).orElseGet(()-> {
                     log.error("\u001B[35mCategory to delete doesn't exists\u001B[0m");
-                    throw new ProductException("Category to delete doesn't exists", HttpStatus.NOT_FOUND);
+                    throw new ProductException("No existe categoría a ser eliminada", HttpStatus.NOT_FOUND);
                 });
     }
 }

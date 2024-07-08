@@ -32,11 +32,11 @@ public class OrderService {
 
     public OrdersByUser saveOrder(Long userId, List<Long> productIds){
         User user=userRepository.findById(userId)
-                .orElseThrow(()-> new AuthUserException("user not found", HttpStatus.NOT_FOUND));
+                .orElseThrow(()-> new AuthUserException("Usuario no encontrado", HttpStatus.NOT_FOUND));
         List<Order>orders=new ArrayList<>();
         for(Long productId:productIds){
             Product product= productRepository.findById(productId)
-                    .orElseThrow(()-> new ProductException("product not found",HttpStatus.NOT_FOUND));
+                    .orElseThrow(()-> new ProductException("Producto no encontrado",HttpStatus.NOT_FOUND));
             orders.add(new Order(user,product));
         }
         return new OrdersByUser(orderRepository.saveAll(orders));
@@ -44,11 +44,11 @@ public class OrderService {
 
     public OrdersByUser getOrdersByUser(Integer page, Integer pageSize, Long userId,
                                         Boolean sortByPending, Boolean sortByChecked ){
-        Sort sort = Sort.by(sortByPending ? DESC : ASC,"isPending")
-                .and(Sort.by(sortByChecked ? DESC : ASC,"isChecked"));//isPending field in Order entity
+        Sort sort = Sort.by(sortByPending ? DESC : ASC,"isPending")//isPending field in Order entity
+                .and(Sort.by(sortByChecked ? DESC : ASC,"isChecked"));//isChecked field in Order entity
         PageRequest pages=PageRequest.of(page - 1, pageSize, sort);
         Page<Order> orders=orderRepository.findOrdersByUserId(userId,pages);
-        if(orders.isEmpty()) throw new ProductException("user doesn't contain orders",HttpStatus.NOT_FOUND);
+        if(orders.isEmpty()) throw new ProductException("Usuario no contiene órdenes",HttpStatus.NOT_FOUND);
         else return new OrdersByUser(orders.stream().toList(),orders.getTotalElements());
     }
 
@@ -56,11 +56,11 @@ public class OrderService {
     public List<OrderView> getPendingOrders(Integer page, Integer pageSize,
                                             Boolean sortByPending, Boolean sortByChecked ){
         Sort sort = Sort.by(sortByPending ? DESC : ASC,"isPending")
-                .and(Sort.by(sortByChecked ? DESC : ASC,"isChecked"));//isPending field in Order entity
+                .and(Sort.by(sortByChecked ? DESC : ASC,"isChecked"));
 
         PageRequest pages=PageRequest.of(page - 1, pageSize, sort);
         Page<Order> paginatedOrders=orderRepository.findByPendingOrders(pages);
-        if(paginatedOrders.isEmpty()) throw new ProductException("empty orders!",HttpStatus.NOT_FOUND);
+        if(paginatedOrders.isEmpty()) throw new ProductException("ordenes vacías!",HttpStatus.NOT_FOUND);
         else {
             return paginatedOrders.getContent().stream()
                     .map(order -> new OrderView(order,paginatedOrders.getTotalElements())).toList();
@@ -75,11 +75,11 @@ public class OrderService {
         Page<OrderCount> orders;
         if (orderRepository.findAll().isEmpty()){
             log.error("orders not found");
-            throw new ProductException("orders not found",HttpStatus.NOT_FOUND);
+            throw new ProductException("No se hallan órdenes",HttpStatus.NOT_FOUND);
         }
         if(!sector.equals("All") && orderRepository.getTopOrdersBySector(sector,pages).isEmpty()){
             log.error("orders not found");
-            throw new ProductException("orders not found",HttpStatus.NOT_FOUND);
+            throw new ProductException("No se hallan órdenes",HttpStatus.NOT_FOUND);
         }
         if(sector.equals("All")) orders=orderRepository.getTopOrders(pages);
         else orders=orderRepository.getTopOrdersBySector(sector,pages);
@@ -97,7 +97,7 @@ public class OrderService {
     }
 
     public OrderView updateOrder(OrderView order){
-        if(order == null) throw new ProductException("Empty order", HttpStatus.BAD_REQUEST);
+        if(order == null) throw new ProductException("Orden vacía", HttpStatus.BAD_REQUEST);
         Order toUpdate=orderRepository.getReferenceById(order.getOrderId());
         toUpdate.setIsPending(order.getIsPending());
         toUpdate.setIsChecked(order.getIsChecked());
@@ -111,7 +111,7 @@ public class OrderService {
                     return "deleted successfully";
                 }).orElseGet(()->{
                     log.error("\u001B[35mOrder to delete doesn't exists\u001B[0m");
-                    throw new AuthUserException("Order to delete doesn't exists", HttpStatus.NOT_FOUND);
+                    throw new AuthUserException("No existe orden a ser eliminada", HttpStatus.NOT_FOUND);
                 });
     }
 }

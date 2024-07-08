@@ -46,24 +46,24 @@ const Login = () => {
 
     return (
         <div className={classes.container}>
-            <h2>Log in</h2>
+            <h2>Iniciar sesión</h2>
             <form onSubmit={(e)=>handleSubmit(e)}>
                 <FormControl as='fieldset' className={classes.form} isInvalid={isError}>
                     <div>
-                        <FormLabel>Email address</FormLabel>
-                        <Input type='email' defaultValue={user.email} placeholder="Enter your email"
+                        <FormLabel>Dirección de Email</FormLabel>
+                        <Input type='email' defaultValue={user.email} placeholder="Ingrese su email"
                             onChange={(event) => {
                                 setUser({ ...user, email: event.target.value });
                                 setIsError(false);
                             }} />
-                        {!isError ? <FormHelperText>We'll never share your data or send spam</FormHelperText> :
+                        {!isError ? <FormHelperText>No compartiremos tus datos ni te enviaremos correos spam</FormHelperText> :
                             <FormErrorMessage>{`${error}`}</FormErrorMessage>
                         }
                     </div>
 
                     <div>
-                        <FormLabel>Password</FormLabel>
-                        <Input type='password' defaultValue={user.password} placeholder="Enter your password"
+                        <FormLabel>Contraseña</FormLabel>
+                        <Input type='password' defaultValue={user.password} placeholder="Ingrese su contraseña"
                             onChange={(event) => {
                                 setUser({...user,password: event.target.value});
                                 setIsError(false);
@@ -74,12 +74,12 @@ const Login = () => {
                     <div>
                         <Checkbox onChange={togglePersist} isChecked={authContext?.persist}
                                     colorScheme="red" >
-                            Remember session
+                            Recordar cuenta
                         </Checkbox>
                     </div>
 
                     <div>
-                        <Button marginTop={3} type="submit" isDisabled={disable}>Log in</Button>
+                        <Button marginTop={3} type="submit" isDisabled={disable}>Iniciar sesión</Button>
                     </div>
                 </FormControl>
             </form>

@@ -13,17 +13,17 @@ import useMatchMedia from '../../hooks/useMatchMedia';
 type LinkStyle={name:string, path:string, icon:IconType,}
 const linkItems:LinkStyle[]=[
     {
-        name:"Products",
+        name:"Productos",
         path:"products-dashboard",
         icon:Products,
     },
     {
-        name:"Analytics",
+        name:"Analíticas",
         path:"analytics-dashboard",
         icon:Analytics,
     },
     {
-        name:"Customers",
+        name:"Clientes",
         path:"customers-dashboard",
         icon:Customers,
     },
@@ -33,12 +33,12 @@ const MainDashboard = () => {
     const isDesktop = useMatchMedia();
     const { isOpen, onOpen, onClose } = useDisclosure()
     const darkMode = useColorModeValue('gray.600', 'gray.400');
-    const [activeButton, setActiveButton] = useState<string>("Products");
+    const [activeButton, setActiveButton] = useState<string>("Productos");
     const location = useLocation();
     const handleButtonClick = (name: string) => setActiveButton(name);
 
     useEffect(() => {
-        if (location.pathname === '/dashboard/products-dashboard') setActiveButton("Products");
+        if (location.pathname === '/dashboard/products-dashboard') setActiveButton("Productos");
     }, [location.pathname]);
 
     return (
@@ -99,7 +99,7 @@ const MainDashboard = () => {
 
             <div className={classes.outlet}>
                 {/* render ProductDashboard in the first loading before clicking any navigation link*/}
-                {activeButton === 'Products' ? <ProductsDashboard setActiveButton={setActiveButton} />
+                {activeButton === 'Productos' ? <ProductsDashboard setActiveButton={setActiveButton} />
                     : <Outlet />}
             </div>
 

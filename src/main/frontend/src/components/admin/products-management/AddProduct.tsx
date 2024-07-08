@@ -59,14 +59,14 @@ const AddProduct = () => {
             <form onSubmit={handleSubmit}> 
                 <section className={`${classes.title} ${colorMode === 'light' ? classes.light : classes.dark}`}>
                     <Flex direction={'column'}>
-                        <Heading as='h2' size='md' marginRight={10}>Add product</Heading>
+                        <Heading as='h2' size='md' marginRight={10}>Agregar producto</Heading>
                         <Breadcrumb spacing='8px' separator={<ChevronRightIcon color='gray.500' />}>
                             <BreadcrumbItem>
-                                <p>Products</p>
+                                <p>Productos</p>
                             </BreadcrumbItem>
 
                             <BreadcrumbItem isCurrentPage>
-                                <p >Add Product</p>
+                                <p >Agregar Producto</p>
                             </BreadcrumbItem>
                         </Breadcrumb>
                     </Flex>
@@ -74,27 +74,27 @@ const AddProduct = () => {
                     <Button variant='outline' colorScheme='blue' marginRight={5}
                             leftIcon={<LeftIcon />}
                             onClick={() => navigate("/dashboard/products-dashboard")}>
-                        Go back
+                        Volver
                     </Button>
                     <Button type="submit" variant='solid' colorScheme="blue"
                             isLoading={isLoading}
                             loadingText='Submitting'>
-                        Add Product
+                        Agregar producto
                     </Button>
                 </section>
 
                 <div className={classes['inputs-container']}>
                     <div>
                         <section className={`${classes['general-information']} ${colorMode === 'light' ? classes.light : classes.dark}`}>
-                            <Heading as='h2' size='sm' marginRight={10}>General information</Heading>
+                            <Heading as='h2' size='sm' marginRight={10}>Información General</Heading>
                             <Divider/>
 
                             <SelectSector setProduct={setProduct} error={error} setError={setError}/>
 
-                            <FormLabel mt={2}>Product Name</FormLabel>
+                            <FormLabel mt={2}>Nombre del producto</FormLabel>
                             <Input type='text' onChange={(e) => setProduct({...product,name:e.target.value})} />
 
-                            <FormLabel mt={2}>Description</FormLabel>
+                            <FormLabel mt={2}>Descripción</FormLabel>
                             <Textarea minWidth={'25vw'} onChange={(e) => setProduct({...product,description:e.target.value})} />
                         </section>
 

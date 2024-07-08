@@ -33,7 +33,7 @@ const OrdersByMonth = () => {
         },
         xAxis: {
             type: 'category',
-            data: ['Jan', 'Feb','Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept','Oct','Nov','Dec']
+            data: ['Enero', 'Febrero','Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre','Octubre','Noviembre','Diciembre']
         },
         yAxis: {
             type: 'value'
@@ -45,7 +45,7 @@ const OrdersByMonth = () => {
                 symbolSize: 8,
                 tooltip: {
                     valueFormatter: (value: number) => {
-                        return value + ' Products request';
+                        return value + ' Pedidos';
                     }
                 }
             },

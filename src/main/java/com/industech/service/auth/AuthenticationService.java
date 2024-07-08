@@ -57,8 +57,7 @@ public class AuthenticationService {
     public User registerUser(String name, String email, String phone, String password) {
         Optional<User> existingUser = userRepository.findByEmail(email);
         if (existingUser.isPresent()) {
-            log.error("\u001B[31memail is already in use.\u001B[0m");
-            throw new AuthUserException("This email is already in use.", HttpStatus.CONFLICT);
+            throw new AuthUserException("Este email ya está en uso.", HttpStatus.CONFLICT);
         } else {
             User recordUser = new User(name, email, phone, passwordEncoder.encode(password), roles());
             return userRepository.save(recordUser);
@@ -76,7 +75,6 @@ public class AuthenticationService {
                 token=new Token(
                         tokenService.createJwtAccessToken(user),
                         tokenService.createUUIDRefreshToken(user.getUser()).getToken());
-                log.info("\u001B[96mauthenticated user:\n"+ user+"\u001B[0m");
                 //Don't store access token in a cookie or in local storage, refresh token must be saved as a httpOnly cookie
                 ResponseCookie cookie = ResponseCookie.from("refreshToken", token.refreshToken())
                         .httpOnly(true)
@@ -89,8 +87,7 @@ public class AuthenticationService {
             }
             return new LoginResponse(user,token);
         }catch (AuthenticationException e) {
-            log.error("\u001B[31minvalid user.\u001B[0m");
-            throw new AuthUserException("Invalid User", HttpStatus.UNAUTHORIZED);
+            throw new AuthUserException("Usuario no válido", HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -106,7 +103,7 @@ public class AuthenticationService {
                 })
                 .orElseThrow(() -> {
                     log.error("\u001B[31minvalid token or user is null.\u001B[0m");
-                    return new TokenException("invalid token or user is null",HttpStatus.FORBIDDEN);
+                    return new TokenException("token inválido o usuario nulo",HttpStatus.FORBIDDEN);
                 });
     }
 }

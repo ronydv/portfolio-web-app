@@ -72,13 +72,13 @@ public class TokenService {
 
     public RefreshToken verifyExpiration(RefreshToken token) {
         if (token.getExpiryDate().compareTo(Instant.now()) < 0) {
-            log.warn("checking token expiration...\ntoken expired, deleting token: "
-                    + token.getToken() + " with id: " + token.getId()+" Please make a new login request");
+/*            log.warn("checking token expiration...\ntoken expired, deleting token: "
+                    + token.getToken() + " with id: " + token.getId()+" Please make a new login request");*/
             tokenRepository.delete(token);
-            throw new TokenException("Refresh token: "+token.getToken()+" was expired. Please make a new login request",
+            throw new TokenException("Refresh token: "+token.getToken()+" ha expirado. Por favor, inicie sesión nuevamente",
                     HttpStatus.UNAUTHORIZED);
         } else {
-            log.info("\u001B[35mchecking token expiration...\nrefresh token still valid! :D\u001B[0m");
+            //log.info("\u001B[35mchecking token expiration...\nrefresh token still valid! :D\u001B[0m");
             return token;
         }
     }

@@ -56,7 +56,7 @@ const CatalogFilter = ({sector, selectedCategories, selectedTypes, setSelectedCa
             {/* categories sector */}
             <Flex direction={'row'}>
                 
-                <Text fontSize='lg' color={colorGray} pl={3} fontFamily={'sans-serif'} fontWeight={600}>Categories: </Text>
+                <Text fontSize='lg' color={colorGray} pl={3} fontFamily={'sans-serif'} fontWeight={600}>Categorias: </Text>
             </Flex>
             <Stack mb={3} paddingLeft={5}>
                 {categories.map((category, i) => (
@@ -73,7 +73,7 @@ const CatalogFilter = ({sector, selectedCategories, selectedTypes, setSelectedCa
             {/* product type sector */}
             <Flex direction={'row'}>
                 {/* <div className={classes['filter-title-border']} /> */}
-                <Text fontSize='lg' color={colorGray} pl={3} fontFamily={'sans-serif'} fontWeight={600}>Types: </Text>
+                <Text fontSize='lg' color={colorGray} pl={3} fontFamily={'sans-serif'} fontWeight={600}>Tipos: </Text>
             </Flex>
             <Stack mb={3} paddingLeft={5}>
                 {types.map((type, i) => (

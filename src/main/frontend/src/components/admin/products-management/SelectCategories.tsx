@@ -74,7 +74,7 @@ const SelectCategories = ({ colorMode, setProduct, product }: CategoriesProps) =
 
     return (
         <section className={`${classes.categories} ${colorMode === 'light' ? classes.light : classes.dark}`}>
-            <Heading as='h2' size='sm' marginRight={10}>Add category</Heading>
+            <Heading as='h2' size='sm' marginRight={10}>Agregar categoría</Heading>
             
             <FormControl as='fieldset' className={classes.form} isInvalid={error!==""}>
                 <FormLabel mt={2}>{error ? <Text color={'red'}>{error}</Text>: 'Category Name'}</FormLabel>
@@ -83,13 +83,13 @@ const SelectCategories = ({ colorMode, setProduct, product }: CategoriesProps) =
                             setError("");
                 }}/>
             </FormControl>
-            <Button mt={2} onClick={addCategory}>Add</Button>
+            <Button mt={2} onClick={addCategory}>Agregar</Button>
 
             <Accordion allowToggle={true} mt={3}>
                 <AccordionItem>
                     <AccordionButton>
                         <Box as="span" flex='1' textAlign='left'>
-                            Select categories
+                            Seleccionar categorías
                         </Box><AccordionIcon />
                     </AccordionButton>
 

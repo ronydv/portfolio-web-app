@@ -63,11 +63,11 @@ const Signup = () => {
     }
     return (
         <div className={classes.container}>
-            <h2>Sign up</h2>
+            <h2>Registrarse</h2>
             <form onSubmit={handleSubmit}>                         {/*invalidate form if there is an error message */}
                 <FormControl as='fieldset' className={classes.form} isInvalid={error !== ''} >
                     <div>
-                        <FormLabel>Name</FormLabel>
+                        <FormLabel>Nombre</FormLabel>
                         <Input type='text' placeholder="Enter your name (optional)" isInvalid={false}
                             onChange={(event) => {
                                 setUser({ ...user, name: event.target.value });
@@ -75,40 +75,40 @@ const Signup = () => {
                     </div>
 
                     <div>
-                        <FormLabel>Email address</FormLabel>
-                        <Input type='email' placeholder="Enter your e-mail" isInvalid={!isEmailValid}
+                        <FormLabel>Dirección de email</FormLabel>
+                        <Input type='email' placeholder="Ingrese su email" isInvalid={!isEmailValid}
                             onChange={(event) => {
                                 setError('');
                                 setUser({ ...user, email: event.target.value });
                                 setIsEmailValid(EMAIL_REGEX.test(event.target.value));
                             }} />
-                        {!error ? <FormHelperText>We'll never share your data or send spam</FormHelperText> :
+                        {!error ? <FormHelperText>No compartiremos tus datos ni te enviaremos correos spam</FormHelperText> :
                             <FormErrorMessage>{error}</FormErrorMessage>
                         }
                     </div>
 
                     <div>
-                        <FormLabel>Phone number</FormLabel>
-                        <Input type='text' placeholder="Enter your phone" isInvalid={false}
+                        <FormLabel>Número de teléfono</FormLabel>
+                        <Input type='text' placeholder="Ingrese su numero de teléfono" isInvalid={false}
                             onChange={(event) => {
                                 setUser({ ...user, phone: event.target.value });
                             }} />
                     </div>
 
                     <div>
-                        <FormLabel>Password</FormLabel>
-                        <Input type='password' placeholder="Enter your password" isInvalid={!isPasswordValid}
+                        <FormLabel>Contraseña</FormLabel>
+                        <Input type='password' placeholder="Ingrese su contraseña" isInvalid={!isPasswordValid}
                             ref={password} onChange={(event) => {//change input type to password later on develpment
                                 setError('');
                                 setUser({ ...user, password: event.target.value });
                                 checkMatch(event.target.value, matchPassword.current?.value!);
                             }} />
-                        <FormHelperText>Password must have more than 5 characters.</FormHelperText>
+                        <FormHelperText>La contraseña debe tener mas de 5 caracteres.</FormHelperText>
                     </div>
 
                     <div>
-                        <FormLabel>Confirm Password</FormLabel>
-                        <Input type='password' placeholder="Repeat password" isInvalid={!isPasswordValid}
+                        <FormLabel>Confirmar contraseña</FormLabel>
+                        <Input type='password' placeholder="Repetir contraseña" isInvalid={!isPasswordValid}
                             ref={matchPassword} onChange={(event) => {
                                 setError('');
                                 checkMatch(password.current?.value!, event.target.value);
@@ -116,7 +116,7 @@ const Signup = () => {
                     </div>
 
                     <div>
-                        <Button marginTop={3} type="submit" isDisabled={disable}>Register</Button>
+                        <Button marginTop={3} type="submit" isDisabled={disable}>Registrar</Button>
                     </div>
                 </FormControl>
             </form>

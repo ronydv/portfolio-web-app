@@ -37,7 +37,7 @@ const Cart = () => {
                 },
             });
             clearCart();
-            setOrderResponse("Order sent successfully");
+            setOrderResponse("Orden enviada!");
         } catch(error){
             if(axios.isAxiosError(error)) setError(error.response?.data.message);
         }
@@ -45,13 +45,13 @@ const Cart = () => {
     return (
         <div className={classes.container}>
             <Heading fontSize={'25px'} mb={3} color={darkMode}>
-                {!orderResponse ? items?.length! > 0 ? 'Schedule the following services:' : 'No items have been selected'
+                {!orderResponse ? items?.length! > 0 ? 'Agendar los siguientes servicios:' : 'No se ha seleccionado ningun ítem'
                                  : orderResponse }
             </Heading>
 
             {items?.length! > 0 && <Flex columnGap={4} mb={5}>
-                <Button onClick={sendServiceRequest}>Send request</Button>
-                <Button variant={'outline'} colorScheme={'red'} onClick={clearCart}>Cancel all</Button>
+                <Button onClick={sendServiceRequest}>Enviar petición</Button>
+                <Button variant={'outline'} colorScheme={'red'} onClick={clearCart}>Cancelar todos</Button>
             </Flex>}
 
             {items?.map((product, i) =>
@@ -59,7 +59,7 @@ const Cart = () => {
                     bgColor={`${colorMode === 'dark' && 'gray.900'}`}>
                     <CardBody>
                         <Image src={product.images && product.images[0].url}
-                               alt='Green double couch with wooden legs' 
+                               alt={product.name}
                                borderRadius='lg'/>
                         <Stack mt='6' spacing='3'>
                             <Heading size='md'>{product.name}</Heading>
@@ -84,7 +84,7 @@ const Cart = () => {
                         <ButtonGroup spacing='2'>
                             <Button onClick={()=>removeItem(i)}
                                     variant='outline' colorScheme='red'>
-                                Cancel
+                                Cancelar
                             </Button>
                         </ButtonGroup>
                     </CardFooter>

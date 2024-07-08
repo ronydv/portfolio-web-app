@@ -49,13 +49,13 @@ const SelectType =({ product, setProduct, error, setError, setTypesUrl, typesUrl
     return (
         <>
             <Heading as='h2' size='sm' marginRight={10} mb={2}>
-                {error?.includes('type') ? <Text color={'red'}>{error}</Text>: <Text>Product Type</Text> }
+                {error?.includes('type') ? <Text color={'red'}>{error}</Text>: <Text>Tipo de producto</Text> }
                 </Heading>
             <Accordion /* allowToggle={true} */ mt={3}>
                 <AccordionItem>
                     <AccordionButton>
 
-                        <Input type="text" placeholder="Add type or select existing type"
+                        <Input type="text" placeholder="Agregar tipo o seleccionar existente"
                                value={product?.productType ? product?.productType: selectedType}
                                onChange={(e)=>{handleRadio(e.target.value)}}/>
                         <AccordionIcon />

@@ -74,11 +74,11 @@ const Profile = () => {
     }
     return ( 
         <div className={classes['profile-container']}>
-            <h2>Edit Account</h2>
+            <h2>Editar Cuenta</h2>
             <form onSubmit={handleSubmit}>                         {/*invalidate form if there is an error message */}
                 <FormControl as='fieldset' className={classes.form} isInvalid={error !== ''} >
                     <div>
-                        <FormLabel>Name</FormLabel>
+                        <FormLabel>Nombre</FormLabel>
                         <Input type='text' placeholder="Enter your name (optional)" 
                             isInvalid={false} defaultValue={user?.name}
                             onChange={(event) => {
@@ -87,22 +87,22 @@ const Profile = () => {
                     </div>
 
                     <div>
-                        <FormLabel>Email address</FormLabel>
-                        <Input type='email' placeholder="Enter your e-mail"
+                        <FormLabel>Direccion de Email</FormLabel>
+                        <Input type='email' placeholder="Ingrese su email"
                             isInvalid={!isEmailValid} defaultValue={user?.email}
                             onChange={(event) => {
                                 setError('');
                                 setUserState({ ...user, email: event.target.value });
                                 setIsEmailValid(EMAIL_REGEX.test(event.target.value));
                             }} />
-                        {!error ? <FormHelperText>We'll never share your data or send spam</FormHelperText> :
+                        {!error ? <FormHelperText>No compartiremos tus datos ni enviaremos correos spam</FormHelperText> :
                             <FormErrorMessage>{error}</FormErrorMessage>
                         }
                     </div>
 
                     <div>
-                        <FormLabel>Phone number</FormLabel>
-                        <Input type='text' placeholder="Enter your phone" 
+                        <FormLabel>Número de teléfono</FormLabel>
+                        <Input type='text' placeholder="Ingrese su numero de teléfono" 
                             isInvalid={false} defaultValue={user?.phone}
                             onChange={(event) => {
                                 setUserState({ ...user, phone: event.target.value });
@@ -110,22 +110,22 @@ const Profile = () => {
                     </div>
 
                     <div>
-                        <FormLabel>New Password</FormLabel>
-                        <Input type='text' placeholder="Enter your password" isInvalid={false}
+                        <FormLabel>Nueva Contraseña</FormLabel>
+                        <Input type='text' placeholder="Ingrese su nueva contraseña" isInvalid={false}
                                onChange={(event) => {//change input type to password later on develpment
                                 setUserState({ ...user, password: event.target.value });
                             }} />
-                        <FormHelperText>Password must have more than 5 characters.</FormHelperText>
+                        <FormHelperText>La contraseña debe tener mas de 5 caracteres.</FormHelperText>
                     </div>
 
                     <div>
-                        <Button marginTop={3} type="submit" isDisabled={disable}>Save Changes</Button>
+                        <Button marginTop={3} type="submit" isDisabled={disable}>Guardar Cambios</Button>
                         
                         <Button variant={'ghost'} colorScheme="red" 
                                 marginLeft={2} marginTop={3}
                                 onClick={handleDelete}
                                 >
-                                Delete Account
+                                Borrar cuenta
                         </Button>
                     </div>
                 </FormControl>

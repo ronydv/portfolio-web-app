@@ -17,19 +17,19 @@ const AnalyticsDashboard = () => {
             <Flex direction={'column'}>
                 <Box>
                     <Text as={'h1'} fontSize={'20px'} mb={2} fontWeight={'bold'} color={darkMode}>
-                        Order statuses
+                        Estatus de los pedidos
                     </Text>
                     <OrderStatuses />
                 </Box>
                 <Box>
                     <Text as={'h1'} fontSize={'20px'} mb={2} fontWeight={'bold'} color={darkMode}>
-                        Most Requested Products
+                        Pedidos mas solicitados
                     </Text>
                     <CommonOrders />
                 </Box>
                 <Box>
                     <Text as={'h1'} fontSize={'20px'} mb={2} fontWeight={'bold'} color={darkMode}>
-                        Orders per Month
+                        Pedidos por mes
                     </Text>
                     <OrdersByMonth />
                 </Box>

@@ -50,17 +50,17 @@ const ModifyProduct = () => {
                     <section className={`${classes.title} ${colorMode === 'light' ? classes.light : classes.dark}`}>
                         <Flex direction={'column'}>
                             <Heading as='h2' size='md' marginRight={10}>
-                                Modify Product
+                                Modificar Producto
                             </Heading>
                             <Breadcrumb spacing='8px' separator={<ChevronRightIcon color='gray.500' />}>
                                 <BreadcrumbItem>
-                                    <p>Products</p>
+                                    <p>Productos</p>
                                 </BreadcrumbItem>
                                 <BreadcrumbItem>
-                                <p>Table</p>
+                                    <p>Tabla</p>
                                 </BreadcrumbItem>
                                 <BreadcrumbItem isCurrentPage>
-                                <p>Update</p>
+                                    <p>Actualizar</p>
                                 </BreadcrumbItem>
                             </Breadcrumb>
                         </Flex>
@@ -68,20 +68,20 @@ const ModifyProduct = () => {
                         <Button variant='outline' colorScheme='blue' marginRight={5}
                             leftIcon={<LeftIcon />}
                             onClick={() => navigate("/dashboard/products-dashboard")}>
-                            Go back
+                            Volver
                         </Button>
                         <Button type="submit" variant={'solid'}
                             isLoading={isLoading}
                             loadingText='Submitting'
                             colorScheme={'blue'}>
-                            Save Changes
+                            Guardar cambios
                         </Button>
                     </section>
 
                     <div className={classes['inputs-container']}>
                         <div>
                             <section className={`${classes['general-information']} ${colorMode === 'light' ? classes.light : classes.dark}`}>
-                                <Heading as='h2' size='sm' marginRight={10}>General information</Heading>
+                                <Heading as='h2' size='sm' marginRight={10}>Información General</Heading>
                                 <Divider/>
                                 
                                 <SelectSector 
@@ -90,12 +90,12 @@ const ModifyProduct = () => {
                                     error={error} 
                                     setError={setError}/>
 
-                                <FormLabel mt={2}>Product Name</FormLabel>
+                                <FormLabel mt={2}>Nombre del producto</FormLabel>
                                 <Input defaultValue={product.name} type='text' onChange={(e) => {
                                     setProduct({ ...product, name: e.target.value });
                                 }} />
 
-                                <FormLabel mt={2}>Description</FormLabel>
+                                <FormLabel mt={2}>Descripción</FormLabel>
                                 <Textarea minWidth={'25vw'} defaultValue={product.description} onChange={(e) => {
                                     setProduct({ ...product, description: e.target.value });
                                 }} />

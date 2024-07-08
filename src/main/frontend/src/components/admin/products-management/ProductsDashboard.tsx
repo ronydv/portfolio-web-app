@@ -48,7 +48,7 @@ const ProductsDashboard = ({ setActiveButton }: ActiveButtonProps) => {
                             //switch the value within MainDashboard.tsx to render the <Outlet/>, check <div className={classes.outlet}>
                             onClick={() => setActiveButton && setActiveButton("Add Product")}
                             leftIcon={<AddProductIcon/>}>
-                        Add Product
+                        Agregar producto
                     </Button>
                 </Link>
             </div>
