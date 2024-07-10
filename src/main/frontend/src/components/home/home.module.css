@@ -1,13 +1,41 @@
-.main{
-    height: 100vh;
-    padding-top: 5vh;
-}
+/* first section with the cover */
 .call-to-actions{
-    /* background-color: aqua; */
     width: 70vw;
 }
-.call-to-actions div{
+.call-to-actions .cover{
     display: flex;
     flex-direction: row;
     align-items: center;
+}
+.call-to-actions .title{
+    background: linear-gradient(to bottom right, #e53e3e, #941414);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-size: 40px;
+    font-weight: 600;
+    display: inline;
+}
+
+/* second section with three thumbnails */
+.about{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 25px;
+}
+.cards{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    column-gap: 5vw;
+}
+.cards .title{
+    background: linear-gradient(0deg, #e53e3e, #941414);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-size: 20px;
+    font-weight: 700;
+    display: inline;
 }

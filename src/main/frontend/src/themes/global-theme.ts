@@ -74,7 +74,7 @@ export const indexTheme = extendTheme({
 				  }),
 			},
 			defaultProps: {
-				size: 'sm', // default is md
+				size: 'sm',
 				variant: 'industech',
 			},
 		},

@@ -30,8 +30,8 @@ function App() {
 				<Route path="/" element={<Layout />}>
 
 					{/* public routes */}
-					{/* <Route index element={<Index />}></Route> */}
-					<Route path='/' element={<Home />} />
+					{/* <Route path='/' element={<Home />} /> */}
+					<Route index element={<Home />} />
 					<Route path='/login' element={<Login />} />
 					<Route path='/signup' element={<Signup />} />
 					<Route path="/unauthorized" element={<Unauthorized />} />

@@ -204,7 +204,7 @@ const CustomersDashboard = () => {
                             onPageChange={page => handleOrdersPageChange(page)}
                         />
                     </div>
-                    <TableContainer width={isDesktop ? '40vw' : '70vw'}>
+                    <TableContainer width={isDesktop ? '45vw' : '70vw'}>
                         <Table variant='simple' size={isDesktop ? 'md' : 'sm'}>
                             <Thead>
                                 <Tr>

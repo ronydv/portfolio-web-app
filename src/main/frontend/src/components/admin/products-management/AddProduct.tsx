@@ -2,11 +2,11 @@ import { Button, Text, FormControl, FormLabel, Heading, Input, NumberInput, Numb
 import { FaArrowLeft as LeftIcon } from "react-icons/fa6";
 import { MdOutlineChevronRight as ChevronRightIcon } from "react-icons/md";
 import classes from "./products-panel.module.css";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import SelectCategories from "./SelectCategories";
 import axios from "axios";
 import useInterceptor from "../../../hooks/useInterceptor";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import AddImages from "./AddImages";
 import SelectSector from "./SelectSector";
 import SelectType from "./SelectType";

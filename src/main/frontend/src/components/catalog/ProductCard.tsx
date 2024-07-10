@@ -88,7 +88,7 @@ const DesktopVersionCard = ({ product, colorMode, tabIndex, categories, types, p
                     {/* <Link to={{pathname:`/product-details/${product?.id}`,search:`?tab=${tabIndex}`}}> */}
                         <Button onClick={()=>handleNavigation(product?.id!,navigate,tabIndex,categories, types, page, browse)}
                                 variant='solid' colorScheme='orange' mr={4}>
-                            View Details
+                            Ver Detalles
                         </Button>
                    {/*  </Link> */}
                     <Button onClick={()=>{
@@ -143,7 +143,7 @@ const MobileVersionCard = ({ product, colorMode, tabIndex, categories, types, pa
                             </span>
                         ))}
                         <p />
-                        <Tag mt={1} colorScheme="orange"> {product.images?.length} images</Tag>
+                        <Tag mt={1} colorScheme="orange"> {product.images?.length} imágenes</Tag>
                     </Box>
                 </Stack>
             </CardBody>

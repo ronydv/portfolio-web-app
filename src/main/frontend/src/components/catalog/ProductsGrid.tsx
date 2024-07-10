@@ -7,6 +7,7 @@ import { useSingleFetch } from "../../hooks/useSingleFetch";
 import { SiAltiumdesigner as Designs } from "react-icons/si";
 import { FaGears as Machinery } from "react-icons/fa6";
 import { LiaMicrochipSolid as Automations } from "react-icons/lia";
+import { IoIosSearch as SearchIcon } from "react-icons/io";
 import ProductCard from "./ProductCard";
 import { IconType } from "react-icons";
 import useMatchMedia from "../../hooks/useMatchMedia";
@@ -75,6 +76,11 @@ const ProductsGrid = ({browse, setSector, selectedCategories, selectedTypes,tabI
         else setTabIndex(0);
     }, [browse]);
 
+    const resultsTab =(browse:string)=>{
+        if(browse) return (
+            isDesktop ? <Tab>Resultados de la Búsqueda:</Tab>:<Tab><Icon as={SearchIcon}/></Tab>
+        )
+    }
     return ( 
         <div className={`${classes['product-list-container']} 
                          ${colorMode === 'light' ? classes['pagination-light'] : classes['pagination-dark']}`}>
@@ -85,7 +91,7 @@ const ProductsGrid = ({browse, setSector, selectedCategories, selectedTypes,tabI
                         if(isDesktop) return <Tab key={i}>{sector.name}</Tab>
                         else return <Tab key={i}><Icon as={icons[i]} pr={1}/>{ tabIndex=== i && sector.name}</Tab>
                     })}
-                    {browse && <Tab>Browse Result:</Tab>}
+                    {resultsTab(browse)}
                 </TabList>
 
                 <TabPanels>

@@ -37,15 +37,10 @@
 }
 .active-border.selected{/* show active button in the left side of the dashboard navbar */
     background-color: rgb(255, 0, 132);
-    /* background-color: var(--chakra-colors-teal-700); */
 }
 
 /* right side of the dashboard pane, this contains the components */
 .outlet{
-/*     display: flex;
-    align-items: flex-start;
-    justify-content: center; */
     margin-left: 25px;
     padding-top: 30px;
-
 }
