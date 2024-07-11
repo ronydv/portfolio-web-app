@@ -1,4 +1,7 @@
-import { TableContainer, Table, Image, TableCaption, Thead, Tr, Th, Tbody, Td, Tag, Flex, Tab, TabList, TabPanels, Tabs, useColorMode, Icon, Popover, Box, Button, ButtonGroup, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverFooter, PopoverHeader, PopoverTrigger, Portal, useDisclosure, Spinner } from "@chakra-ui/react";
+import { TableContainer, Table, Image, TableCaption, Thead, Tr, Th, Tbody, Td, Tag, 
+    Flex, Tab, TabList, TabPanels, Tabs, useColorMode, Icon, Popover, Box, Button, ButtonGroup, 
+    PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverFooter, PopoverHeader, 
+    PopoverTrigger, Portal, useDisclosure, Spinner } from "@chakra-ui/react";
 import useMatchMedia from "../../../hooks/useMatchMedia";
 import { useEffect, useState } from "react";
 import ResponsivePagination from 'react-responsive-pagination';

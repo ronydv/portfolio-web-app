@@ -26,7 +26,7 @@ const Layout = () => {
                 </main>
 
             </div>
-            <footer style={{paddingLeft:'40px', marginTop:'40px'}}>
+            <footer style={{paddingLeft:'40px', marginTop:'10px'}}>
                 <p>Industech &copy; 2024. Todos los derechos reservados.</p>
             </footer>
         </div>

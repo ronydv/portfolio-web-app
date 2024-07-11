@@ -1,4 +1,4 @@
-import { Button, Text, FormControl, FormLabel, Heading, Input, NumberInput, NumberInputField, Spacer, Textarea, useColorMode, Flex, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Divider } from "@chakra-ui/react";
+import { Button, FormLabel, Heading, Input, Spacer, Textarea, useColorMode, Flex, Breadcrumb, BreadcrumbItem, Divider } from "@chakra-ui/react";
 import { FaArrowLeft as LeftIcon } from "react-icons/fa6";
 import { MdOutlineChevronRight as ChevronRightIcon } from "react-icons/md";
 import classes from "./products-panel.module.css";

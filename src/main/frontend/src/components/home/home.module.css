@@ -7,6 +7,9 @@
     flex-direction: row;
     align-items: center;
 }
+.cover.mobile{
+    flex-direction: column;
+}
 .call-to-actions .title{
     background: linear-gradient(to bottom right, #e53e3e, #941414);
     -webkit-background-clip: text;
@@ -15,6 +18,9 @@
     font-size: 40px;
     font-weight: 600;
     display: inline;
+}
+.title.mobile{
+    font-size: 30px;
 }
 
 /* second section with three thumbnails */
@@ -29,6 +35,10 @@
     display: flex;
     flex-direction: row;
     column-gap: 5vw;
+}
+.cards.mobile{
+    flex-direction: column;
+    align-items: center;
 }
 .cards .title{
     background: linear-gradient(0deg, #e53e3e, #941414);

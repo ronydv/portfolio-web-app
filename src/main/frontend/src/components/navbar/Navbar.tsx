@@ -26,16 +26,6 @@ const Navbar = () => {
                     color={darkMode}
                     icon={<StoreIcon />} />
             </Link>
-
-            <IconButton isRound={true} variant='ghost' aria-label='Dark Mode'
-                fontSize='20px'
-                color={darkMode}
-                icon={<ContactIcon />} />
-
-            <IconButton isRound={true} variant='ghost' aria-label='Dark Mode'
-                fontSize='20px'
-                color={darkMode}
-                icon={<AboutIcon />} />
             
             <div className={classes['cart-container']}>
                     <Link to={'/cart'}>

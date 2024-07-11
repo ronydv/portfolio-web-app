@@ -10,6 +10,8 @@ import { useAuthContext } from "../../hooks/useAuthContext";
 import { useContext } from "react";
 import CartContext, { CartItemContext } from "../../context/CartProvider";
 import AccountMenu from "../account/AccountMenu";
+import Restricted from "../authentication/Restricted";
+import { Role } from '../../react-app-env.d';
 
 const Header = () => {
     const {auth:{user}} : UserContext = useAuthContext();
@@ -50,11 +52,12 @@ const Header = () => {
             <Spacer flex={0.2}/>
 
             <div className={classes.container}>
-                <Button variant='outline' colorScheme="orange"
-                            onClick={() => navigate("/dashboard/products-dashboard")}>
-                    Dashboard
-                </Button>
-                
+                <Restricted to={[Role.ADMIN]}>
+                    <Button variant='outline' colorScheme="orange"
+                        onClick={() => navigate("/dashboard/products-dashboard")}>
+                        Dashboard
+                    </Button>
+                </Restricted>
                 {user?.isEnabled ?
                     <AccountMenu/>
                     :
