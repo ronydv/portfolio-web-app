@@ -81,7 +81,7 @@ public class AuthenticationService {
                         .sameSite("None")
                         .secure(true)
                         .path("/")
-                        .maxAge(24* 60 * 60)  // Set the expiration same as the refresh token
+                        .maxAge(7 * 24 * 60 * 60) // one week
                         .build();
                 response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
             }
@@ -98,11 +98,11 @@ public class AuthenticationService {
                 .map(user ->{
                     AuthUser authUser=new AuthUser(user);
                     String accessToken=tokenService.createJwtAccessToken(authUser);
-                    log.info("\u001B[35mgenerated new access token: " + accessToken + "\u001B[0m");//delete after
+                    //log.info("\u001B[35mgenerated new access token: " + accessToken + "\u001B[0m");//delete after
                     return new LoginResponse(authUser,new Token(accessToken, refreshTokenRequest));
                 })
                 .orElseThrow(() -> {
-                    log.error("\u001B[31minvalid token or user is null.\u001B[0m");
+                    //log.error("\u001B[31minvalid token or user is null.\u001B[0m");
                     return new TokenException("token inválido o usuario nulo",HttpStatus.FORBIDDEN);
                 });
     }

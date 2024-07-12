@@ -83,7 +83,7 @@ const CommonOrders = () => {
 			<Tabs isFitted colorScheme='red' index={tabIndex} variant='enclosed'
 				onChange={(index) => setTabIndex(index)}>
 				<TabList mb='1em'>
-					<Tab>{'All'}</Tab>
+					<Tab>{'Todos'}</Tab>
 					{sectors.map((sector, i) => (
 						<Tab key={i}>{sector.name}</Tab>
 					))}

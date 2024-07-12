@@ -31,7 +31,7 @@ public class TokenService {
 
     public String createJwtAccessToken(AuthUser user){
         Instant now = Instant.now();
-        Instant thirtyMinutes= ZonedDateTime.now().plusMinutes(30).toInstant();
+        Instant thirtyMinutes= ZonedDateTime.now().plusDays(1L).toInstant();
         String role = user.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(" "));
@@ -48,7 +48,7 @@ public class TokenService {
     public RefreshToken generateRefreshTokenForUser(User user){
         RefreshToken refreshToken = new RefreshToken(
                 UUID.randomUUID().toString(),
-                ZonedDateTime.now().plusMinutes(1440).toInstant(),//24hs
+                ZonedDateTime.now().plusWeeks(1L).toInstant(),//24hs
                 user);
         return tokenRepository.save(refreshToken);
     }

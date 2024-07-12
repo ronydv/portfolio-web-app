@@ -42,3 +42,18 @@ code {
   align-items: flex-start;/* set items at the center of the pane */
   justify-content: center;/* set items horizontally in the middle */
 }
+
+.whatsapp-icon {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000; /* Ensure it appears above other elements */
+  background-color: white; /* Optional: add a background color */
+  border-radius: 50%; /* Optional: make it circular */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Optional: add a shadow */
+  padding: 10px; /* Optional: add padding */
+}
+.whatsapp-icon.dark{
+  background-color: #1a202c; /* Optional: add a background color */
+  box-shadow:0 2px 10px rgba(0, 0, 0, 0.558);
+}
