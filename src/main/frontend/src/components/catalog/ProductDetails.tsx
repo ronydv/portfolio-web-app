@@ -73,8 +73,8 @@ const ProductDetails = () => {
         notification({
             title: 'Producto agregado al carrito.',
             description: isDesktop ? 
-                        "Click en el icono de arriba a la derecha para confirmar." :
-                        "Click en el panel abajo a la izquierda para confirmar ",
+                        "Click en el icono del carrito de arriba a la derecha para confirmar." :
+                        "Click en el icono del carrito en el panel de la izquierda para confirmar ",
             status: 'info',
             duration: 4000,
             isClosable: true,

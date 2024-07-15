@@ -133,7 +133,7 @@ const CustomersDashboard = () => {
     return (
         <div>
             <InputGroup width={isDesktop ? '20vw' : '70vw'}>
-                <Input type='text' placeholder='Search Customer' ref={inputRef}                            
+                <Input type='text' placeholder='Buscar clientes' ref={inputRef}                            
                             onChange={(e) => handleChangeSearch(e)}
                             onKeyDown={(e) => e.key === "Enter" && handleSearch()} />
                 <InputRightElement  >
@@ -193,70 +193,78 @@ const CustomersDashboard = () => {
                 {/* orders table */}
                 <div>
                     <Divider />
-                    <Text placeContent={'center'} fontSize={'large'} fontWeight={'bold'} color={grayColor}>
-                        Detalle de los pedidos del cliente: "{orders?.userName}"
-                    </Text>
-                    <div className={`${classes['paginator-container']}
-                                    ${colorMode === 'light' ? classes['pagination-light'] : classes['pagination-dark']}`}>
-                        <ResponsivePagination
-                            total={Math.ceil(totalOrders / ordersPageSize)}
-                            current={currentOrdersPage}
-                            onPageChange={page => handleOrdersPageChange(page)}
-                        />
-                    </div>
-                    <TableContainer width={isDesktop ? '45vw' : '70vw'}>
-                        <Table variant='simple' size={isDesktop ? 'md' : 'sm'}>
-                            <Thead>
-                                <Tr>
-                                    <Th>Producto</Th>
-                                    <Th>
-                                        <Button variant={'ghost'} rightIcon={<Sort />} color={grayColor}
-                                            onClick={() => setToggleIsPending(!toggleIsPending)}>
-                                            Estatus
-                                        </Button>
-                                    </Th>
-                                    <Th>
-                                        <Button variant={'ghost'} rightIcon={<Sort />} color={grayColor}
-                                            onClick={() => setToggleIsChecked(!toggleIsChecked)}>
-                                            Checkeado
-                                        </Button>
-                                    </Th>
+                    {!error ?
+                        <>
+                            <Text placeContent={'center'} fontSize={'large'} fontWeight={'bold'} color={grayColor}>
+                                Pedidos del cliente: "<span style={{ color: 'crimson' }}>{orders?.userName}</span>"
+                            </Text>
 
-                                </Tr>
-                            </Thead>
-                            <Tbody>
-                                {orders?.orderedProducts?.map((order, i) => (
-                                    <Tr key={i}>
-                                        <Td>{order.productName}</Td>
-                                        <Td>
-                                            {isPendingTag(order.isPending!)}
-                                            {finalizeOrder(order)}
-                                        </Td>
-                                        <Td>
-                                            {isCheckedTag(order.isChecked!)}
-                                            {checkOrder(order)}
-                                        </Td>
-                                        <Td paddingLeft={1}>
-                                            {isLoading}
-                                            <IconButton isRound={true} variant='ghost' aria-label='Dark Mode'
-                                                onClick={() => {
-                                                    deleteOrder(order);
-                                                    setSelectedButton(i);
-                                                }}
-                                                fontSize='20px'
-                                                isDisabled={!order.isPending && order.isChecked}/* TODO: ADD BROWSE FUNCTION */
-                                                color={'red'}
-                                                icon={isLoading && selectedButton === i ?
-                                                         <Spinner thickness='4px' speed='0.65s' color='red.500' size='xs'/> 
-                                                         : 
-                                                         <DeleteIcon />
-                                            }/>
-                                        </Td>
-                                    </Tr>
-                                ))}
-                            </Tbody>
-                        </Table>
-                    </TableContainer>
+                            <div className={`${classes['paginator-container']}
+                                    ${colorMode === 'light' ? classes['pagination-light'] : classes['pagination-dark']}`}>
+                                <ResponsivePagination
+                                    total={Math.ceil(totalOrders / ordersPageSize)}
+                                    current={currentOrdersPage}
+                                    onPageChange={page => handleOrdersPageChange(page)}
+                                />
+                            </div>
+
+                            <TableContainer width={isDesktop ? '45vw' : '70vw'}>
+                                <Table variant='simple' size={isDesktop ? 'md' : 'sm'}>
+                                    <Thead>
+                                        <Tr>
+                                            <Th>Producto</Th>
+                                            <Th>
+                                                <Button variant={'ghost'} rightIcon={<Sort />} color={grayColor}
+                                                    onClick={() => setToggleIsPending(!toggleIsPending)}>
+                                                    Estatus
+                                                </Button>
+                                            </Th>
+                                            <Th>
+                                                <Button variant={'ghost'} rightIcon={<Sort />} color={grayColor}
+                                                    onClick={() => setToggleIsChecked(!toggleIsChecked)}>
+                                                    Checkeado
+                                                </Button>
+                                            </Th>
+
+                                        </Tr>
+                                    </Thead>
+
+                                    <Tbody>
+                                        {orders?.orderedProducts?.length! > 0 && orders?.orderedProducts?.map((order, i) => (
+                                            <Tr key={i}>
+                                                <Td>{order.productName}</Td>
+                                                <Td>
+                                                    {isPendingTag(order.isPending!)}
+                                                    {finalizeOrder(order)}
+                                                </Td>
+                                                <Td>
+                                                    {isCheckedTag(order.isChecked!)}
+                                                    {checkOrder(order)}
+                                                </Td>
+                                                <Td paddingLeft={1}>
+                                                    {isLoading}
+                                                    <IconButton isRound={true} variant='ghost' aria-label='Dark Mode'
+                                                        onClick={() => {
+                                                            deleteOrder(order);
+                                                            setSelectedButton(i);
+                                                        }}
+                                                        fontSize='20px'
+                                                        isDisabled={!order.isPending && order.isChecked}/* TODO: ADD BROWSE FUNCTION */
+                                                        color={'red'}
+                                                        icon={isLoading && selectedButton === i ?
+                                                            <Spinner thickness='4px' speed='0.65s' color='red.500' size='xs' />
+                                                            :
+                                                            <DeleteIcon />
+                                                        } />
+                                                </Td>
+                                            </Tr>
+                                        ))}
+                                    </Tbody>
+                                </Table>
+                            </TableContainer>
+                        </>
+                        :
+                        <Text width={isDesktop ? '45vw' : '70vw'}>El cliente no contiene pedidos</Text>}
                 </div>
 
             </div>

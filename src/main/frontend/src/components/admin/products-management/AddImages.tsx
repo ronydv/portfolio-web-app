@@ -36,8 +36,8 @@ type AddImagesProps= {
             <Flex alignItems={'center'} direction={'column'}>
                 <Flex justifyContent={'center'} mt={2}>
                     <FormLabel className={classes.imagelabel} htmlFor="files">
-                        {error?.includes('images')  ? <Text color={'red'}>{'Empty Files'}</Text>
-                                                    : 'Select Images'}
+                        {error?.includes('images')  ? <Text color={'red'}>{'Archivos vacíos'}</Text>
+                                                    : 'Seleccionar Imagenes'}
                     </FormLabel>
                     <Input type='file' accept='image/*' id="files" onChange={handleImage} multiple hidden />
                 </Flex>
