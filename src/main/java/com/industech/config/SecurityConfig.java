@@ -1,5 +1,6 @@
 package com.industech.config;
 
+import com.industech.security.IndexRedirectionFilter;
 import com.industech.security.RSAKeyGenerator;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
@@ -30,6 +31,7 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 import static org.springframework.http.HttpMethod.GET;
@@ -45,6 +47,8 @@ public class SecurityConfig {
     private UserDetailsService userDetailsService;
     @Autowired
     private LogoutHandler logoutHandler;
+    @Autowired
+    IndexRedirectionFilter redirectionFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -57,6 +61,12 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())//by default, it uses corsConfigurationSource bean name
                 .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers("/",
+                            "/index.html",
+                            "/public/**",
+                            "/static/**",
+                            "/manifest.json",
+                            "/favicon.ico").permitAll();
                     auth.requestMatchers("/api/v1/auth/**").permitAll();
                     auth.requestMatchers("/api/v1/product-management/sector").permitAll();
                     auth.requestMatchers("/api/v1/product-management/categories/{sector}").permitAll();
@@ -78,6 +88,7 @@ public class SecurityConfig {
                     logout.logoutSuccessHandler(
                             (request,response,authentication) -> SecurityContextHolder.clearContext());
                 })
+                .addFilterBefore(redirectionFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 

@@ -37,7 +37,7 @@ const SelectType =({ product, setProduct, error, setError, setTypesUrl, typesUrl
     }
 
     useEffect(() => {//render items in the accordion in the first component load
-        setTypes(data);
+        if(Array.isArray(data) && data.length > 0) setTypes(data);
     }, [data]);
 
     useEffect(()=>{
@@ -64,7 +64,7 @@ const SelectType =({ product, setProduct, error, setError, setTypesUrl, typesUrl
                     <AccordionPanel pb={4} style={{ maxHeight: '200px', overflowY: 'auto' }}>
                         <RadioGroup onChange={(e)=>{handleRadio(e)}} value={selectedType}>
                             <Stack spacing={1} direction='column'>
-                                {types.map((type, i) => (
+                                {Array.isArray(types) && types.length > 0 && types.map((type, i) => (
                                     <div key={i} style={{ display: 'flex' }}>
                                         <Radio colorScheme='red' value={type.productType}>{type.productType}</Radio>
                                         <Spacer />

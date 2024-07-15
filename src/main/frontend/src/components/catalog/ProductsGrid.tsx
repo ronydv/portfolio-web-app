@@ -100,7 +100,7 @@ const ProductsGrid = ({browse, setSector, selectedCategories, selectedTypes,tabI
                         current={currentPage}
                         onPageChange={page => handlePageChange(page)}
                     />
-                    {products?.products.map((product, i)=>(
+                    { products?.products && products?.products.map((product, i)=>(
                         <div key={i} className={classes['card-container']}>
                             <ProductCard product={product} 
                                          colorMode={colorMode}

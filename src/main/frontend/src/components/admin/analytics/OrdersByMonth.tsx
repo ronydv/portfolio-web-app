@@ -13,7 +13,7 @@ const OrdersByMonth = () => {
 
     useEffect(()=>{
         setUrl("/api/v1/orders/order/monthly")
-        if(ordersByMonth.length > 0){
+        if(Array.isArray(ordersByMonth) && ordersByMonth.length > 0){
             const orders:number[]=ordersByMonth.map((order)=> order.amount );
             setChartData(orders);
         }
@@ -33,14 +33,14 @@ const OrdersByMonth = () => {
         },
         xAxis: {
             type: 'category',
-            data: ['Enero', 'Febrero','Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre','Octubre','Noviembre','Diciembre']
+            data: ['En', 'Feb','Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ag', 'Sept','Oct','Nov','Dic']
         },
         yAxis: {
             type: 'value'
         },
         series: [
             {
-                data: chartData,
+                data: chartData.length > 0 && chartData,
                 type: 'line',
                 symbolSize: 8,
                 tooltip: {
