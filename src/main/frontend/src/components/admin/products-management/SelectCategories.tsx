@@ -21,7 +21,7 @@ const SelectCategories = ({ colorMode, setProduct, product }: CategoriesProps) =
     const [categories, setCategories] = useState<Category[]>([]);
     const [tags, setTags] = useState<CategoryList>({ names: [] });
     const [mount, setMount] = useState(false);
-
+    const [renderTagsForModifyProduct, setRenderTagsForModifyProduct]=useState(false);
     const handleCheckbox = (e: ChangeEvent<HTMLInputElement>) => {
         const { value, checked } = e.target;
         setTags((prev) => {
@@ -53,6 +53,10 @@ const SelectCategories = ({ colorMode, setProduct, product }: CategoriesProps) =
         }
     }
 
+    useEffect(()=>{//when this component is mount from ModifyProduct, trigger this function for the last useEffect
+        if(product?.categories?.length! > 0)setRenderTagsForModifyProduct(true);
+    },[product])
+    
     useEffect(() => {//render items in the accordion in the first component load
         setCategories(data);
         setMount(true);//used to trigger the last useEffect to render tags if this component is being used in ModifyProducts.tsx
@@ -65,13 +69,12 @@ const SelectCategories = ({ colorMode, setProduct, product }: CategoriesProps) =
         });
     }, [tags]);
 
-    useEffect(()=>{//render tags in the first component loading if this component is being used in ModifyProducts.tsx
+    useEffect(()=>{//render tags if this component is being used in ModifyProducts.tsx
         if (product && product.categories) {
             setTags({ names: product.categories.map(category => category.name || '') });
         }
         setMount(false);
-        console.log(tags);
-    },[mount]);
+    },[mount,renderTagsForModifyProduct]);
 
     return (
         <section className={`${classes.categories} ${colorMode === 'light' ? classes.light : classes.dark}`}>
@@ -93,13 +96,22 @@ const SelectCategories = ({ colorMode, setProduct, product }: CategoriesProps) =
                             Seleccionar categorías
                         </Box><AccordionIcon />
                     </AccordionButton>
-
                     <AccordionPanel pb={4} style={{ maxHeight: '200px', overflowY: 'auto' }}>
-                        {categories.map((category, i) => (
+                        {tags.names.length > 0 && categories.map((category, i) => (
                             <div key={i} style={{ display: 'flex' }}>
                                 <Checkbox value={category.name} colorScheme='red'
                                     //check the categories from the product props against categories from the accordion panel
-                                    defaultChecked={ product?.categories ? product.categories.some(c => c.name === category.name) : false }
+                                    defaultChecked={tags.names.some(tagName => tagName === category.name)}
+                                    onChange={(e) => handleCheckbox(e)}>
+                                    {category.name}
+                                </Checkbox>
+                                <Spacer />
+                                <DeleteIcon className={classes['action-icon']} color="red" onClick={() => deleteCategory(category)} />
+                            </div>
+                        ))}
+                        {tags.names.length === 0 && categories.map((category, i) => (
+                            <div key={i} style={{ display: 'flex' }}>
+                                <Checkbox value={category.name} colorScheme='red'
                                     onChange={(e) => handleCheckbox(e)}>
                                     {category.name}
                                 </Checkbox>

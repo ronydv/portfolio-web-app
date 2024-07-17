@@ -1,4 +1,4 @@
-import { Tabs, TabList, Tab, TabPanels, useColorMode, Icon } from "@chakra-ui/react";
+import { Tabs, TabList, Tab, TabPanels, useColorMode, Icon, Spinner, Button } from "@chakra-ui/react";
 import classes from './catalog.module.css';
 import ResponsivePagination from 'react-responsive-pagination';
 import 'react-responsive-pagination/themes/minimal.css';
@@ -15,6 +15,7 @@ import useMatchMedia from "../../hooks/useMatchMedia";
 const icons: IconType[]= [Designs, Machinery, Automations];
 type ProductsGridProps={
     browse: string;
+    loadingSectors:boolean
     setSector: React.Dispatch<React.SetStateAction<string>>
     selectedCategories: string[];
     selectedTypes: string[];
@@ -24,8 +25,8 @@ type ProductsGridProps={
     currentPage: number;
     setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
 }
-const ProductsGrid = ({browse, setSector, selectedCategories, selectedTypes,tabIndex,
-                       setTabIndex, sectors, currentPage, setCurrentPage}:ProductsGridProps) => {
+const ProductsGrid = ({browse, loadingSectors, setSector, selectedCategories, selectedTypes,tabIndex,
+                       setTabIndex, sectors, currentPage, setCurrentPage }:ProductsGridProps) => {
     
     const isDesktop = useMatchMedia();
     const { colorMode } = useColorMode();
@@ -34,6 +35,7 @@ const ProductsGrid = ({browse, setSector, selectedCategories, selectedTypes,tabI
     const pageSize = 4;
     const [url, setUrl]=useState("");
     const { data:products, error } = useSingleFetch<PaginatedProducts>(url);
+    const [isLoading, setIsLoading]=useState(false);
 
     const filter =(sector:string)=>{
         switch (true) {
@@ -51,12 +53,18 @@ const ProductsGrid = ({browse, setSector, selectedCategories, selectedTypes,tabI
         }
     }
 
+    useEffect(()=>{
+        setIsLoading(true);
+        if(products?.products?.length! > 0)setIsLoading(false);
+    },[products]);
+
     useEffect(()=>{//fetch data according to the selected tab, categories or types
         if (browse === "") {
             sectors.forEach((sector, i) => {
                 if (tabIndex === i) {
                     setSector(sector.name);//update sector to set within the url for CatalogFilter.tsx
                     filter(sector.name);
+                    setIsLoading(true);
                 }
             });
         }else {
@@ -66,14 +74,20 @@ const ProductsGrid = ({browse, setSector, selectedCategories, selectedTypes,tabI
             if (tabIndex === i) {
                 setSector(sector.name);//update sector to set within the url for CatalogFilter.tsx
                 filter(sector.name);
+                setIsLoading(true);
             }
         });
     },[sectors, browse, currentPage, tabIndex, selectedCategories, selectedTypes, url]);
 
     useEffect(() => {//reset the value of the current page and switch tab whenever the browser value is changed
         setCurrentPage(1);
-        if(browse !== "")setTabIndex(sectors.length);//sector.lenght is the last value of the tab which is <Tab>Browse Result:</Tab>
-        else setTabIndex(0);
+        if(browse !== ""){
+            setTabIndex(sectors.length);//sector.lenght is the last value of the tab which is <Tab>Browse Result:</Tab>
+            setIsLoading(true);
+        }else{
+            setTabIndex(0);
+            setIsLoading(false);
+        } 
     }, [browse]);
 
     const resultsTab =(browse:string)=>{
@@ -84,23 +98,28 @@ const ProductsGrid = ({browse, setSector, selectedCategories, selectedTypes,tabI
     return ( 
         <div className={`${classes['product-list-container']} 
                          ${colorMode === 'light' ? classes['pagination-light'] : classes['pagination-dark']}`}>
+
             <Tabs colorScheme='red' index={tabIndex} variant='enclosed'
                   onChange={(index) => setTabIndex(index)}>
+                                {loadingSectors ? <Spinner thickness='4px'
+                                            speed='0.65s' emptyColor='gray.200'
+                                            color='purple.500' size='md' /> 
+                    :
                 <TabList>
                     {Array.isArray(sectors) && sectors.map((sector,i) => {
                         if(isDesktop) return <Tab key={i}>{sector.name}</Tab>
                         else return <Tab key={i}><Icon as={icons[i]} pr={1}/>{ tabIndex=== i && sector.name}</Tab>
                     })}
                     {resultsTab(browse)}
-                </TabList>
-
+                </TabList>}
                 <TabPanels>
+                {isLoading && <p>Cargando productos...</p> }
                     <ResponsivePagination 
                         total={Math.ceil(products?.totalProducts! / pageSize)}
                         current={currentPage}
                         onPageChange={page => handlePageChange(page)}
                     />
-                    { products?.products && products?.products.map((product, i)=>(
+                {!isLoading && products?.products && products?.products.map((product, i)=>(
                         <div key={i} className={classes['card-container']}>
                             <ProductCard product={product} 
                                          colorMode={colorMode}

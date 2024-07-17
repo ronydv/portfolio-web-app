@@ -46,6 +46,9 @@
     padding-top: 30px;
     padding-left: 20px;
 }
+.right-container.desktop{
+    width: 60vw;
+}
 .right-container.no-padding-left{/*mobile version */
     padding-left: 0px;
 }
@@ -56,7 +59,7 @@
 .product-list-container{
     --pagination-color: var(--chakra-colors-red-600);
     --pagination-hover-color: var(--chakra-colors-red-200);/* #454648; */
-    --pagination-bg: transparent/* change to app theme */
+    --pagination-bg: transparent;/* change to app theme */
 }
 .pagination-dark{
     --pagination-active-color:var(--chakra-colors-gray-800);

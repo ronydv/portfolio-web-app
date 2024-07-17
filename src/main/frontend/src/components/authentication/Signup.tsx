@@ -1,4 +1,4 @@
-import { Button, FormControl, FormErrorMessage, FormHelperText, FormLabel, Input, useToast } from "@chakra-ui/react";
+import { Button, FormControl, FormErrorMessage, FormHelperText, FormLabel, Input, Spinner, useToast } from "@chakra-ui/react";
 import classes from './authentication.module.css';
 import { FormEvent, useEffect, useRef, useState } from "react";
 import axios from "axios";
@@ -67,6 +67,10 @@ const Signup = () => {
     return (
         <div className={classes.container}>
             <h2>Registrarse</h2>
+            {isLoading ? <Spinner thickness='4px'
+                                            speed='0.65s' emptyColor='gray.200'
+                                            color='purple.500' size='xl' />
+                                        : 
             <form onSubmit={handleSubmit}>                         {/*invalidate form if there is an error message */}
                 <FormControl as='fieldset' className={classes.form} isInvalid={error !== ''} >
                     <div>
@@ -119,12 +123,10 @@ const Signup = () => {
                     </div>
 
                     <div>
-                        <Button marginTop={3} type="submit" 
-                            isLoading={isLoading} isDisabled={disable}>Registrar
-                            </Button>
+                        <Button marginTop={3} type="submit"  isDisabled={disable}>Registrar</Button>
                     </div>
                 </FormControl>
-            </form>
+            </form>}
         </div>
      );
 }

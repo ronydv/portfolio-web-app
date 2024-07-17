@@ -14,7 +14,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 const Catalog = () => {
     const isDesktop = useMatchMedia();
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const { data: sectors } = useFetch<Sector>("/api/v1/product-management/sector");
+    const { data: sectors, isLoading:loadingSectors } = useFetch<Sector>("/api/v1/product-management/sector");
     const [sector, setSector] = useState<string>("");
     const [tabIndex, setTabIndex] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
@@ -114,7 +114,7 @@ const Catalog = () => {
                             </>
              }
 
-            <div className={`${classes['right-container']} ${!isDesktop && classes['no-padding-left']}`}>
+            <div className={`${classes['right-container']} ${!isDesktop ? classes['no-padding-left']:classes.desktop }`}>
                 <Flex direction={'row'} alignItems={'center'} mb={5}>
                     <InputGroup maxWidth={'60%'}>
                         <Input type='text' placeholder='Buscar producto' ref={inputRef}
@@ -129,6 +129,7 @@ const Catalog = () => {
                 </Flex>
                 <section>
                     <ProductsGrid browse={browse}
+                        loadingSectors={loadingSectors}
                         setSector={setSector}
                         selectedCategories={selectedCategories}
                         selectedTypes={selectedTypes}

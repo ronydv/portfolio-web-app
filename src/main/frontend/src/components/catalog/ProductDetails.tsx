@@ -26,7 +26,7 @@ const ProductDetails = () => {
     const isDesktop = useMatchMedia();
     const notification = useToast();
     const { id } = useParams<string>();
-    const { data: product } = useSingleFetch<Product>(`/api/v1/product-management/products/${id}`);
+    const { data: product, isLoading } = useSingleFetch<Product>(`/api/v1/product-management/products/${id}`);
     const darkMode = useColorModeValue('gray.600', 'gray.400');
     const carouselRef = useRef<Carousel>(null);
     const [imageIndex, setImageIndex] = useState<number>(0);
@@ -126,7 +126,7 @@ const ProductDetails = () => {
                 <Text as={'pre'} fontFamily={'sans-serif'} whiteSpace={'pre-wrap'}>
                     {product?.description && product.description}
                 </Text>
-
+                {isLoading && <Text fontSize={18}>Cargando...</Text>}
                 {product?.images !== undefined && isDesktop &&
                     <Carousel responsive={thumbnails}
                         containerClass={`${classes.thumbnails} ${product.images.length < (thumbnails.desktop.items+1)

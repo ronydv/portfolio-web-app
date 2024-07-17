@@ -1,4 +1,4 @@
-import { Stack, Checkbox, Divider, Text, useColorMode, Flex, useColorModeValue } from '@chakra-ui/react';
+import { Stack, Checkbox, Divider, Text, useColorMode, Flex, useColorModeValue, Spinner } from '@chakra-ui/react';
 import classes from './catalog.module.css';
 import { useFetch } from '../../hooks/useFetch';
 import { ChangeEvent, useEffect, useState } from 'react';
@@ -19,8 +19,8 @@ const CatalogFilter = ({sector, selectedCategories, selectedTypes, setSelectedCa
     const { colorMode } = useColorMode();
     const [categoryUrl, setCategoryUrl]=useState<string>("");
     const [typeUrl, setTypeUrl]=useState<string>("");
-    const {data:categories}=useFetch<Category>(categoryUrl);
-    const {data:types}=useFetch<Type>(typeUrl);
+    const {data:categories, isLoading:loadingCategories}=useFetch<Category>(categoryUrl);
+    const {data:types, isLoading:loadingTypes}=useFetch<Type>(typeUrl);
     const isCategorySelected = (category: string):boolean => selectedCategories?.includes(category);
     const isTypeSelected = (type: string):boolean => selectedTypes?.includes(type);
     const [disableCheckbox, setDisableCheckbox]=useState<boolean>(false);
@@ -53,39 +53,46 @@ const CatalogFilter = ({sector, selectedCategories, selectedTypes, setSelectedCa
     return (
         
         <div className={`${classes.filter} ${colorMode === 'light' ? classes.light : classes.dark}`}>
-            {/* categories sector */}
+            {/* categories */}
             <Flex direction={'row'}>
                 
                 <Text fontSize='lg' color={colorGray} pl={3} fontFamily={'sans-serif'} fontWeight={600}>Categorias: </Text>
             </Flex>
             <Stack mb={3} paddingLeft={5}>
-                {Array.isArray(categories) && categories.map((category, i) => (
-                    <Checkbox colorScheme='red'
-                        key={i}
-                        value={category.name}
-                        isDisabled={disableCheckbox}
-                        isChecked={isCategorySelected(category?.name!)}//false if the setSelectedCategories is set to empty in the useEffect of ProductGrid.tsx
-                        onChange={(e) => handleCategoriesCheckbox(e)}>{category.name}
-                    </Checkbox>
-                ))}
+                {loadingCategories ? <Spinner thickness='4px'
+                                            speed='0.65s' emptyColor='gray.200'
+                                            color='purple.500' size='md' /> 
+                    :
+                    Array.isArray(categories) && categories.map((category, i) => (
+                        <Checkbox colorScheme='red'
+                            key={i}
+                            value={category.name}
+                            isDisabled={disableCheckbox}
+                            isChecked={isCategorySelected(category?.name!)}//false if the setSelectedCategories is set to empty in the useEffect of ProductGrid.tsx
+                            onChange={(e) => handleCategoriesCheckbox(e)}>{category.name}
+                        </Checkbox>
+                    ))}
             </Stack>
 
-            {/* product type sector */}
+            {/* types */}
             <Flex direction={'row'}>
                 {/* <div className={classes['filter-title-border']} /> */}
                 <Text fontSize='lg' color={colorGray} pl={3} fontFamily={'sans-serif'} fontWeight={600}>Tipos: </Text>
             </Flex>
             <Stack mb={3} paddingLeft={5}>
-                {Array.isArray(types) && types.map((type, i) => (
-                    <Checkbox colorScheme='red'
-                        key={i}
-                        value={type.productType}
-                        isDisabled={disableCheckbox}
-                        isChecked={isTypeSelected(type?.productType!)}
-                        onChange={(e) => handleTypesCheckbox(e)}
-                    >{type.productType}
-                    </Checkbox>
-                ))}
+                {loadingTypes ? <Spinner thickness='4px'
+                                                speed='0.65s' emptyColor='gray.200'
+                                                color='purple.500' size='md' /> 
+                    :
+                    Array.isArray(types) && types.map((type, i) => (
+                        <Checkbox colorScheme='red'
+                            key={i}
+                            value={type.productType}
+                            isDisabled={disableCheckbox}
+                            isChecked={isTypeSelected(type?.productType!)}
+                            onChange={(e) => handleTypesCheckbox(e)}>{type.productType}
+                        </Checkbox>
+                    ))}
             </Stack>
 
         </div>
