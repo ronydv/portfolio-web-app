@@ -115,7 +115,7 @@ const ProductDetails = () => {
                 <Box mb={2} mt={1}>
                     <Badge variant='solid' fontSize='15px' colorScheme='red'>{product?.productType}</Badge>
                     {/* set the categories inside a loop */}
-                    {product?.categories?.map((category, i) => (
+                    {Array.isArray(product?.categories) && product?.categories?.map((category, i) => (
                         <Text key={i} fontSize={'lg'}>
                             <span style={{ color: 'var(--chakra-colors-blue-300)', margin: '4px' }}>•</span>
                             {category.name}

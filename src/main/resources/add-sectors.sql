@@ -1,1 +1,1 @@
-INSERT INTO sector(name) VALUES('Designs'),('Machinery'),('Automations');
+INSERT INTO sector(name) VALUES('Diseños'),('Maquinarias'),('Automatizaciones');

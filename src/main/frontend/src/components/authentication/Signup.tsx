@@ -15,7 +15,7 @@ const Signup = () => {
 
     const password=useRef<HTMLInputElement>(null);
     const matchPassword=useRef<HTMLInputElement>(null);
-    
+    const [isLoading, setIsLoading]=useState(false);
     const notification = useToast();
 
     const showToast=()=>{
@@ -41,7 +41,8 @@ const Signup = () => {
     
     const handleSubmit = async (event:FormEvent<HTMLFormElement>) =>{
         event.preventDefault();
-        try {         
+        setIsLoading(true); 
+        try {        
             const response = await axios.post<User>("/api/v1/auth/signup",
                 user, {//object to send to the server
                 headers: {
@@ -49,9 +50,11 @@ const Signup = () => {
                     "Content-Type": "application/json",
                 },
             });
+            setIsLoading(false);
             showToast();
             navigate("/login");
         } catch (error: unknown) {//TODO: DELETE ALL CONSOLE OUTPUT THAT CONTAINS USER INFORMATION
+            setIsLoading(false);
             if (axios.isAxiosError(error)) {
                 if (error.response?.status === 409) {
                     setError(error.response.data.message);
@@ -89,7 +92,7 @@ const Signup = () => {
 
                     <div>
                         <FormLabel>Número de teléfono</FormLabel>
-                        <Input type='text' placeholder="Ingrese su numero de teléfono" isInvalid={false}
+                        <Input type='text' placeholder="Ingrese su numero sin espacios en blanco" isInvalid={false}
                             onChange={(event) => {
                                 setUser({ ...user, phone: event.target.value });
                             }} />
@@ -116,7 +119,9 @@ const Signup = () => {
                     </div>
 
                     <div>
-                        <Button marginTop={3} type="submit" isDisabled={disable}>Registrar</Button>
+                        <Button marginTop={3} type="submit" 
+                            isLoading={isLoading} isDisabled={disable}>Registrar
+                            </Button>
                     </div>
                 </FormControl>
             </form>

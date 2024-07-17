@@ -12,9 +12,11 @@ const Login = () => {
     const [isError, setIsError]= useState<boolean>(false)
     const [error, setError]=useState<string | undefined>(undefined);
     const disable: boolean= user.email=== '' || user.password === '';
+    const [isLoading, setIsLoading]=useState(false);
 
     const handleSubmit = async (event:FormEvent<HTMLFormElement>) =>{
         event.preventDefault();
+        setIsLoading(true); 
         try{
             const response = await axios.post<LoginResponse>("/api/v1/auth/login",
                 user, {//object to send to the server
@@ -24,15 +26,17 @@ const Login = () => {
                 },
             });
             authContext?.setAuth(response.data);
+            setIsLoading(false);
             navigate("/");
         }catch(error:unknown){
+            setIsLoading(false);
             if(axios.isAxiosError(error)){
                 if (error.response?.status === 401) {
                     setIsError(true);
                     setError(error.response.data.message);
                 }else if (error.response?.status === 500){
                     setIsError(true);
-                    setError("Error while trying to login");
+                    setError("Error del servidor");
                 }
             }
         }
@@ -79,7 +83,8 @@ const Login = () => {
                     </div>
 
                     <div>
-                        <Button marginTop={3} type="submit" isDisabled={disable}>Iniciar sesión</Button>
+                        <Button marginTop={3} type="submit" 
+                            isLoading={isLoading} isDisabled={disable}>Iniciar sesión</Button>
                     </div>
                 </FormControl>
             </form>

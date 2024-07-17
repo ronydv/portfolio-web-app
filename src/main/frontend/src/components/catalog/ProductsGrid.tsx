@@ -87,7 +87,7 @@ const ProductsGrid = ({browse, setSector, selectedCategories, selectedTypes,tabI
             <Tabs colorScheme='red' index={tabIndex} variant='enclosed'
                   onChange={(index) => setTabIndex(index)}>
                 <TabList>
-                    {sectors.map((sector,i) => {
+                    {Array.isArray(sectors) && sectors.map((sector,i) => {
                         if(isDesktop) return <Tab key={i}>{sector.name}</Tab>
                         else return <Tab key={i}><Icon as={icons[i]} pr={1}/>{ tabIndex=== i && sector.name}</Tab>
                     })}

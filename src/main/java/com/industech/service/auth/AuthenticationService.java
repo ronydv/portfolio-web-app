@@ -46,6 +46,7 @@ public class AuthenticationService {
     private Set<Role> roles(){
         Set<Privilege>privileges=new HashSet<>(privilegeRepository.findAll());
         Set<Role> roles=new HashSet<>();
+        //switch "user" to "admin" to create an admin role, and then, switch again the value to "user"
         Optional<Role> role= roleRepository.findByRoleName("user");
         if(role.isPresent()){
             role.get().setPrivileges(privileges);

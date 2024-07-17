@@ -55,7 +55,7 @@ const SelectCategories = ({ colorMode, setProduct, product }: CategoriesProps) =
 
     useEffect(() => {//render items in the accordion in the first component load
         setCategories(data);
-        setMount(true);//set mount to true to render tags if this component is being used in ModifyProducts.tsx
+        setMount(true);//used to trigger the last useEffect to render tags if this component is being used in ModifyProducts.tsx
     }, [data]);
 
     useEffect(() => {//update the categories in the product object through re-rendering this component
@@ -70,6 +70,7 @@ const SelectCategories = ({ colorMode, setProduct, product }: CategoriesProps) =
             setTags({ names: product.categories.map(category => category.name || '') });
         }
         setMount(false);
+        console.log(tags);
     },[mount]);
 
     return (
@@ -111,7 +112,7 @@ const SelectCategories = ({ colorMode, setProduct, product }: CategoriesProps) =
                 </AccordionItem>
             </Accordion>
             <Grid mt={2} templateColumns='repeat(3, 1fr)' gap={2}>
-                {tags.names.map((item, i) => (
+                {tags.names.length > 0 && tags.names.map((item, i) => (
                     <Tag key={i}>{item}</Tag>
                 ))}
             </Grid>

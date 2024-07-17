@@ -59,7 +59,7 @@ const CatalogFilter = ({sector, selectedCategories, selectedTypes, setSelectedCa
                 <Text fontSize='lg' color={colorGray} pl={3} fontFamily={'sans-serif'} fontWeight={600}>Categorias: </Text>
             </Flex>
             <Stack mb={3} paddingLeft={5}>
-                {categories.map((category, i) => (
+                {Array.isArray(categories) && categories.map((category, i) => (
                     <Checkbox colorScheme='red'
                         key={i}
                         value={category.name}
@@ -76,7 +76,7 @@ const CatalogFilter = ({sector, selectedCategories, selectedTypes, setSelectedCa
                 <Text fontSize='lg' color={colorGray} pl={3} fontFamily={'sans-serif'} fontWeight={600}>Tipos: </Text>
             </Flex>
             <Stack mb={3} paddingLeft={5}>
-                {types.map((type, i) => (
+                {Array.isArray(types) && types.map((type, i) => (
                     <Checkbox colorScheme='red'
                         key={i}
                         value={type.productType}
