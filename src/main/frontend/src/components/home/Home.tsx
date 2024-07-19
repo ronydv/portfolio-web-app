@@ -14,15 +14,15 @@ type Service={
 }
 const services:Service[]=[
     {title:'Diseños',
-        image:designImage,
+        image:'https://res.cloudinary.com/dlm0bynvi/image/upload/v1721395574/index/nuedkerapilgdhnyqbh6.jpg',
         description:'Diseños de plantas y equipos industriales enfocados a la agroindustria'},
 
     {title:'Maquinarias',
-        image:machineryImage,
+        image:'https://res.cloudinary.com/dlm0bynvi/image/upload/v1721395572/index/v65j7imimx5ojmuyrjgh.jpg',
         description:'Manufactura e instalación de las maquinarias diseñadas'},
 
     {title:'Automatizaciones',
-        image:automationImage,
+        image:'https://res.cloudinary.com/dlm0bynvi/image/upload/v1721395572/index/rswfcycqqjf4ypgrzybq.jpg',
         description:'Servicios de Automatización para equipos industriales'}
 ];
 const Home = () => {
@@ -59,7 +59,8 @@ const Home = () => {
                     <Image objectFit='cover' borderRadius={isDesktop ? '0 8px 8px 0' : 8}
                         clipPath={isDesktop ? 'polygon(10% 0%, 100% 0%, 100% 100%, 0% 100%)' : ''}
                         boxSize={isDesktop ? '35vw' : ''}
-                        src={MainCover}
+                        /* src={MainCover} */
+                        src={'https://res.cloudinary.com/dlm0bynvi/image/upload/v1721395573/index/u3e4nsikizrfdbejfsfe.jpg'}
                         alt={'main-cover'} />
                 </div>
             </section>

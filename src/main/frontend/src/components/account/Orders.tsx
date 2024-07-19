@@ -41,7 +41,6 @@ const Orders = () => {
     }, [errorFromOrdersByUser]);
 
     useEffect(() => {
-        setTableMessage("cargando...");
         //orders for admin view
         if (user.user?.authorities?.find((role: Role) => role.authority === Role.ADMIN)) {
             setFetchAll('/api/v1/orders/order/all' +

@@ -28,19 +28,18 @@ const Navbar = () => {
                     color={darkMode}
                     icon={<StoreIcon />} />
             </Link>
-            
-            <div className={classes['cart-container']}>
-                    <Link to={'/cart'}>
-                    <IconButton isRound={true} variant='ghost' aria-label='Dark Mode'
-                        fontSize='20px'
-                        color={darkMode}
-                        icon={<CartIcon/>} /> 
-                    </Link>
-                    <Flex className={classes['cart-value']} bgColor={'orange.200'}>
-                        <Text as={'span'} fontWeight={'900'} fontSize={'12px'} color={'gray.600'}>{cartContext?.items.length}</Text>
-                    </Flex>
-            </div>
-
+            <Link to={'/cart'}>
+                <div className={classes['cart-container']}>
+                        <IconButton isRound={true} variant='ghost' aria-label='Dark Mode'
+                            fontSize='20px'
+                            color={darkMode}
+                            icon={<CartIcon/>} /> 
+                        
+                        <Flex className={classes['cart-value']} bgColor={'orange.200'}>
+                            <Text as={'span'} fontWeight={'900'} fontSize={'12px'} color={'gray.600'}>{cartContext?.items.length}</Text>
+                        </Flex>
+                </div>
+            </Link>
             <a href={`https://wa.me/595971217202?text=${greet}`} target="_blank" rel="noopener noreferrer">
                 <IconButton isRound={true} variant='ghost' aria-label='Dark Mode'
                     fontSize='32px'
