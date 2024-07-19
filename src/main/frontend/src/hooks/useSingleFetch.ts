@@ -11,7 +11,7 @@ interface FetchResult<T> {
 export const useSingleFetch = <T>(url: string): FetchResult<T> => {
     const axiosPrivate = useInterceptor();
     const [data, setData] = useState<T | null>(null); // Use the generic type parameter here
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<AxiosError | unknown | null>(null);
     
     useEffect(() => {
@@ -21,6 +21,7 @@ export const useSingleFetch = <T>(url: string): FetchResult<T> => {
         
         const getData = async () => {
             try {
+                setIsLoading(true);
                 const response = await axiosPrivate.get<T>(url, { signal });
                 if (isMounted) {
                     setData(response.data);
@@ -28,11 +29,10 @@ export const useSingleFetch = <T>(url: string): FetchResult<T> => {
                     setError(null);
                 }
             } catch (error: unknown) {
+                setIsLoading(false);
                 if (axios.isAxiosError(error)) {
-                    /* axios.isCancel(error) && console.log("Fetch cancelled: " + error.message); */
-                    setError(error.response?.data.message);
+                    setError(error);
                 } else {
-                    setIsLoading(false);
                     setError(error);
                 }
             }

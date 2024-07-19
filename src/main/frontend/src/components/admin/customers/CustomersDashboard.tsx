@@ -15,11 +15,11 @@ const CustomersDashboard = () => {
     const grayColor = useColorModeValue('gray.600', 'gray.400');
     const { colorMode } = useColorMode();
     const isDesktop = useMatchMedia();
+    const [selectedButton, setSelectedButton]=useState(-1);
 
     //users section
     const [usersUrl, setUsersUrl] = useState("");
     const { data:users } = useSingleFetch<PaginatedUsers>(usersUrl);
-    const [selectedButton, setSelectedButton]=useState(0);
     const [userId, setUserId]=useState(0);
     const usersPageSize = 6;
     const [currentUsersPage, setCurrentUsersPage] = useState(1);
@@ -30,14 +30,15 @@ const CustomersDashboard = () => {
 
     //orders section
     const [ordersUrl, setOrdersUrl] = useState("");
-    const { data: orders, error } = useSingleFetch<Order>(ordersUrl);
+    const { data: orders, error, isLoading:loadingOrders } = useSingleFetch<Order>(ordersUrl);
     const ordersPageSize = 6;
     const [currentOrdersPage, setCurrentOrdersPage] = useState(1);
     const [toggleIsPending, setToggleIsPending] = useState(false);
     const [toggleIsChecked, setToggleIsChecked] = useState(false);
     const [totalOrders, setTotalOrders] = useState(0);
     const handleOrdersPageChange = (page: number) => setCurrentOrdersPage(page);
-    const [isLoading, setIsLoading]=useState(false);//variable used upon deleting order
+    const [isChecking, setIsChecking]=useState(false);//variable used upon checking/finalizing order
+    const [isDeleting, setIsDeleting]=useState(false);//variable used upon deleting order
 
     useEffect(()=>{//load users
         if(browse){
@@ -67,6 +68,7 @@ const CustomersDashboard = () => {
     };
 
     const sendOrderStatus= async (order:OrderView)=>{
+        setIsChecking(true);
         const response = await axiosPrivate.put<OrderView>("/api/v1/orders/order",//add try catch if needed
             order, {
             headers: {
@@ -74,10 +76,11 @@ const CustomersDashboard = () => {
                 "Content-Type": "application/json",
             },
         });
+        setIsChecking(false);
         setOrdersUrl("");
     }
 
-    const finalizeOrder = (order: OrderedProduct) => {
+    const finalizeOrder = (order: OrderedProduct,buttonIndex:number) => {
         const finalize = (order: OrderedProduct) => {
             const finalizedOrder:OrderView={
                 orderId:order.orderId,
@@ -86,11 +89,16 @@ const CustomersDashboard = () => {
             sendOrderStatus(finalizedOrder);
         };
         return (<Button variant={'ghost'} colorScheme="green" size={'sm'}
-                       onClick={() => finalize(order)}>✓checkear
+                        onClick={() => {
+                                    setSelectedButton(buttonIndex);
+                                    finalize(order);}}
+                        >
+                        {isChecking && selectedButton === buttonIndex ?
+                                                <Spinner thickness='4px' speed='0.65s' color='red.500' size='xs' />:'✓checkear'}
               </Button>);
     };
 
-    const checkOrder = (order: OrderedProduct) => {
+    const checkOrder = (order: OrderedProduct,buttonIndex:number) => {
         const check = (order: OrderedProduct) => {
             const checkedOrder:OrderView={
                 orderId:order.orderId,
@@ -99,19 +107,24 @@ const CustomersDashboard = () => {
             sendOrderStatus(checkedOrder);
         };
         return (<Button variant={'ghost'} colorScheme="green" size={'sm'}
-                       onClick={() => check(order)}>✓checkear
+                       onClick={() => {
+                                    setSelectedButton(buttonIndex);
+                                    check(order);}}
+                        >
+                        {isChecking && selectedButton === buttonIndex ?
+                                                <Spinner thickness='4px' speed='0.65s' color='red.500' size='xs' />:'✓checkear'}
               </Button>);
     };
 
     const deleteOrder = async(order: OrderedProduct) => {
-        setIsLoading(true);
+        setIsDeleting(true);
         const response = await axiosPrivate.delete<string>(`/api/v1/orders/order/${order.orderId}`, {
             headers: {
                 "Accept": "text/plain",//Expect plain text response from the backend
             },
             responseType: 'text'//the string response from the backend
         });
-        setIsLoading(false);
+        setIsDeleting(false);
         setOrdersUrl("");//reset the orders table upon the selected order is deleted
     };
 
@@ -155,6 +168,7 @@ const CustomersDashboard = () => {
                                 onPageChange={page => handleUsersPageChange(page)}
                             />
                         </div>
+                        
                         <TableContainer width={isDesktop ? '40vw' : '70vw'}>
                             <Table variant='simple' size={isDesktop ? 'md' : 'sm'}>
                                 <Thead>
@@ -173,6 +187,7 @@ const CustomersDashboard = () => {
                                                         variant={i === selectedButton ? 'solid': 'ghost'} 
                                                         colorScheme={i === selectedButton ? 'red':''} 
                                                         onClick={() => {
+                                                            console.log("loading orders??: ",loadingOrders)
                                                             setUserId(user.id!);
                                                             setSelectedButton(i);
                                                             setCurrentOrdersPage(1);//reset orders position when a new user is selected
@@ -199,14 +214,15 @@ const CustomersDashboard = () => {
                                 Pedidos del cliente: "<span style={{ color: 'crimson' }}>{orders?.userName}</span>"
                             </Text>
 
-                            <div className={`${classes['paginator-container']}
-                                    ${colorMode === 'light' ? classes['pagination-light'] : classes['pagination-dark']}`}>
-                                <ResponsivePagination
-                                    total={Math.ceil(totalOrders / ordersPageSize)}
-                                    current={currentOrdersPage}
-                                    onPageChange={page => handleOrdersPageChange(page)}
-                                />
-                            </div>
+                            {loadingOrders ? 'cargando ordenes...' :
+                                <div className={`${classes['paginator-container']}
+                                        ${colorMode === 'light' ? classes['pagination-light'] : classes['pagination-dark']}`}>
+                                    <ResponsivePagination
+                                        total={Math.ceil(totalOrders / ordersPageSize)}
+                                        current={currentOrdersPage}
+                                        onPageChange={page => handleOrdersPageChange(page)}
+                                    />
+                                </div>}
 
                             <TableContainer width={isDesktop ? '45vw' : '70vw'}>
                                 <Table variant='simple' size={isDesktop ? 'md' : 'sm'}>
@@ -235,14 +251,13 @@ const CustomersDashboard = () => {
                                                 <Td>{order.productName}</Td>
                                                 <Td>
                                                     {isPendingTag(order.isPending!)}
-                                                    {finalizeOrder(order)}
+                                                    {finalizeOrder(order,i)}
                                                 </Td>
                                                 <Td>
                                                     {isCheckedTag(order.isChecked!)}
-                                                    {checkOrder(order)}
+                                                    {checkOrder(order,i)}
                                                 </Td>
                                                 <Td paddingLeft={1}>
-                                                    {isLoading}
                                                     <IconButton isRound={true} variant='ghost' aria-label='Dark Mode'
                                                         onClick={() => {
                                                             deleteOrder(order);
@@ -251,7 +266,7 @@ const CustomersDashboard = () => {
                                                         fontSize='20px'
                                                         isDisabled={!order.isPending && order.isChecked}/* TODO: ADD BROWSE FUNCTION */
                                                         color={'red'}
-                                                        icon={isLoading && selectedButton === i ?
+                                                        icon={isDeleting && selectedButton === i ?
                                                             <Spinner thickness='4px' speed='0.65s' color='red.500' size='xs' />
                                                             :
                                                             <DeleteIcon />

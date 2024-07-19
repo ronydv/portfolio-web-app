@@ -14,6 +14,7 @@ const Profile = () => {
     const [isEmailValid, setIsEmailValid] = useState(false);
     const [disable, setDisable] = useState(true);
     const [error, setError] = useState<string>();
+    const [isLoading, setIsLoading]=useState(false);
 
     useEffect(() => {
         if (user?.email) {
@@ -34,7 +35,8 @@ const Profile = () => {
     
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        try {         
+        try {
+            setIsLoading(true);      
             const response = await axiosPrivate.put<User>("/api/v1/users/user",
                 userState, {//object to send to the server
                 headers: {
@@ -44,7 +46,9 @@ const Profile = () => {
             });
             //update the current auth state after updating the user
             setAuth( prevAuth => ( {...prevAuth, user: response.data } ) );
+            setIsLoading(false);   
         } catch (error: unknown) {
+            setIsLoading(false);
             if (axios.isAxiosError(error)) {
                 if(error.response?.data.message.includes('duplicate key')){
                     setError('Email already exists');
@@ -58,15 +62,18 @@ const Profile = () => {
     }
     const handleDelete= async () =>{
         try {
+            setIsLoading(true); 
             await axiosPrivate.delete<string>(`/api/v1/users/user/${user?.id}`, {
                 headers: {
                     "Accept": "text/plain",//Expect plain text response from the backend
                 },
                 responseType: 'text'
             });
+            setIsLoading(false);
             setAuth({});
             navigate("/")
         } catch (error) {
+            setIsLoading(false);
             if (axios.isAxiosError(error)) {
                 setError(error.response?.data.message);
             }
@@ -74,7 +81,7 @@ const Profile = () => {
     }
     return ( 
         <div className={classes['profile-container']}>
-            <h2>Editar Cuenta</h2>
+            <h2>{isLoading ? 'Guardando cambios...':'Editar Cuenta'}</h2>
             <form onSubmit={handleSubmit}>                         {/*invalidate form if there is an error message */}
                 <FormControl as='fieldset' className={classes.form} isInvalid={error !== ''} >
                     <div>
@@ -119,12 +126,11 @@ const Profile = () => {
                     </div>
 
                     <div>
-                        <Button marginTop={3} type="submit" isDisabled={disable}>Guardar Cambios</Button>
+                        <Button marginTop={3} type="submit" isDisabled={disable}>
+                                Guardar Cambios
+                        </Button>
                         
-                        <Button variant={'ghost'} colorScheme="red" 
-                                marginLeft={2} marginTop={3}
-                                onClick={handleDelete}
-                                >
+                        <Button variant={'ghost'} colorScheme="red" marginLeft={2} marginTop={3} onClick={handleDelete}>
                                 Borrar cuenta
                         </Button>
                     </div>

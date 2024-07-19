@@ -11,6 +11,7 @@ import { IoIosSearch as SearchIcon } from "react-icons/io";
 import ProductCard from "./ProductCard";
 import { IconType } from "react-icons";
 import useMatchMedia from "../../hooks/useMatchMedia";
+import axios from "axios";
 
 const icons: IconType[]= [Designs, Machinery, Automations];
 type ProductsGridProps={
@@ -30,12 +31,11 @@ const ProductsGrid = ({browse, loadingSectors, setSector, selectedCategories, se
     
     const isDesktop = useMatchMedia();
     const { colorMode } = useColorMode();
-    //only for the pagination gui, not used in the page url
-    const handlePageChange = (page: number) => setCurrentPage(page);
+    const handlePageChange = (page: number) => setCurrentPage(page);//only for the pagination gui, not used in the page url
     const pageSize = 4;
     const [url, setUrl]=useState("");
-    const { data:products, error } = useSingleFetch<PaginatedProducts>(url);
-    const [isLoading, setIsLoading]=useState(false);
+    const { data, error, isLoading } = useSingleFetch<PaginatedProducts>(url);
+    const [products, setProducts] = useState<PaginatedProducts | null>(null);
 
     const filter =(sector:string)=>{
         switch (true) {
@@ -54,9 +54,9 @@ const ProductsGrid = ({browse, loadingSectors, setSector, selectedCategories, se
     }
 
     useEffect(()=>{
-        setIsLoading(true);
-        if(products?.products?.length! > 0)setIsLoading(false);
-    },[products]);
+        setProducts(data);
+        if(axios.isAxiosError(error))setProducts(null);
+    },[data,error]);
 
     useEffect(()=>{//fetch data according to the selected tab, categories or types
         if (browse === "") {
@@ -64,7 +64,6 @@ const ProductsGrid = ({browse, loadingSectors, setSector, selectedCategories, se
                 if (tabIndex === i) {
                     setSector(sector.name);//update sector to set within the url for CatalogFilter.tsx
                     filter(sector.name);
-                    setIsLoading(true);
                 }
             });
         }else {
@@ -74,7 +73,6 @@ const ProductsGrid = ({browse, loadingSectors, setSector, selectedCategories, se
             if (tabIndex === i) {
                 setSector(sector.name);//update sector to set within the url for CatalogFilter.tsx
                 filter(sector.name);
-                setIsLoading(true);
             }
         });
     },[sectors, browse, currentPage, tabIndex, selectedCategories, selectedTypes, url]);
@@ -83,10 +81,8 @@ const ProductsGrid = ({browse, loadingSectors, setSector, selectedCategories, se
         setCurrentPage(1);
         if(browse !== ""){
             setTabIndex(sectors.length);//sector.lenght is the last value of the tab which is <Tab>Browse Result:</Tab>
-            setIsLoading(true);
         }else{
             setTabIndex(0);
-            setIsLoading(false);
         } 
     }, [browse]);
 
@@ -94,6 +90,10 @@ const ProductsGrid = ({browse, loadingSectors, setSector, selectedCategories, se
         if(browse) return (
             isDesktop ? <Tab>Resultados de la Búsqueda:</Tab>:<Tab><Icon as={SearchIcon}/></Tab>
         )
+    }
+    const statusMessage = () =>{
+        if(isLoading){return <p>Cargando productos...</p>}
+        if(axios.isAxiosError(error)){return <p>{error.response?.data.message}</p>}
     }
     return ( 
         <div className={`${classes['product-list-container']} 
@@ -113,13 +113,13 @@ const ProductsGrid = ({browse, loadingSectors, setSector, selectedCategories, se
                     {resultsTab(browse)}
                 </TabList>}
                 <TabPanels>
-                {isLoading && <p>Cargando productos...</p> }
+                {statusMessage() }
                     <ResponsivePagination 
                         total={Math.ceil(products?.totalProducts! / pageSize)}
                         current={currentPage}
                         onPageChange={page => handlePageChange(page)}
                     />
-                {!isLoading && products?.products && products?.products.map((product, i)=>(
+                {!isLoading && products?.products  && products.products?.map((product, i)=>(
                         <div key={i} className={classes['card-container']}>
                             <ProductCard product={product} 
                                          colorMode={colorMode}

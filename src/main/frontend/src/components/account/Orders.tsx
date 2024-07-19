@@ -11,14 +11,12 @@ import Restricted from "../authentication/Restricted";
 import { CiCircleCheck as Check } from "react-icons/ci";
 import useInterceptor from "../../hooks/useInterceptor";
 import useMatchMedia from "../../hooks/useMatchMedia";
+import axios from "axios";
 
-const Orders = () => {//todo: get the user from authContext
-    
+const Orders = () => {
     const isDesktop = useMatchMedia();
     const axiosPrivate = useInterceptor();
     const { auth: user } = useAuthContext();
-    //replace value with the user from AuthContext and check Cart component as well;
-    //const auth: { userId: number; userName: string; } = { userId: 2, userName: "user" };
     const grayColor = useColorModeValue('gray.600', 'gray.400');
     const { colorMode } = useColorMode();
     const pageSize = 6;
@@ -27,25 +25,41 @@ const Orders = () => {//todo: get the user from authContext
     const [fetchByUser, setFetchByUser] = useState("");
     const [fetchAll, setFetchAll] = useState("");
     const [fetchStatuses, setFetchStatuses] = useState("");
-    const { data: ordersByuser, error: errorFromOrdersByUser } = useSingleFetch<Order>(fetchByUser);
-    const { data: orders, error: errorFromOrders } = useFetch<OrderView>(fetchAll);
+    const { data: ordersByuser, error: errorFromOrdersByUser, isLoading:loadingUserOrders } = useSingleFetch<Order>(fetchByUser);
+    const { data: orders, error: errorFromOrders, isLoading:loadingAllOrders } = useFetch<OrderView>(fetchAll);
     const { data: statuses, error: errorFromStatuses } = useSingleFetch<OrderStatus>(fetchStatuses);
     const handlePageChange = (page: number) => setCurrentPage(page);
     const [toggleIsPending, setToggleIsPending] = useState(false);
     const [toggleIsChecked, setToggleIsChecked] = useState(false);
     const [response, setResponse] = useState<OrderView>({});
+    const [isChecking, setIsChecking]= useState(false);
+    const [selectedButton, setSelectedButton]=useState(-1);
+    const [tableMessage, setTableMessage]=useState("");
 
     useEffect(() => {
+        if (axios.isAxiosError(errorFromOrdersByUser)) setTableMessage(errorFromOrdersByUser.response?.data.message);
+    }, [errorFromOrdersByUser]);
+
+    useEffect(() => {
+        setTableMessage("cargando...");
+        //orders for admin view
         if (user.user?.authorities?.find((role: Role) => role.authority === Role.ADMIN)) {
             setFetchAll('/api/v1/orders/order/all' +
                 `?page=${currentPage}&page-size=${pageSize}&sort-pending=${toggleIsPending}&sort-checked=${toggleIsChecked}`);
-            orders.length && setTotalElements(orders[0].total!);
+            orders.length > 0 && setTotalElements(orders[0].total!);
             setFetchStatuses('/api/v1/orders/order/status');
+            if(orders){
+                setTableMessage("*Producto checkeado significa que el administrador ha revisado la orden");
+            }
+        //orders for user view
         } else {
             setFetchByUser('/api/v1/orders/order' +
                 `?page=${currentPage}&page-size=${pageSize}&user-id=${user.user?.id}` +
                 `&sort-pending=${toggleIsPending}&sort-checked=${toggleIsChecked}`);
             setTotalElements(ordersByuser?.total!);
+            if(ordersByuser){
+                setTableMessage("*Producto checkeado significa que el administrador ha revisado la orden");
+            }
         }
     }, [orders, ordersByuser, toggleIsChecked, toggleIsPending, currentPage, response]);
 
@@ -60,9 +74,8 @@ const Orders = () => {//todo: get the user from authContext
 
     const checkOrder = (index: number) => {
         const check = async (index: number) => {
-            console.log(orders[index]);
             orders[index].isChecked = true;
-            
+            setIsChecking(true)
             const response = await axiosPrivate.put<OrderView>("/api/v1/orders/order",//add try catch if needed
                 orders[index], {
                 headers: {
@@ -70,11 +83,16 @@ const Orders = () => {//todo: get the user from authContext
                     "Content-Type": "application/json",
                 },
             });
+            setIsChecking(false);
             setResponse(response.data);
             setFetchStatuses("");//update the url so the useEffect from above will be called and therefore updated data will be received 
         };
         return <Button variant={'ghost'} colorScheme="green" leftIcon={<Check />} size={'sm'}
-            onClick={() => check(index)}>Checkear</Button>;
+                        onClick={() => {
+                                    setSelectedButton(index);
+                                    check(index);
+                }}>{isChecking && selectedButton === index ?'Checkeando...':'Checkear'}
+            </Button>;
     };
 
     return (
@@ -92,7 +110,7 @@ const Orders = () => {//todo: get the user from authContext
             </div>
             <TableContainer width={!isDesktop ? '60vw': ''}>
                     <Table variant='simple' size={isDesktop ? 'md': 'sm'}>
-                        <TableCaption>*Producto checkeado significa que el administrador ha revisado el pedido</TableCaption>
+                        {<TableCaption>{tableMessage}</TableCaption>}
                         <Thead>
                             <Tr>
                                 <Restricted to={[Role.ADMIN]}>
@@ -116,26 +134,28 @@ const Orders = () => {//todo: get the user from authContext
                                 </Restricted>
                             </Tr>
                         </Thead>
+                        {loadingAllOrders || loadingUserOrders ? <p>Cargando...</p>:
                         <Tbody>
-                            {user.user?.authorities?.find((role: Role) => role.authority === Role.ADMIN) ?
-                                orders?.map((order, i) => (
-                                    <Tr key={i}>
-                                        <Td>{order.userName}</Td>
-                                        <Td>{order.productName}</Td>
-                                        <Td>{isPendingTag(order.isPending!)}</Td>
-                                        <Td>{isCheckedTag(order.isChecked!)}</Td>
-                                        <Td>{checkOrder(i)}</Td>
-                                    </Tr>
-                                ))
-                                :
-                                ordersByuser?.orderedProducts?.map((order, i) => (
-                                    <Tr key={i}>
-                                        <Td>{order.productName}</Td>
-                                        <Td>{isPendingTag(order.isPending!)}</Td>
-                                        <Td>{isCheckedTag(order.isChecked!)}</Td>
-                                    </Tr>
-                                ))}
-                        </Tbody>
+                        {user.user?.authorities?.find((role: Role) => role.authority === Role.ADMIN) ?
+                            orders?.map((order, i) => (
+                                <Tr key={i}>
+                                    <Td>{order.userName}</Td>
+                                    <Td>{order.productName}</Td>
+                                    <Td>{isPendingTag(order.isPending!)}</Td>
+                                    <Td>{isCheckedTag(order.isChecked!)}</Td>
+                                    <Td>{checkOrder(i)}</Td>
+                                </Tr>
+                            ))
+                            :
+                            ordersByuser?.orderedProducts?.map((order, i) => (
+                                <Tr key={i}>
+                                    <Td>{order.productName}</Td>
+                                    <Td>{isPendingTag(order.isPending!)}</Td>
+                                    <Td>{isCheckedTag(order.isChecked!)}</Td>
+                                </Tr>
+                            ))}
+                    </Tbody>
+                        }
                         <Tfoot>
                             <Tr>
                                 <Restricted to={[Role.ADMIN]}>
