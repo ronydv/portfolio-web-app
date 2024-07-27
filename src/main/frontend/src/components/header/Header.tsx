@@ -33,7 +33,7 @@ const Header = () => {
                          lineHeight={{base:'1.2',lg: "1.2"}}>
                     <Text as='span'
                           bgGradient='linear(to-t, #e53e3e, #941414)'
-                          bgClip='text' fontFamily={'abnes'}>IndusTEch</Text>
+                          bgClip='text' fontFamily={'abnes'}>Demo App</Text>
                     
                 </Heading>
             </div>
@@ -42,10 +42,10 @@ const Header = () => {
 
             {isDesktop && <div className={classes.container}>
                 <Link to={'/'}>
-                    <Button marginRight={2} variant='link' color={grayColor}>Inicio</Button>
+                    <Button marginRight={2} variant='link' color={grayColor}>Home</Button>
                 </Link>
                 <Link to={'/catalog'}>
-                    <Button marginRight={2} variant='link' color={grayColor}>Catálogo</Button>
+                    <Button marginRight={2} variant='link' color={grayColor}>Catalog</Button>
                 </Link>
             </div>}
 

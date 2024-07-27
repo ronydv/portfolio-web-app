@@ -13,17 +13,17 @@ type Service={
     description:string;
 }
 const services:Service[]=[
-    {title:'Diseños',
+    {title:'****',
         image:'https://res.cloudinary.com/dlm0bynvi/image/upload/v1721395574/index/nuedkerapilgdhnyqbh6.jpg',
-        description:'Diseños de plantas y equipos industriales enfocados a la agroindustria'},
+        description:'-----------------------------------'},
 
-    {title:'Maquinarias',
+    {title:'****',
         image:'https://res.cloudinary.com/dlm0bynvi/image/upload/v1721395572/index/v65j7imimx5ojmuyrjgh.jpg',
-        description:'Manufactura e instalación de las maquinarias diseñadas'},
+        description:'------------------------------------'},
 
-    {title:'Automatizaciones',
+    {title:'****',
         image:'https://res.cloudinary.com/dlm0bynvi/image/upload/v1721395572/index/rswfcycqqjf4ypgrzybq.jpg',
-        description:'Servicios de Automatización para equipos industriales'}
+        description:'-----'}
 ];
 const Home = () => {
     const grayColor = useColorModeValue('gray.600','gray.400');
@@ -37,22 +37,21 @@ const Home = () => {
                 <div className={`${classes.cover} ${!isDesktop && classes.mobile}`}>
                     <Flex direction={'column'}>
                         <span className={`${classes.title} ${!isDesktop && classes.mobile}`}>
-                            Diseño y manufactura de equipos industriales
+                            Title/description about the web app
                         </span>
                         <Text mt={3} fontSize={isDesktop ? 18 : 15} pr={isDesktop ? 20 : 0} color={grayColor} fontWeight={'600'}>
-                            Pida un producto o servicio específico a medida o 
-                            explore los más de 200 productos y servicios que tenemos a disposición.
+                            Brief explanatory intro for the content of the app
                         </Text>
                         {isDesktop ? 
                             <Box mt={7}>
                                 <Button variant={'outline'} colorScheme='red'
                                     rightIcon={<Outward />} onClick={() => navigate("/catalog")}>
-                                    Explorar
+                                    Explore
                                 </Button>
                             </Box> :
                             <Button variant={'outline'} colorScheme='red' mt={7} mb={5}
                                     rightIcon={<Outward />} onClick={() => navigate("/catalog")}>
-                                    Explorar
+                                    Explore
                             </Button>
                         }
                     </Flex>

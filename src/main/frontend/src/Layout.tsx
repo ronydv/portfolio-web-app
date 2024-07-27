@@ -9,7 +9,7 @@ import WhatsappLogo from './assets/whatsapp-logo.png';
 const Layout = () => {
     const mode = useColorMode();
     const isDesktop=useMatchMedia();
-    const greet:string="Buenas, estoy interesado en consultar un producto";
+    const greet:string="Whatsapp greet";
 
     return (
         <div className={classes.layout}>
@@ -32,13 +32,13 @@ const Layout = () => {
             </div>
             {isDesktop &&
                 <div className={`${classes['whatsapp-icon']} ${mode.colorMode==='dark' && classes.dark}`}>
-                    <a href={`https://wa.me/595971217202?text=${greet}`} target="_blank" rel="noopener noreferrer">
+                    <a href={`https://wa.me/45645454?text=${greet}`} target="_blank" rel="noopener noreferrer">
                         <img src={WhatsappLogo} alt="WhatsApp" />
                     </a>
                 </div>
             }
             <footer style={{paddingLeft:'40px', marginTop:'10px'}}>
-                <p>Industech &copy; 2024. Todos los derechos reservados.</p>
+                <p>footer description</p>
             </footer>
         </div>
     );

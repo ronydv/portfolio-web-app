@@ -11,7 +11,7 @@ import CartContext, { CartItemContext } from "../../context/CartProvider";
 const Navbar = () => {
     const darkMode = useColorModeValue('gray.600','gray.400');
     const cartContext=useContext<CartItemContext | undefined>(CartContext);
-    const greet:string="Buenas, estoy interesado en consultar un producto";
+    const greet:string="Whatsapp greet";
 
     return ( 
         <div className={classes.navbar}>
@@ -40,7 +40,7 @@ const Navbar = () => {
                         </Flex>
                 </div>
             </Link>
-            <a href={`https://wa.me/595971217202?text=${greet}`} target="_blank" rel="noopener noreferrer">
+            <a href={`https://wa.me/456456456?text=${greet}`} target="_blank" rel="noopener noreferrer">
                 <IconButton isRound={true} variant='ghost' aria-label='Dark Mode'
                     fontSize='32px'
                     color={'#25d366'}
