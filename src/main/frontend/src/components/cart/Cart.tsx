@@ -39,7 +39,7 @@ const Cart = () => {
             });
             setIsLoading(false);
             clearCart();
-            setOrderResponse("Orden enviada!");
+            setOrderResponse("Order sent!");
         } catch(error){
             setIsLoading(false);
             if(axios.isAxiosError(error)) setError(error.response?.data.message);
@@ -49,12 +49,12 @@ const Cart = () => {
     const renderStatusMessage = (): JSX.Element => {
         if (!orderResponse) {
             if (items?.length! > 0) {
-                return isLoading ? <p>Enviando pedido...
+                return isLoading ? <p>Sending order...
                                       <Spinner thickness='4px'speed='0.65s' emptyColor='gray.200'color='purple.500' size='md'/>
                                    </p>
-                                 : <p>Agendar los siguientes servicios:</p>;
+                                 : <p>Schedule the following services:</p>;
                                  
-            }else return <p>No se ha seleccionado ningun ítem</p>;
+            }else return <p>No item has been selected</p>;
 
         } else {
             return <p>{orderResponse}</p>;
@@ -68,8 +68,8 @@ const Cart = () => {
             </Heading>
 
             {items?.length! > 0 && <Flex columnGap={4} mb={5}>
-                <Button onClick={sendServiceRequest}>Enviar petición</Button>
-                <Button variant={'outline'} colorScheme={'red'} onClick={clearCart}>Cancelar todos</Button>
+                <Button onClick={sendServiceRequest}>Send request</Button>
+                <Button variant={'outline'} colorScheme={'teal'} onClick={clearCart}>Cancel all</Button>
             </Flex>}
 
             {items?.map((product, i) =>
@@ -101,8 +101,8 @@ const Cart = () => {
                     <CardFooter>
                         <ButtonGroup spacing='2'>
                             <Button onClick={()=>removeItem(i)}
-                                    variant='outline' colorScheme='red'>
-                                Cancelar
+                                    variant='outline' colorScheme='teal'>
+                                Cancel
                             </Button>
                         </ButtonGroup>
                     </CardFooter>

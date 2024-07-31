@@ -30,7 +30,7 @@ public class SectorService {
         List<Sector> sectors = sectorRepository.findAll();
         if (sectors.isEmpty()) {
             log.error("No sectors found -> getSectors()");
-            throw new ProductException("No se encontraron sectores", HttpStatus.NOT_FOUND);
+            throw new ProductException("No sectors found", HttpStatus.NOT_FOUND);
         } else {
             return sectors.stream()
                     .map(sector -> new SectorDetails(sector.getName()))

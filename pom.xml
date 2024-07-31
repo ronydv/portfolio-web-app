@@ -11,7 +11,7 @@
 	<groupId>com.industech</groupId>
 	<artifactId>portfolio-web-app</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>industech-portfolio</name>
+	<name>portfolio-web-app</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>17</java.version>

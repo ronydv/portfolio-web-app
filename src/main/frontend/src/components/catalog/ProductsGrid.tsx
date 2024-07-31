@@ -88,18 +88,18 @@ const ProductsGrid = ({browse, loadingSectors, setSector, selectedCategories, se
 
     const resultsTab =(browse:string)=>{
         if(browse) return (
-            isDesktop ? <Tab>Resultados de la Búsqueda:</Tab>:<Tab><Icon as={SearchIcon}/></Tab>
+            isDesktop ? <Tab>Search result:</Tab>:<Tab><Icon as={SearchIcon}/></Tab>
         )
     }
     const statusMessage = () =>{
-        if(isLoading){return <p>Cargando productos...</p>}
+        if(isLoading){return <p>Loading products...</p>}
         if(axios.isAxiosError(error)){return <p>{error.response?.data.message}</p>}
     }
     return ( 
         <div className={`${classes['product-list-container']} 
                          ${colorMode === 'light' ? classes['pagination-light'] : classes['pagination-dark']}`}>
 
-            <Tabs colorScheme='red' index={tabIndex} variant='enclosed'
+            <Tabs colorScheme='teal' index={tabIndex} variant='enclosed'
                   onChange={(index) => setTabIndex(index)}>
                                 {loadingSectors ? <Spinner thickness='4px'
                                             speed='0.65s' emptyColor='gray.200'

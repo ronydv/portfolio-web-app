@@ -59,12 +59,12 @@ const CustomersDashboard = () => {
     }, [userId, ordersUrl, orders, toggleIsPending, toggleIsChecked, currentOrdersPage]);
 
     const isPendingTag = (isPending: boolean) => {
-        if (isPending) return <Tag colorScheme={'red'}>{'Pendiente'}</Tag>;
-        else return <Tag colorScheme={'green'}>{'Finalizado'}</Tag>;
+        if (isPending) return <Tag colorScheme={'red'}>{'Pending'}</Tag>;
+        else return <Tag colorScheme={'green'}>{'Done'}</Tag>;
     };
     const isCheckedTag = (isChecked: boolean) => {
-        if (isChecked) return <Tag colorScheme={'green'}>{'*Checkeado'}</Tag>;
-        else return <Tag colorScheme={'orange'}>{'No checkeado'}</Tag>;
+        if (isChecked) return <Tag colorScheme={'green'}>{'*Checked'}</Tag>;
+        else return <Tag colorScheme={'orange'}>{'Unchecked'}</Tag>;
     };
 
     const sendOrderStatus= async (order:OrderView)=>{
@@ -94,7 +94,7 @@ const CustomersDashboard = () => {
                                     finalize(order);}}
                         >
                         {isChecking && selectedButton === buttonIndex ?
-                                                <Spinner thickness='4px' speed='0.65s' color='red.500' size='xs' />:'✓checkear'}
+                                                <Spinner thickness='4px' speed='0.65s' color='teal.500' size='xs' />:'✓check'}
               </Button>);
     };
 
@@ -112,7 +112,7 @@ const CustomersDashboard = () => {
                                     check(order);}}
                         >
                         {isChecking && selectedButton === buttonIndex ?
-                                                <Spinner thickness='4px' speed='0.65s' color='red.500' size='xs' />:'✓checkear'}
+                                                <Spinner thickness='4px' speed='0.65s' color='teal.500' size='xs' />:'✓check'}
               </Button>);
     };
 
@@ -146,7 +146,7 @@ const CustomersDashboard = () => {
     return (
         <div>
             <InputGroup width={isDesktop ? '20vw' : '70vw'}>
-                <Input type='text' placeholder='Buscar clientes' ref={inputRef}                            
+                <Input type='text' placeholder='Search clients' ref={inputRef}                            
                             onChange={(e) => handleChangeSearch(e)}
                             onKeyDown={(e) => e.key === "Enter" && handleSearch()} />
                 <InputRightElement  >
@@ -158,7 +158,7 @@ const CustomersDashboard = () => {
                 <div>
                     <div className={classes['users-list']}>
                         <Text placeContent={'center'} fontSize={'large'} fontWeight={'bold'} color={grayColor}>
-                            Lista de clientes
+                            Customer List
                         </Text>
                         <div className={`${classes['paginator-container']}
                                     ${colorMode === 'light' ? classes['pagination-light'] : classes['pagination-dark']}`}>
@@ -173,9 +173,9 @@ const CustomersDashboard = () => {
                             <Table variant='simple' size={isDesktop ? 'md' : 'sm'}>
                                 <Thead>
                                     <Tr>
-                                        <Th>Cliente</Th>
+                                        <Th>Customer</Th>
                                         <Th>Email</Th>
-                                        <Th>Teléfono</Th>
+                                        <Th>Phone</Th>
                                     </Tr>
                                 </Thead>
                                 <Tbody>
@@ -185,9 +185,8 @@ const CustomersDashboard = () => {
                                                 <Button key={user.id} leftIcon={<UserIcon />} 
                                                         isActive={i === selectedButton}
                                                         variant={i === selectedButton ? 'solid': 'ghost'} 
-                                                        colorScheme={i === selectedButton ? 'red':''} 
+                                                        colorScheme={i === selectedButton ? 'teal':''} 
                                                         onClick={() => {
-                                                            console.log("loading orders??: ",loadingOrders)
                                                             setUserId(user.id!);
                                                             setSelectedButton(i);
                                                             setCurrentOrdersPage(1);//reset orders position when a new user is selected
@@ -211,7 +210,7 @@ const CustomersDashboard = () => {
                     {!error ?
                         <>
                             <Text placeContent={'center'} fontSize={'large'} fontWeight={'bold'} color={grayColor}>
-                                Pedidos del cliente: "<span style={{ color: 'crimson' }}>{orders?.userName}</span>"
+                                Customer orders: "<span style={{ color: 'crimson' }}>{orders?.userName}</span>"
                             </Text>
 
                             {loadingOrders ? 'cargando ordenes...' :
@@ -228,17 +227,17 @@ const CustomersDashboard = () => {
                                 <Table variant='simple' size={isDesktop ? 'md' : 'sm'}>
                                     <Thead>
                                         <Tr>
-                                            <Th>Producto</Th>
+                                            <Th>Product</Th>
                                             <Th>
                                                 <Button variant={'ghost'} rightIcon={<Sort />} color={grayColor}
                                                     onClick={() => setToggleIsPending(!toggleIsPending)}>
-                                                    Estatus
+                                                    Status
                                                 </Button>
                                             </Th>
                                             <Th>
                                                 <Button variant={'ghost'} rightIcon={<Sort />} color={grayColor}
                                                     onClick={() => setToggleIsChecked(!toggleIsChecked)}>
-                                                    Checkeado
+                                                    Checked
                                                 </Button>
                                             </Th>
 
@@ -267,7 +266,7 @@ const CustomersDashboard = () => {
                                                         isDisabled={!order.isPending && order.isChecked}/* TODO: ADD BROWSE FUNCTION */
                                                         color={'red'}
                                                         icon={isDeleting && selectedButton === i ?
-                                                            <Spinner thickness='4px' speed='0.65s' color='red.500' size='xs' />
+                                                            <Spinner thickness='4px' speed='0.65s' color='teal.500' size='xs' />
                                                             :
                                                             <DeleteIcon />
                                                         } />
@@ -279,7 +278,7 @@ const CustomersDashboard = () => {
                             </TableContainer>
                         </>
                         :
-                        <Text width={isDesktop ? '45vw' : '70vw'}>El cliente no contiene pedidos</Text>}
+                        <Text width={isDesktop ? '45vw' : '70vw'}>Customer does not contain orders</Text>}
                 </div>
 
             </div>

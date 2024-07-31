@@ -117,7 +117,7 @@ const Catalog = () => {
             <div className={`${classes['right-container']} ${!isDesktop ? classes['no-padding-left']:classes.desktop }`}>
                 <Flex direction={'row'} alignItems={'center'} mb={5}>
                     <InputGroup maxWidth={'60%'}>
-                        <Input type='text' placeholder='Buscar producto' ref={inputRef}
+                        <Input type='text' placeholder='Search product' ref={inputRef}
                             onChange={(e) => handleChangeSearch(e)}
                             onKeyDown={(e) => e.key === "Enter" && handleSearch()} />
                         <InputRightElement  >

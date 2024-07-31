@@ -11,7 +11,7 @@
     flex-direction: column;
 }
 .call-to-actions .title{
-    background: linear-gradient(to bottom right, #e53e3e, #941414);
+    background: linear-gradient(to bottom right, #2c7a7b, #319795);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;

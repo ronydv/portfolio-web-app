@@ -26,7 +26,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {//replaced 
 
 
     @Query("""
-            SELECT new com.industech.dto.order.OrderStatus(
+            SELECT new com.portfolio.dto.order.OrderStatus(
                 COUNT(o),
                 SUM(CASE WHEN o.isPending = TRUE THEN 1 ELSE 0 END),
                 SUM(CASE WHEN o.isPending = FALSE THEN 1 ELSE 0 END),
@@ -39,7 +39,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {//replaced 
 
 
     @Query("""
-            SELECT new com.industech.dto.order.OrderCount(
+            SELECT new com.portfolio.dto.order.OrderCount(
                 p.name,
                 COUNT(o)
             )
@@ -53,7 +53,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {//replaced 
     Page<OrderCount> getTopOrdersBySector(@Param("sectorName") String sectorName, Pageable pages);
 
     @Query("""
-            SELECT new com.industech.dto.order.OrderCount(
+            SELECT new com.portfolio.dto.order.OrderCount(
                 p.name,
                 COUNT(o)
             )
@@ -66,7 +66,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {//replaced 
     Page<OrderCount> getTopOrders(Pageable pages);
 
     @Query("""
-            SELECT new com.industech.dto.order.MonthlyOrders(
+            SELECT new com.portfolio.dto.order.MonthlyOrders(
                 COUNT(o)
             )
             FROM Order o

@@ -40,7 +40,7 @@ public class ProductService {
         List<Product> products = productRepository.findAll();
         if (products.isEmpty()) {
             log.error("No products found -> getAllProducts()");
-            throw new ProductException("No se encontraron productos", HttpStatus.NOT_FOUND);
+            throw new ProductException("No products found", HttpStatus.NOT_FOUND);
         } else {
             return products.stream()
                     .map(found -> {
@@ -62,7 +62,7 @@ public class ProductService {
         ProductsBySector productsBySector = customRepository.findProductsBySector(sector, pageRequest);
         if (productsBySector.products().isEmpty()) {
             log.error("getAllProductsBySector() No products found for sector: {}", sector);
-            throw new ProductException("No se encontraron productos", HttpStatus.NOT_FOUND);
+            throw new ProductException("No products have been found for sector", HttpStatus.NOT_FOUND);
         }
         List<ProductDetails>products=productsBySector.products()
                 .stream()
@@ -93,7 +93,7 @@ public class ProductService {
 
         if (productsBySector.products().isEmpty()) {
             log.error("No products found for sector: {} filtering by: {},{}", sector,categories,types);
-            throw new ProductException("No se encontraron productos en sector: {"+sector+"} filtrados por:" +
+            throw new ProductException("No products have been found in sector: {"+sector+"} filtering by:" +
                     " {"+categories+"},{"+types+"}", HttpStatus.NOT_FOUND);
         }
         List<ProductDetails>products=productsBySector.products()
@@ -128,7 +128,7 @@ public class ProductService {
                     return product;
                 }).orElseGet(() -> {
                     log.error("\u001B[35mproduct not found\u001B[0m");
-                    throw new ProductException("Producto no encontrado", HttpStatus.NOT_FOUND);
+                    throw new ProductException("Product not found", HttpStatus.NOT_FOUND);
                 });
     }
 
@@ -145,7 +145,7 @@ public class ProductService {
         PageRequest pageRequest = PageRequest.of(page - 1, pageSize);
         if (productRepository.searchProducts(regex, pageRequest).isEmpty()) {
             log.error("No products found -> searchProducts");
-            throw new ProductException("No se encontraron productos", HttpStatus.NOT_FOUND);
+            throw new ProductException("No products have been found", HttpStatus.NOT_FOUND);
         } else {
             Page<Product> productsByPage = productRepository.searchProducts(regex, pageRequest);
             List<ProductDetails> products = productsByPage.getContent()
@@ -158,10 +158,10 @@ public class ProductService {
 
     public ProductDetails saveProduct(ProductDetails productDetails, List<MultipartFile> files) {
         if(productDetails.getSector()== null || productDetails.getSector().isEmpty()){
-            throw new ProductException("El sector del producto está vacío", HttpStatus.BAD_REQUEST);
+            throw new ProductException("The product sector is empty", HttpStatus.BAD_REQUEST);
         }
         if(productDetails.getProductType()== null || productDetails.getProductType().isEmpty()){
-            throw new ProductException("El tipo del producto está vacío", HttpStatus.BAD_REQUEST);
+            throw new ProductException("The product type is empty", HttpStatus.BAD_REQUEST);
         }
         try {
             Product product = new Product(productDetails.getName(), productDetails.getDescription());
@@ -199,16 +199,16 @@ public class ProductService {
             return new ProductDetails(productRepository.save(product), categories, images);
         } catch (Exception e) {
             log.error(e.getMessage());
-            throw new ProductException("Error al guardar producto", HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new ProductException("Error while saving product", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     public ProductDetails updateProduct(ProductDetails product){
         if(product.getSector()== null || product.getSector().isEmpty()){
-            throw new ProductException("El sector del producto está vacío", HttpStatus.BAD_REQUEST);
+            throw new ProductException("The product sector is empty", HttpStatus.BAD_REQUEST);
         }
         if(product.getProductType()== null || product.getProductType().isEmpty()){
-            throw new ProductException("El tipo del producto está vacío", HttpStatus.BAD_REQUEST);
+            throw new ProductException("The product type is empty", HttpStatus.BAD_REQUEST);
         }
         try{
             Product toUpdate=productRepository.getReferenceById(product.getId());
@@ -268,13 +268,13 @@ public class ProductService {
                     return "Product deleted successfully";
                 }).orElseGet(()-> {
                     log.error("\u001B[35mProduct to delete doesn't exists\u001B[0m");
-                    throw new ProductException("No existe producto a eliminar", HttpStatus.NOT_FOUND);
+                    throw new ProductException("Product to delete doesn't exists", HttpStatus.NOT_FOUND);
                 });
     }
 
     public Long getTotalProductsBySector(String sector){
         if(productRepository.getTotalBySector(sector).isPresent()){
             return productRepository.getTotalBySector(sector).get();
-        }else throw new ProductException("No se pudo extaer cantidad por sector",HttpStatus.BAD_REQUEST);
+        }else throw new ProductException("Could not extract quantity per sector",HttpStatus.BAD_REQUEST);
     }
 }

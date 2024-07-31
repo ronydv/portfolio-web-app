@@ -56,7 +56,7 @@ const CatalogFilter = ({sector, selectedCategories, selectedTypes, setSelectedCa
             {/* categories */}
             <Flex direction={'row'}>
                 
-                <Text fontSize='lg' color={colorGray} pl={3} fontFamily={'sans-serif'} fontWeight={600}>Categorias: </Text>
+                <Text fontSize='lg' color={colorGray} pl={3} fontFamily={'sans-serif'} fontWeight={600}>Categories: </Text>
             </Flex>
             <Stack mb={3} paddingLeft={5}>
                 {loadingCategories ? <Spinner thickness='4px'
@@ -77,7 +77,7 @@ const CatalogFilter = ({sector, selectedCategories, selectedTypes, setSelectedCa
             {/* types */}
             <Flex direction={'row'}>
                 {/* <div className={classes['filter-title-border']} /> */}
-                <Text fontSize='lg' color={colorGray} pl={3} fontFamily={'sans-serif'} fontWeight={600}>Tipos: </Text>
+                <Text fontSize='lg' color={colorGray} pl={3} fontFamily={'sans-serif'} fontWeight={600}>Types: </Text>
             </Flex>
             <Stack mb={3} paddingLeft={5}>
                 {loadingTypes ? <Spinner thickness='4px'

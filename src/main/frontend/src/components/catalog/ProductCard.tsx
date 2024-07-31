@@ -46,10 +46,10 @@ const DesktopVersionCard = ({ product, colorMode, tabIndex, categories, types, p
 
     const showToast=()=>{
         notification({
-            title: 'Producto agregado al carrito.',
+            title: 'Product added to the cart.',
             description: isDesktop ? 
-                        "Click en el icono del carrito de arriba a la derecha para confirmar." :
-                        "Click en el icono del carrito en el panel de la izquierda para confirmar ",
+                        "Click on the cart icon at the top right to confirm." :
+                        "Click on the cart icon in the left panel to confirm. ",
             status: 'info',
             duration: 4000,
             isClosable: true,
@@ -81,21 +81,21 @@ const DesktopVersionCard = ({ product, colorMode, tabIndex, categories, types, p
                         </span>
                     ))}
                     <p />
-                    <Tag mt={1} colorScheme="orange"> {product.images?.length} imágenes</Tag>
+                    <Tag mt={1} colorScheme="orange"> {product.images?.length} images</Tag>
                 </CardBody>
 
                 <CardFooter pt={1}>
                     {/* <Link to={{pathname:`/product-details/${product?.id}`,search:`?tab=${tabIndex}`}}> */}
                         <Button onClick={()=>handleNavigation(product?.id!,navigate,tabIndex,categories, types, page, browse)}
-                                variant='solid' colorScheme='orange' mr={4}>
-                            Ver Detalles
+                                variant='solid' colorScheme='blue' mr={4}>
+                            View Details
                         </Button>
                    {/*  </Link> */}
                     <Button onClick={()=>{
                                 addCartItems(items,product,cartContext);
                                 showToast();
                         }}>
-                        Agendar servicio
+                        Schedule Service
                     </Button>
                 </CardFooter>
             </Stack>
@@ -111,10 +111,10 @@ const MobileVersionCard = ({ product, colorMode, tabIndex, categories, types, pa
 
     const showToast=()=>{
         notification({
-            title: 'Producto agregado al carrito.',
+            title: 'Product added to the cart.',
             description: isDesktop ? 
-                        "Click en el icono del carrito de arriba a la derecha para confirmar." :
-                        "Click en el icono del carrito en el panel de la izquierda para confirmar ",
+                        "Click on the cart icon at the top right to confirm." :
+                        "Click on the cart icon in the left panel to confirm. ",
             status: 'info',
             duration: 4000,
             isClosable: true,
@@ -143,7 +143,7 @@ const MobileVersionCard = ({ product, colorMode, tabIndex, categories, types, pa
                             </span>
                         ))}
                         <p />
-                        <Tag mt={1} colorScheme="orange"> {product.images?.length} imágenes</Tag>
+                        <Tag mt={1} colorScheme="orange"> {product.images?.length} images</Tag>
                     </Box>
                 </Stack>
             </CardBody>
@@ -151,14 +151,14 @@ const MobileVersionCard = ({ product, colorMode, tabIndex, categories, types, pa
                 {/* <Link to={{pathname:`/product-details/${product?.id}`,search:`?tab=${tabIndex}`}}> */}
                 <Button onClick={()=>handleNavigation(product?.id!,navigate,tabIndex,categories, types, page, browse)}
                         variant='solid' colorScheme='orange'>
-                    Ver Detalles
+                    View Details
                 </Button>
                 <Spacer />
                 <Button onClick={() => {
                     addCartItems(items, product, cartContext);
                     showToast();
                 }}>
-                    Agendar servicio
+                    Schedule Service
                 </Button>
             </CardFooter>
         </Card>

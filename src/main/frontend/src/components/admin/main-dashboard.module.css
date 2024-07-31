@@ -36,7 +36,7 @@
     height: 100%;
 }
 .active-border.selected{/* show active button in the left side of the dashboard navbar */
-    background-color: rgb(255, 0, 132);
+    background-color: rgb(50, 159, 137);
 }
 
 /* right side of the dashboard pane, this contains the components */

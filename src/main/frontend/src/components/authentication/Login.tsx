@@ -36,7 +36,7 @@ const Login = () => {
                     setError(error.response.data.message);
                 }else if (error.response?.status === 500){
                     setIsError(true);
-                    setError("Error del servidor");
+                    setError("Error from the server");
                 }
             }
         }
@@ -50,7 +50,7 @@ const Login = () => {
 
     return (
         <div className={classes.container}>
-            <h2>Iniciar sesión</h2>
+            <h2>Log in</h2>
             {isLoading ? <Spinner thickness='4px'
                                             speed='0.65s' emptyColor='gray.200'
                                             color='purple.500' size='xl' />
@@ -58,20 +58,20 @@ const Login = () => {
             <form onSubmit={(e)=>handleSubmit(e)}>
                 <FormControl as='fieldset' className={classes.form} isInvalid={isError}>
                     <div>
-                        <FormLabel>Dirección de Email</FormLabel>
-                        <Input type='email' defaultValue={user.email} placeholder="Ingrese su email"
+                        <FormLabel>Email Address</FormLabel>
+                        <Input type='email' defaultValue={user.email} placeholder="Enter your email"
                             onChange={(event) => {
                                 setUser({ ...user, email: event.target.value });
                                 setIsError(false);
                             }} />
-                        {!isError ? <FormHelperText>No compartiremos tus datos ni te enviaremos correos spam</FormHelperText> :
+                        {!isError ? <FormHelperText>We will not share your data or send you spam</FormHelperText> :
                             <FormErrorMessage>{`${error}`}</FormErrorMessage>
                         }
                     </div>
 
                     <div>
-                        <FormLabel>Contraseña</FormLabel>
-                        <Input type='password' defaultValue={user.password} placeholder="Ingrese su contraseña"
+                        <FormLabel>Password</FormLabel>
+                        <Input type='password' defaultValue={user.password} placeholder="Enter your password"
                             onChange={(event) => {
                                 setUser({...user,password: event.target.value});
                                 setIsError(false);
@@ -81,13 +81,13 @@ const Login = () => {
 
                     <div>
                         <Checkbox onChange={togglePersist} isChecked={authContext?.persist}
-                                    colorScheme="red" >
-                            Recordar cuenta
+                                    colorScheme="teal" >
+                            Remember account
                         </Checkbox>
                     </div>
 
                     <div>
-                        <Button marginTop={3} type="submit" isDisabled={disable}>Iniciar sesión</Button>
+                        <Button marginTop={3} type="submit" isDisabled={disable}>Log in</Button>
                     </div>
                 </FormControl>
             </form>}

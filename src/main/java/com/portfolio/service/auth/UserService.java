@@ -51,7 +51,7 @@ public class UserService {
         PageRequest pages = PageRequest.of(page - 1, pageSize);
         if(userRepository.searchByKeywords(regex, pages).isEmpty()){
             //log.error("No users found -> searchUsers");
-            throw new ProductException("No se encuentran usuarios con esos valores", HttpStatus.NOT_FOUND);
+            throw new ProductException("No users with those values are found", HttpStatus.NOT_FOUND);
         }else {
             Page<User> users=userRepository.searchByKeywords(regex, pages);
             return new PaginatedUsers(users.getContent()
@@ -61,7 +61,7 @@ public class UserService {
         }
     }
     public AuthUser updateUser(User user) {
-        if (user == null) throw new AuthUserException("Usuario nulo", HttpStatus.BAD_REQUEST);
+        if (user == null) throw new AuthUserException("Empty user", HttpStatus.BAD_REQUEST);
         Optional<User> reference = userRepository.findById(user.getId());
         if (reference.isEmpty()) return null;
 
@@ -88,10 +88,10 @@ public class UserService {
             }
             return new AuthUser(userRepository.save(existingUser));
         } catch (IllegalAccessException e) {
-            throw new AuthUserException("Error al ingresar los campos del usuario", HttpStatus.BAD_REQUEST);
+            throw new AuthUserException("Error when accessing user fields", HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             throw e.getLocalizedMessage().contains("ConstraintViolationException") ?
-                    new AuthUserException("Este email ya se encuentra en uso", HttpStatus.BAD_REQUEST) :
+                    new AuthUserException("This email is already in use", HttpStatus.BAD_REQUEST) :
                     new AuthUserException(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -101,10 +101,10 @@ public class UserService {
         return userRepository.findById(id)
                 .map((user)-> {
                     userRepository.delete(user);
-                    return "borrado exitosamente!";
+                    return "deleted successfully!";
                 }).orElseGet(()-> {
                     //log.error("\u001B[35mUser to delete doesn't exists\u001B[0m");
-                    throw new AuthUserException("No existe usuario a ser eliminado", HttpStatus.NOT_FOUND);
+                    throw new AuthUserException("User to delete doesn't exists", HttpStatus.NOT_FOUND);
                 });
     }
 }

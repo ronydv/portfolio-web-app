@@ -49,13 +49,13 @@ public class Logout implements LogoutHandler {
                     repository.findByToken(cookie.getValue())
                             .ifPresent(token ->
                                     repository.delete(token));
-                    logoutResponse("sesión cerrada",response);
+                    logoutResponse("closed session",response);
                 }
             }
         }catch (Exception e){
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             CustomError error=new CustomError(
-                    response.getStatus(),"No se ha encontrado ninguna cookie. "+ e.getMessage());
+                    response.getStatus(),"No cookie has been found. "+ e.getMessage());
             logoutResponse(error,response);
         }
     }

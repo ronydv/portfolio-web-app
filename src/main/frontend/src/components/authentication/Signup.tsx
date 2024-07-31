@@ -20,8 +20,8 @@ const Signup = () => {
 
     const showToast=()=>{
         notification({
-            title: 'Registro',
-            description:'Registrado exitosamente!',
+            title: 'Register',
+            description:'Registered successfully!',
             status: 'info',
             duration: 4000,
             isClosable: true,
@@ -66,7 +66,7 @@ const Signup = () => {
     }
     return (
         <div className={classes.container}>
-            <h2>Registrarse</h2>
+            <h2>Sign up</h2>
             {isLoading ? <Spinner thickness='4px'
                                             speed='0.65s' emptyColor='gray.200'
                                             color='purple.500' size='xl' />
@@ -74,7 +74,7 @@ const Signup = () => {
             <form onSubmit={handleSubmit}>                         {/*invalidate form if there is an error message */}
                 <FormControl as='fieldset' className={classes.form} isInvalid={error !== ''} >
                     <div>
-                        <FormLabel>Nombre</FormLabel>
+                        <FormLabel>Name</FormLabel>
                         <Input type='text' placeholder="Enter your name (optional)" isInvalid={false}
                             onChange={(event) => {
                                 setUser({ ...user, name: event.target.value });
@@ -82,40 +82,40 @@ const Signup = () => {
                     </div>
 
                     <div>
-                        <FormLabel>Dirección de email</FormLabel>
-                        <Input type='email' placeholder="Ingrese su email" isInvalid={!isEmailValid}
+                        <FormLabel>Email address</FormLabel>
+                        <Input type='email' placeholder="Enter your email" isInvalid={!isEmailValid}
                             onChange={(event) => {
                                 setError('');
                                 setUser({ ...user, email: event.target.value });
                                 setIsEmailValid(EMAIL_REGEX.test(event.target.value));
                             }} />
-                        {!error ? <FormHelperText>No compartiremos tus datos ni te enviaremos correos spam</FormHelperText> :
+                        {!error ? <FormHelperText>We will not share your data or send you spam</FormHelperText> :
                             <FormErrorMessage>{error}</FormErrorMessage>
                         }
                     </div>
 
                     <div>
-                        <FormLabel>Número de teléfono</FormLabel>
-                        <Input type='text' placeholder="Ingrese su numero sin espacios en blanco" isInvalid={false}
+                        <FormLabel>Phone number</FormLabel>
+                        <Input type='text' placeholder="Enter phone number without spaces" isInvalid={false}
                             onChange={(event) => {
                                 setUser({ ...user, phone: event.target.value });
                             }} />
                     </div>
 
                     <div>
-                        <FormLabel>Contraseña</FormLabel>
-                        <Input type='password' placeholder="Ingrese su contraseña" isInvalid={!isPasswordValid}
+                        <FormLabel>Password</FormLabel>
+                        <Input type='password' placeholder="Enter your password" isInvalid={!isPasswordValid}
                             ref={password} onChange={(event) => {//change input type to password later on develpment
                                 setError('');
                                 setUser({ ...user, password: event.target.value });
                                 checkMatch(event.target.value, matchPassword.current?.value!);
                             }} />
-                        <FormHelperText>La contraseña debe tener mas de 5 caracteres.</FormHelperText>
+                        <FormHelperText>The password must be longer than 5 characters.</FormHelperText>
                     </div>
 
                     <div>
-                        <FormLabel>Confirmar contraseña</FormLabel>
-                        <Input type='password' placeholder="Repetir contraseña" isInvalid={!isPasswordValid}
+                        <FormLabel>Confirm password</FormLabel>
+                        <Input type='password' placeholder="Repeat password" isInvalid={!isPasswordValid}
                             ref={matchPassword} onChange={(event) => {
                                 setError('');
                                 checkMatch(password.current?.value!, event.target.value);
@@ -123,7 +123,7 @@ const Signup = () => {
                     </div>
 
                     <div>
-                        <Button marginTop={3} type="submit"  isDisabled={disable}>Registrar</Button>
+                        <Button marginTop={3} type="submit"  isDisabled={disable}>Register</Button>
                     </div>
                 </FormControl>
             </form>}

@@ -12,7 +12,7 @@ type Service={
     image:string;
     description:string;
 }
-const services:Service[]=[
+/* const services:Service[]=[
     {title:'****',
         image:'https://res.cloudinary.com/dlm0bynvi/image/upload/v1721395574/index/nuedkerapilgdhnyqbh6.jpg',
         description:'-----------------------------------'},
@@ -24,7 +24,7 @@ const services:Service[]=[
     {title:'****',
         image:'https://res.cloudinary.com/dlm0bynvi/image/upload/v1721395572/index/rswfcycqqjf4ypgrzybq.jpg',
         description:'-----'}
-];
+]; */
 const Home = () => {
     const grayColor = useColorModeValue('gray.600','gray.400');
     const { colorMode } = useColorMode();
@@ -37,19 +37,19 @@ const Home = () => {
                 <div className={`${classes.cover} ${!isDesktop && classes.mobile}`}>
                     <Flex direction={'column'}>
                         <span className={`${classes.title} ${!isDesktop && classes.mobile}`}>
-                            Title/description about the web app
+                            Title or description about the web app
                         </span>
                         <Text mt={3} fontSize={isDesktop ? 18 : 15} pr={isDesktop ? 20 : 0} color={grayColor} fontWeight={'600'}>
-                            Brief explanatory intro for the content of the app
+                            Brief explanatory intro for the app content
                         </Text>
                         {isDesktop ? 
                             <Box mt={7}>
-                                <Button variant={'outline'} colorScheme='red'
+                                <Button variant={'outline'} colorScheme='teal'
                                     rightIcon={<Outward />} onClick={() => navigate("/catalog")}>
                                     Explore
                                 </Button>
                             </Box> :
-                            <Button variant={'outline'} colorScheme='red' mt={7} mb={5}
+                            <Button variant={'outline'} colorScheme='teal' mt={7} mb={5}
                                     rightIcon={<Outward />} onClick={() => navigate("/catalog")}>
                                     Explore
                             </Button>
@@ -59,12 +59,12 @@ const Home = () => {
                         clipPath={isDesktop ? 'polygon(10% 0%, 100% 0%, 100% 100%, 0% 100%)' : ''}
                         boxSize={isDesktop ? '35vw' : ''}
                         /* src={MainCover} */
-                        src={'https://res.cloudinary.com/dlm0bynvi/image/upload/v1721395573/index/u3e4nsikizrfdbejfsfe.jpg'}
+                        src={'https://images.pexels.com/photos/389818/pexels-photo-389818.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'}
                         alt={'main-cover'} />
                 </div>
             </section>
 
-            <section className={classes.about}>
+{/*             <section className={classes.about}>
                 <div className={`${classes.cards} ${!isDesktop && classes.mobile}`}>
                     {services.map((service, i) => {
                         return (
@@ -72,7 +72,6 @@ const Home = () => {
                                                                          'transparent'}`}
                                     key={i} align='center' size='sm' maxW={260}>
                                 <CardHeader pb={'1px'}>
-                                    {/* <h1 className={classes.title}>{service.title}</h1> */}
                                     <Heading size='md' color={grayColor}>{service.title}</Heading>
                                 </CardHeader>
                                 <CardBody>
@@ -87,7 +86,7 @@ const Home = () => {
                         );
                     })}
                 </div>
-            </section>
+            </section> */}
         </div>
      );
 }

@@ -78,22 +78,22 @@ const SelectCategories = ({ colorMode, setProduct, product }: CategoriesProps) =
 
     return (
         <section className={`${classes.categories} ${colorMode === 'light' ? classes.light : classes.dark}`}>
-            <Heading as='h2' size='sm' marginRight={10}>Agregar categoría</Heading>
+            <Heading as='h2' size='sm' marginRight={10}>Add Category</Heading>
             
             <FormControl as='fieldset' className={classes.form} isInvalid={error!==""}>
-                <FormLabel mt={2}>{error ? <Text color={'red'}>{error}</Text>: 'Nombre de la Categoría'}</FormLabel>
+                <FormLabel mt={2}>{error ? <Text color={'red'}>{error}</Text>: 'Category Name'}</FormLabel>
                 <Input type='text' placeholder="Insertar categoría" onChange={(e) =>{
                             setCategory({ name: e.target.value })
                             setError("");
                 }}/>
             </FormControl>
-            <Button mt={2} onClick={addCategory}>Agregar</Button>
+            <Button mt={2} onClick={addCategory}>Add</Button>
 
             <Accordion allowToggle={true} mt={3}>
                 <AccordionItem>
                     <AccordionButton>
                         <Box as="span" flex='1' textAlign='left'>
-                            Seleccionar categorías
+                            Select categories
                         </Box><AccordionIcon />
                     </AccordionButton>
                     <AccordionPanel pb={4} style={{ maxHeight: '200px', overflowY: 'auto' }}>
@@ -111,7 +111,7 @@ const SelectCategories = ({ colorMode, setProduct, product }: CategoriesProps) =
                         ))}
                         {tags.names.length === 0 && categories.map((category, i) => (
                             <div key={i} style={{ display: 'flex' }}>
-                                <Checkbox value={category.name} colorScheme='red'
+                                <Checkbox value={category.name} colorScheme='teal'
                                     onChange={(e) => handleCheckbox(e)}>
                                     {category.name}
                                 </Checkbox>

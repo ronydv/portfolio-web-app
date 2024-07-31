@@ -23,6 +23,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                     //get the user from database, set data to User Entity and transform to AuthUser
                     return new AuthUser(user);
                 })
-                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }

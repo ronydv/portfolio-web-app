@@ -32,8 +32,8 @@ const Header = () => {
                          fontSize={{ base: "25px", lg: "25px" }}
                          lineHeight={{base:'1.2',lg: "1.2"}}>
                     <Text as='span'
-                          bgGradient='linear(to-t, #e53e3e, #941414)'
-                          bgClip='text' fontFamily={'abnes'}>Demo App</Text>
+                          bgGradient='linear(to-t, #2c7a7b, #319795)'
+                          bgClip='text' fontFamily={'rubik'}>Demo App</Text>
                     
                 </Heading>
             </div>
@@ -62,8 +62,8 @@ const Header = () => {
                     <AccountMenu/>
                     :
                     <>
-                        <Link to='/login'><Button variant='outline' colorScheme="red">Iniciar sesión</Button></Link>
-                        <Link to='/signup'><Button>Registro</Button></Link>
+                        <Link to='/login'><Button variant='outline' colorScheme="cyan">Log in</Button></Link>
+                        <Link to='/signup'><Button>Sign up</Button></Link>
                         
                     </>
                 }

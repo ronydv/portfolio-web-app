@@ -31,13 +31,13 @@ type AddImagesProps= {
     };
     return (
         <div className={`${classes['product-image']} ${colorMode === 'light' ? classes.light : classes.dark}`}>
-            <Heading as='h2' size='sm' marginRight={10}>Agregar imagen</Heading>
+            <Heading as='h2' size='sm' marginRight={10}>Add Image</Heading>
 
             <Flex alignItems={'center'} direction={'column'}>
                 <Flex justifyContent={'center'} mt={2}>
                     <FormLabel className={classes.imagelabel} htmlFor="files">
-                        {error?.includes('images')  ? <Text color={'red'}>{'Archivos vacíos'}</Text>
-                                                    : 'Seleccionar Imagenes'}
+                        {error?.includes('images')  ? <Text color={'red'}>{'Empty Files'}</Text>
+                                                    : 'Select Images'}
                     </FormLabel>
                     <Input type='file' accept='image/*' id="files" onChange={handleImage} multiple hidden />
                 </Flex>
@@ -48,7 +48,7 @@ type AddImagesProps= {
                                                                 setFiles([]);
                                                                 setSelectedImages([]);
                                                             }}>
-                                                    limpiar
+                                                    Clean
                                                  </Button>}
                     {selectedImages.map((image, index) => (
                         

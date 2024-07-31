@@ -111,8 +111,8 @@
     display: flex;
     flex-direction: column;
     margin-top: 20px;
-    --pagination-color: var(--chakra-colors-red-600);
-    --pagination-hover-color: var(--chakra-colors-red-200);/* #454648; */
+    --pagination-color: var(--chakra-colors-teal-600);
+    --pagination-hover-color: var(--chakra-colors-teal-200);/* #454648; */
     --pagination-bg: transparent/* change to app theme */
 }
 

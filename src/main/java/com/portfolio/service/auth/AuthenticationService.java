@@ -58,7 +58,7 @@ public class AuthenticationService {
     public User registerUser(String name, String email, String phone, String password) {
         Optional<User> existingUser = userRepository.findByEmail(email);
         if (existingUser.isPresent()) {
-            throw new AuthUserException("Este email ya está en uso.", HttpStatus.CONFLICT);
+            throw new AuthUserException("This email is already in use.", HttpStatus.CONFLICT);
         } else {
             User recordUser = new User(name, email, phone, passwordEncoder.encode(password), roles());
             return userRepository.save(recordUser);
@@ -88,7 +88,7 @@ public class AuthenticationService {
             }
             return new LoginResponse(user,token);
         }catch (AuthenticationException e) {
-            throw new AuthUserException("Usuario no válido", HttpStatus.UNAUTHORIZED);
+            throw new AuthUserException("Invalid user", HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -104,7 +104,7 @@ public class AuthenticationService {
                 })
                 .orElseThrow(() -> {
                     //log.error("\u001B[31minvalid token or user is null.\u001B[0m");
-                    return new TokenException("token inválido o usuario nulo",HttpStatus.FORBIDDEN);
+                    return new TokenException("Invalid token or user is null",HttpStatus.FORBIDDEN);
                 });
     }
 }

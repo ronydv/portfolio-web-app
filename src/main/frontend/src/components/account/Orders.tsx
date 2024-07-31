@@ -48,7 +48,7 @@ const Orders = () => {
             orders.length > 0 && setTotalElements(orders[0].total!);
             setFetchStatuses('/api/v1/orders/order/status');
             if(orders){
-                setTableMessage("*Producto checkeado significa que el administrador ha revisado la orden");
+                setTableMessage("*Product checked means the admin has reviewed the order");
             }
         //orders for user view
         } else {
@@ -57,18 +57,18 @@ const Orders = () => {
                 `&sort-pending=${toggleIsPending}&sort-checked=${toggleIsChecked}`);
             setTotalElements(ordersByuser?.total!);
             if(ordersByuser){
-                setTableMessage("*Producto checkeado significa que el administrador ha revisado la orden");
+                setTableMessage("*Product checked means the admin has reviewed the order");
             }
         }
     }, [orders, ordersByuser, toggleIsChecked, toggleIsPending, currentPage, response]);
 
     const isPendingTag = (isPending: boolean) => {
-        if (isPending) return <Tag colorScheme={'red'}>{'Pendiente'}</Tag>;
-        else return <Tag colorScheme={'green'}>{'Finalizado'}</Tag>;
+        if (isPending) return <Tag colorScheme={'red'}>{'Pending'}</Tag>;
+        else return <Tag colorScheme={'green'}>{'Done'}</Tag>;
     };
     const isCheckedTag = (isChecked: boolean) => {
-        if (isChecked) return <Tag colorScheme={'green'}>{'*Checkeado'}</Tag>;
-        else return <Tag colorScheme={'orange'}>{'No checkeado'}</Tag>;
+        if (isChecked) return <Tag colorScheme={'green'}>{'*Checked'}</Tag>;
+        else return <Tag colorScheme={'orange'}>{'Unchecked'}</Tag>;
     };
 
     const checkOrder = (index: number) => {
@@ -90,14 +90,14 @@ const Orders = () => {
                         onClick={() => {
                                     setSelectedButton(index);
                                     check(index);
-                }}>{isChecking && selectedButton === index ?'Checkeando...':'Checkear'}
+                }}>{isChecking && selectedButton === index ?'Checking...':'Check'}
             </Button>;
     };
 
     return (
         <Box mt={5}>
             <Restricted to={[Role.ADMIN]}>
-                <Tag size={'lg'} colorScheme="orange">Pedidos sin checkear: {statuses?.uncheckedOrders} </Tag>
+                <Tag size={'lg'} colorScheme="orange">Unchecked orders: {statuses?.uncheckedOrders} </Tag>
             </Restricted>
             <div className={`${classes['table-container']}
                                     ${colorMode === 'light' ? classes['pagination-light'] : classes['pagination-dark']}`}>
@@ -113,9 +113,9 @@ const Orders = () => {
                         <Thead>
                             <Tr>
                                 <Restricted to={[Role.ADMIN]}>
-                                    <Th>Cliente</Th>
+                                    <Th>Client</Th>
                                 </Restricted>
-                                <Th>Producto</Th>
+                                <Th>Product</Th>
                                 <Th>
                                     <Button variant={'ghost'} rightIcon={<Sort />} color={grayColor}
                                         onClick={() => setToggleIsPending(!toggleIsPending)}>
@@ -125,15 +125,15 @@ const Orders = () => {
                                 <Th>
                                     <Button variant={'ghost'} rightIcon={<Sort />} color={grayColor}
                                         onClick={() => setToggleIsChecked(!toggleIsChecked)}>
-                                        Checkeado
+                                        Checked
                                     </Button>
                                 </Th>
                                 <Restricted to={[Role.ADMIN]}>
-                                    <Th>Acción</Th>
+                                    <Th>Action</Th>
                                 </Restricted>
                             </Tr>
                         </Thead>
-                        {loadingAllOrders || loadingUserOrders ? <p>Cargando...</p>:
+                        {loadingAllOrders || loadingUserOrders ? <p>Loading...</p>:
                         <Tbody>
                         {user.user?.authorities?.find((role: Role) => role.authority === Role.ADMIN) ?
                             orders?.map((order, i) => (
@@ -158,13 +158,13 @@ const Orders = () => {
                         <Tfoot>
                             <Tr>
                                 <Restricted to={[Role.ADMIN]}>
-                                    <Th>Cliente</Th>
+                                    <Th>Client</Th>
                                 </Restricted>
-                                <Th>Producto</Th>
+                                <Th>Product</Th>
                                 <Th>Status</Th>
-                                <Th>Checkeado</Th>
+                                <Th>Checked</Th>
                                 <Restricted to={[Role.ADMIN]}>
-                                    <Th>Acción</Th>
+                                    <Th>Action</Th>
                                 </Restricted>
                             </Tr>
                         </Tfoot>

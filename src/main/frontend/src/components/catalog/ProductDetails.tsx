@@ -71,10 +71,10 @@ const ProductDetails = () => {
 
     const showToast=()=>{
         notification({
-            title: 'Producto agregado al carrito.',
+            title: 'Product added to the cart.',
             description: isDesktop ? 
-                        "Click en el icono del carrito de arriba a la derecha para confirmar." :
-                        "Click en el icono del carrito en el panel de la izquierda para confirmar ",
+                        "Click on the cart icon at the top right to confirm." :
+                        "Click on the cart icon in the left panel to confirm. ",
             status: 'info',
             duration: 4000,
             isClosable: true,
@@ -109,7 +109,7 @@ const ProductDetails = () => {
                 <Heading fontSize={'25px'} mb={3} color={darkMode}>{product?.name}</Heading>
                 <Button leftIcon={<LeftIcon/>} variant={'outline'}
                         onClick={handleGoBack} colorScheme="blue" mb={2}>
-                    Volver
+                    Go Back
                 </Button>
                 <Divider />
                 <Box mb={2} mt={1}>
@@ -126,7 +126,7 @@ const ProductDetails = () => {
                 <Text as={'pre'} fontFamily={'sans-serif'} whiteSpace={'pre-wrap'}>
                     {product?.description && product.description}
                 </Text>
-                {isLoading && <Text fontSize={18}>Cargando...</Text>}
+                {isLoading && <Text fontSize={18}>Loading...</Text>}
                 {product?.images !== undefined && isDesktop &&
                     <Carousel responsive={thumbnails}
                         containerClass={`${classes.thumbnails} ${product.images.length < (thumbnails.desktop.items+1)
@@ -143,7 +143,7 @@ const ProductDetails = () => {
                     onClick={() => {
                         addCartItems(items, product!, cartContext);
                         showToast();
-                    }}>Agendar servicio</Button>
+                    }}>Schedule Service</Button>
             </div>
             <div>
                 {product?.images !== undefined &&

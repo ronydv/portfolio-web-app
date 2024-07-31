@@ -45,7 +45,7 @@ const OrdersByMonth = () => {
                 symbolSize: 8,
                 tooltip: {
                     valueFormatter: (value: number) => {
-                        return value + ' Pedidos';
+                        return value + ' Orders';
                     }
                 }
             },

@@ -32,7 +32,7 @@ public class TypeService {
         List<Type> types = typeRepository.findAll();
         if (types.isEmpty()) {
             log.error("No product types found -> getproductTypes()");
-            throw new ProductException("No se encontraron tipos de productos", HttpStatus.NOT_FOUND);
+            throw new ProductException("No product types found", HttpStatus.NOT_FOUND);
         } else {
             return types.stream()
                     .map(type -> new TypeDetails(type.getId(),type.getProductType()))
@@ -44,7 +44,7 @@ public class TypeService {
         List<Type> types = typeRepository.findTypesBySector(sector);
         if(types.isEmpty()){
             log.error("No types found in sector: "+sector+" -> getTypesBySector()");
-            throw new ProductException("No se encontraron tipos de productos en el sector: "+sector, HttpStatus.NOT_FOUND);
+            throw new ProductException("No types found in sector: "+sector, HttpStatus.NOT_FOUND);
         } else {
             return types.stream()
                     .map(type -> new TypeDetails(type.getId(),type.getProductType()))
@@ -63,7 +63,7 @@ public class TypeService {
                     return "Type deleted successfully";
                 }).orElseGet(()-> {
                     log.error("\u001B[35mType to delete doesn't exists\u001B[0m");
-                    throw new ProductException("No existe tipo del producto a ser eliminado", HttpStatus.NOT_FOUND);
+                    throw new ProductException("Type to delete doesn't exists", HttpStatus.NOT_FOUND);
                 });
     }
 }

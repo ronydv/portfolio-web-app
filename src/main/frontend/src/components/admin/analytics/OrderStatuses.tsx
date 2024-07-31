@@ -37,7 +37,7 @@ const OrderStatuses = () => {
 		},
 		series: [
 			{
-				name: 'Cantidad',
+				name: 'Amount',
 				type: 'pie',
 				radius: ['40%', '70%'],
 				center: ['50%', '60%'],

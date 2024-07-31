@@ -50,17 +50,17 @@ const ModifyProduct = () => {
                     <section className={`${classes.title} ${colorMode === 'light' ? classes.light : classes.dark}`}>
                         <Flex direction={'column'}>
                             <Heading as='h2' size='md' marginRight={10}>
-                                Modificar Producto
+                                Modify Product
                             </Heading>
                             <Breadcrumb spacing='8px' separator={<ChevronRightIcon color='gray.500' />}>
                                 <BreadcrumbItem>
-                                    <p>Productos</p>
+                                    <p>Products</p>
                                 </BreadcrumbItem>
                                 <BreadcrumbItem>
-                                    <p>Tabla</p>
+                                    <p>Table</p>
                                 </BreadcrumbItem>
                                 <BreadcrumbItem isCurrentPage>
-                                    <p>Actualizar</p>
+                                    <p>Update</p>
                                 </BreadcrumbItem>
                             </Breadcrumb>
                         </Flex>
@@ -68,20 +68,20 @@ const ModifyProduct = () => {
                         <Button variant='outline' colorScheme='blue' marginRight={5}
                             leftIcon={<LeftIcon />}
                             onClick={() => navigate("/dashboard/products-dashboard")}>
-                            Volver
+                            Go back
                         </Button>
                         <Button type="submit" variant={'solid'}
                             isLoading={isLoading}
                             loadingText='Submitting'
                             colorScheme={'blue'}>
-                            Guardar cambios
+                            Save changes
                         </Button>
                     </section>
 
                     <div className={classes['inputs-container']}>
                         <div>
                             <section className={`${classes['general-information']} ${colorMode === 'light' ? classes.light : classes.dark}`}>
-                                <Heading as='h2' size='sm' marginRight={10}>Información General</Heading>
+                                <Heading as='h2' size='sm' marginRight={10}>General Information</Heading>
                                 <Divider/>
                                 
                                 <SelectSector 
@@ -90,12 +90,12 @@ const ModifyProduct = () => {
                                     error={error} 
                                     setError={setError}/>
 
-                                <FormLabel mt={2}>Nombre del producto</FormLabel>
+                                <FormLabel mt={2}>Product Name</FormLabel>
                                 <Input defaultValue={product.name} type='text' onChange={(e) => {
                                     setProduct({ ...product, name: e.target.value });
                                 }} />
 
-                                <FormLabel mt={2}>Descripción</FormLabel>
+                                <FormLabel mt={2}>Description</FormLabel>
                                 <Textarea minWidth={'25vw'} defaultValue={product.description} onChange={(e) => {
                                     setProduct({ ...product, description: e.target.value });
                                 }} />

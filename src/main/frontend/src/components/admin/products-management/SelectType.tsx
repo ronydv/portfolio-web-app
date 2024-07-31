@@ -49,13 +49,13 @@ const SelectType =({ product, setProduct, error, setError, setTypesUrl, typesUrl
     return (
         <>
             <Heading as='h2' size='sm' marginRight={10} mb={2}>
-                {error?.includes('type') ? <Text color={'red'}>{error}</Text>: <Text>Tipo de producto</Text> }
+                {error?.includes('type') ? <Text color={'red'}>{error}</Text>: <Text>Product type</Text> }
                 </Heading>
             <Accordion /* allowToggle={true} */ mt={3}>
                 <AccordionItem>
                     <AccordionButton>
 
-                        <Input type="text" placeholder="Agregar tipo o seleccionar existente"
+                        <Input type="text" placeholder="Add or select existing type"
                                value={product?.productType ? product?.productType: selectedType}
                                onChange={(e)=>{handleRadio(e.target.value)}}/>
                         <AccordionIcon />
@@ -66,7 +66,7 @@ const SelectType =({ product, setProduct, error, setError, setTypesUrl, typesUrl
                             <Stack spacing={1} direction='column'>
                                 {Array.isArray(types) && types.length > 0 && types.map((type, i) => (
                                     <div key={i} style={{ display: 'flex' }}>
-                                        <Radio colorScheme='red' value={type.productType}>{type.productType}</Radio>
+                                        <Radio colorScheme='teal' value={type.productType}>{type.productType}</Radio>
                                         <Spacer />
                                         <DeleteIcon color="red" onClick={()=>{deleteType(type)}} className={classes['action-icon']} />
                                     </div>

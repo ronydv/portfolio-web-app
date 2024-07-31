@@ -33,7 +33,7 @@ const ProductsDashboard = ({ setActiveButton }: ActiveButtonProps) => {
             <div className={classes['search-bar']}>
                 <Flex mr={3}>
                     <InputGroup>
-                        <Input type='text' placeholder='Buscar producto' ref={inputRef}
+                        <Input type='text' placeholder='Search product' ref={inputRef}
                                onChange={(e)=>handleChangeSearch(e)}
                                onKeyDown={(e) => e.key === "Enter" && handleSearch()}/>
                         <InputRightElement  >
@@ -48,7 +48,7 @@ const ProductsDashboard = ({ setActiveButton }: ActiveButtonProps) => {
                             //switch the value within MainDashboard.tsx to render the <Outlet/>, check <div className={classes.outlet}>
                             onClick={() => setActiveButton && setActiveButton("Add Product")}
                             leftIcon={<AddProductIcon/>}>
-                        Agregar producto
+                        Add product
                     </Button>
                 </Link>
             </div>

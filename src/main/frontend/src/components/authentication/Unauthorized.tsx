@@ -8,11 +8,11 @@ const goBack = () => navigate(-1);
 
 return (
     <section style={{marginTop:20}}>
-        <Heading as={'h1'}>No Autorizado</Heading>
+        <Heading as={'h1'}>Unauthorized</Heading>
         <br />
-        <p style={{fontSize:'24px'}}>No tienes permiso para acceder a esta página.</p>
+        <p style={{fontSize:'24px'}}>You do not have permission to access this page.</p>
         <br/>
-        <Button onClick={goBack}>Volver</Button>
+        <Button onClick={goBack}>Go back</Button>
     </section>
 )
 }

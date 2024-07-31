@@ -36,7 +36,6 @@ const CommonOrders = () => {
                     name: topOrder.productName ?? 'none',
                 }));
                 setChartData(topOrders);
-				console.log(topRequestedOrders);
             }
         }
     }, [sectorsUrl, sectors, url, topRequestedOrders, tabIndex, sector]);
@@ -56,7 +55,7 @@ const CommonOrders = () => {
         },
         series: [
             {
-                name: 'Cantidad',
+                name: 'Amount',
                 type: 'pie',
                 radius: ['40%', '70%'],
                 center: ['50%', '60%'],
