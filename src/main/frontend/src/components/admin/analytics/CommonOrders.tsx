@@ -81,10 +81,10 @@ const CommonOrders = () => {
     };
     return (
         <div>
-            <Tabs isFitted colorScheme='red' index={tabIndex} variant='enclosed'
+            <Tabs isFitted colorScheme='teal' index={tabIndex} variant='enclosed'
                 onChange={(index) => setTabIndex(index)}>
                 <TabList mb='1em'>
-                    <Tab>{'Todos'}</Tab>
+                    <Tab>{'All'}</Tab>
                     {Array.isArray(sectors) && sectors.length > 0  && sectors.map((sector, i) => (
                         <Tab key={i}>{sector.name}</Tab>
                     ))}

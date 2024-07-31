@@ -85,7 +85,7 @@ const Cart = () => {
                                 {product.description}
                             </Text>
                             <Box>
-                                <Badge variant='solid' colorScheme='red'>{product.productType}</Badge>
+                                <Badge variant='solid' colorScheme='teal'>{product.productType}</Badge>
                                 {/* set the categories inside a loop */}
                                 {product.categories?.map((category, i) => (
                                     <span key={i}>

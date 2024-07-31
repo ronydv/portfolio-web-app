@@ -193,9 +193,9 @@ const CustomersDashboard = () => {
                                                         }}>{user.name}
                                                 </Button>
                                             </Td>
-                                            <Td color={i === selectedButton ? '#aa2d2f':''} 
+                                            <Td color={i === selectedButton ? '#3182ce':''} 
                                                 textDecoration={i === selectedButton ? 'underline':''}>{user.email}</Td>
-                                            <Td color={i === selectedButton ? '#aa2d2f':''} 
+                                            <Td color={i === selectedButton ? '#3182ce':''} 
                                                 textDecoration={i === selectedButton ? 'underline':''}>{user.phone}</Td>
                                         </Tr>
                                     ))}

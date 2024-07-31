@@ -52,7 +52,7 @@ const MainDashboard = () => {
 
                             <div className={`${classes['active-border']} ${activeButton === item.name && classes.selected}`} />
                             <Link to={item.path}>
-                                <Button variant='link' colorScheme='red' leftIcon={<item.icon />}
+                                <Button variant='link' colorScheme='teal' leftIcon={<item.icon />}
                                     color={darkMode}
                                     isActive={activeButton === item.name}
                                     onClick={() => handleButtonClick(item.name)}>

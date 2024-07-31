@@ -113,7 +113,7 @@ const ProductDetails = () => {
                 </Button>
                 <Divider />
                 <Box mb={2} mt={1}>
-                    <Badge variant='solid' fontSize='15px' colorScheme='red'>{product?.productType}</Badge>
+                    <Badge variant='solid' fontSize='15px' colorScheme='teal'>{product?.productType}</Badge>
                     {/* set the categories inside a loop */}
                     {Array.isArray(product?.categories) && product?.categories?.map((category, i) => (
                         <Text key={i} fontSize={'lg'}>

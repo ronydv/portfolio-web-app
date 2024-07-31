@@ -33,7 +33,7 @@ const OrdersByMonth = () => {
         },
         xAxis: {
             type: 'category',
-            data: ['En', 'Feb','Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ag', 'Sept','Oct','Nov','Dic']
+            data: ['Jan', 'Feb','Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept','Oct','Nov','Dec']
         },
         yAxis: {
             type: 'value'

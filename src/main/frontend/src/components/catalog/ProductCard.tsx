@@ -72,7 +72,7 @@ const DesktopVersionCard = ({ product, colorMode, tabIndex, categories, types, p
                         {description(product)}
                     </Text>
 
-                    <Badge variant='solid' colorScheme='red'>{product.productType}</Badge>
+                    <Badge variant='solid' colorScheme='teal'>{product.productType}</Badge>
                     {/* set the categories inside a loop */}
                     {product.categories?.map((category, i) => (
                         <span key={i}>
@@ -81,7 +81,7 @@ const DesktopVersionCard = ({ product, colorMode, tabIndex, categories, types, p
                         </span>
                     ))}
                     <p />
-                    <Tag mt={1} colorScheme="orange"> {product.images?.length} images</Tag>
+                    <Tag mt={1} colorScheme="blue"> {product.images?.length} images</Tag>
                 </CardBody>
 
                 <CardFooter pt={1}>
@@ -134,7 +134,7 @@ const MobileVersionCard = ({ product, colorMode, tabIndex, categories, types, pa
                         {description(product)}
                     </Text>
                     <Box>
-                        <Badge variant='solid' colorScheme='red'>{product.productType}</Badge>
+                        <Badge variant='solid' colorScheme='teal'>{product.productType}</Badge>
                         {/* set the categories inside a loop */}
                         {product.categories?.map((category, i) => (
                             <span key={i}>
@@ -143,14 +143,14 @@ const MobileVersionCard = ({ product, colorMode, tabIndex, categories, types, pa
                             </span>
                         ))}
                         <p />
-                        <Tag mt={1} colorScheme="orange"> {product.images?.length} images</Tag>
+                        <Tag mt={1} colorScheme="blue"> {product.images?.length} images</Tag>
                     </Box>
                 </Stack>
             </CardBody>
             <CardFooter pt={1}>
                 {/* <Link to={{pathname:`/product-details/${product?.id}`,search:`?tab=${tabIndex}`}}> */}
                 <Button onClick={()=>handleNavigation(product?.id!,navigate,tabIndex,categories, types, page, browse)}
-                        variant='solid' colorScheme='orange'>
+                        variant='solid' colorScheme='blue'>
                     View Details
                 </Button>
                 <Spacer />

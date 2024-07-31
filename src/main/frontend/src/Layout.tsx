@@ -37,9 +37,9 @@ const Layout = () => {
                     </a>
                 </div>
             }
-            <footer style={{paddingLeft:'40px', marginTop:'10px'}}>
+{/*             <footer style={{paddingLeft:'40px', marginTop:'10px'}}>
                 <p>footer description</p>
-            </footer>
+            </footer> */}
         </div>
     );
 };

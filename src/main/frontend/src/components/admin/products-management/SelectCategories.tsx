@@ -82,7 +82,7 @@ const SelectCategories = ({ colorMode, setProduct, product }: CategoriesProps) =
             
             <FormControl as='fieldset' className={classes.form} isInvalid={error!==""}>
                 <FormLabel mt={2}>{error ? <Text color={'red'}>{error}</Text>: 'Category Name'}</FormLabel>
-                <Input type='text' placeholder="Insertar categoría" onChange={(e) =>{
+                <Input type='text' placeholder="Insert category" onChange={(e) =>{
                             setCategory({ name: e.target.value })
                             setError("");
                 }}/>
