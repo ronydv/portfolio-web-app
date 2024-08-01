@@ -59,7 +59,7 @@ const Home = () => {
                         clipPath={isDesktop ? 'polygon(10% 0%, 100% 0%, 100% 100%, 0% 100%)' : ''}
                         boxSize={isDesktop ? '35vw' : ''}
                         /* src={MainCover} */
-                        src={'https://images.pexels.com/photos/389818/pexels-photo-389818.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'}
+                        src={'https://res.cloudinary.com/dlm0bynvi/image/upload/v1722476212/cover-demo-app.webp'}
                         alt={'main-cover'} />
                 </div>
             </section>

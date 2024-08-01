@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
     const authContext  = useContext<UserContext | undefined>(AuthContext);//fill the data and manage it in AuthProvider.tsx
     const navigate = useNavigate();
-    const [user, setUser] = useState<User>({});
+    const [user, setUser] = useState<User>({email:'admin@demoapp.com',password:'password'});
     const [isError, setIsError]= useState<boolean>(false)
     const [error, setError]=useState<string | undefined>(undefined);
     const disable: boolean= user.email=== '' || user.password === '';
