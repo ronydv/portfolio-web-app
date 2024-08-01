@@ -210,7 +210,7 @@ const CustomersDashboard = () => {
                     {!error ?
                         <>
                             <Text placeContent={'center'} fontSize={'large'} fontWeight={'bold'} color={grayColor}>
-                                Customer orders: "<span style={{ color: 'blue' }}>{orders?.userName}</span>"
+                                Customer orders: "<span style={{ color: '#3182ce' }}>{orders?.userName}</span>"
                             </Text>
 
                             {loadingOrders ? 'loading orders...' :

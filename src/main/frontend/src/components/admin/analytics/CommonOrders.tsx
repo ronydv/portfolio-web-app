@@ -46,7 +46,7 @@ const CommonOrders = () => {
         },
         legend: {
             top: '1%', //adjust the position of the legend
-            orient: 'vertical',
+            orient: 'horizontal',
             left: 'left',
             textStyle: {
                 color: `${colorMode === 'light' ? '#4a5568' : '#a0aec0'}`,
