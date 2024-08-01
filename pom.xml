@@ -8,7 +8,7 @@
 		<version>3.2.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.industech</groupId>
+	<groupId>com.portfolio</groupId>
 	<artifactId>portfolio-web-app</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>portfolio-web-app</name>

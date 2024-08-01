@@ -57,8 +57,8 @@
 
 /* container from ProductGrid.tsx, style the pagination inside this container */
 .product-list-container{
-    --pagination-color: var(--chakra-colors-red-600);
-    --pagination-hover-color: var(--chakra-colors-red-200);/* #454648; */
+    --pagination-color: var(--chakra-colors-teal-600);
+    --pagination-hover-color: var(--chakra-colors-teal-200);/* #454648; */
     --pagination-bg: transparent;/* change to app theme */
 }
 .pagination-dark{
@@ -139,5 +139,5 @@
 .carousel-arrow svg {
     width: 3rem;
     height:3rem;
-    color: var(--chakra-colors-red-600);
+    color: var(--chakra-colors-blue-600);
 }

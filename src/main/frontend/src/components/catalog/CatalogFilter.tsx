@@ -64,7 +64,7 @@ const CatalogFilter = ({sector, selectedCategories, selectedTypes, setSelectedCa
                                             color='purple.500' size='md' /> 
                     :
                     Array.isArray(categories) && categories.map((category, i) => (
-                        <Checkbox colorScheme='red'
+                        <Checkbox colorScheme='teal'
                             key={i}
                             value={category.name}
                             isDisabled={disableCheckbox}
@@ -85,7 +85,7 @@ const CatalogFilter = ({sector, selectedCategories, selectedTypes, setSelectedCa
                                                 color='purple.500' size='md' /> 
                     :
                     Array.isArray(types) && types.map((type, i) => (
-                        <Checkbox colorScheme='red'
+                        <Checkbox colorScheme='teal'
                             key={i}
                             value={type.productType}
                             isDisabled={disableCheckbox}
