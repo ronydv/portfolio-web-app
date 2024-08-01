@@ -210,10 +210,10 @@ const CustomersDashboard = () => {
                     {!error ?
                         <>
                             <Text placeContent={'center'} fontSize={'large'} fontWeight={'bold'} color={grayColor}>
-                                Customer orders: "<span style={{ color: 'crimson' }}>{orders?.userName}</span>"
+                                Customer orders: "<span style={{ color: 'blue' }}>{orders?.userName}</span>"
                             </Text>
 
-                            {loadingOrders ? 'cargando ordenes...' :
+                            {loadingOrders ? 'loading orders...' :
                                 <div className={`${classes['paginator-container']}
                                         ${colorMode === 'light' ? classes['pagination-light'] : classes['pagination-dark']}`}>
                                     <ResponsivePagination

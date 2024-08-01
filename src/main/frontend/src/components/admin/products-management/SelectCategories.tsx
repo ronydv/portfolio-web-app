@@ -99,7 +99,7 @@ const SelectCategories = ({ colorMode, setProduct, product }: CategoriesProps) =
                     <AccordionPanel pb={4} style={{ maxHeight: '200px', overflowY: 'auto' }}>
                         {tags.names.length > 0 && categories.map((category, i) => (
                             <div key={i} style={{ display: 'flex' }}>
-                                <Checkbox value={category.name} colorScheme='red'
+                                <Checkbox value={category.name} colorScheme='teal'
                                     //check the categories from the product props against categories from the accordion panel
                                     defaultChecked={tags.names.some(tagName => tagName === category.name)}
                                     onChange={(e) => handleCheckbox(e)}>
